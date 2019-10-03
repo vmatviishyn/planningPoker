@@ -1,0 +1,15 @@
+<div class="cards-wrapper">
+    <div class="card" *ngFor="let card of izyanArray" (click)="onCardClick(card.value)">
+        <div class="card__header">
+            <div>{{ card.secondaryText }}</div>
+            <div>{{ card.secondaryText }}</div>
+        </div>
+        <div class="card__body">
+            {{ card.mainText }}
+        </div>
+        <div class="card__footer">
+            <div>{{ card.secondaryText }}</div>
+            <div>{{ card.secondaryText }}</div>
+        </div>
+    </div>
+</div>

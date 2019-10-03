@@ -1,0 +1,39 @@
+.cards-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card {
+    border-radius: 10px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    justify-content: space-between;
+    margin: 10px;
+    padding: 10px;
+    width: 100px;
+    cursor: pointer;
+
+    &__header {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+
+    &__body {
+        align-self: center;
+        margin: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    &__footer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+}
