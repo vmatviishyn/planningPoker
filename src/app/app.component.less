@@ -1,13 +1,22 @@
+@import "../assets/main-theme";
+
 .container {
-  padding: 40px;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  padding: 40px;
 }
 
 .mat-list {
-  margin-top: 20px;
-  background-color: #b0bec5;
+  background-color: @secondary-background;
   border-radius: 20px;
+  margin-top: 20px;
   width: 400px;
+}
+
+mat-toolbar {
+  background-color: @secondary-background;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
