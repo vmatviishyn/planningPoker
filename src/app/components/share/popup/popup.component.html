@@ -1,5 +1,10 @@
 <div mat-dialog-content>
-  <qrcode [qrdata]="'http://localhost:4200/'" [size]="256" [level]="'M'"></qrcode>
+  <h1>angularx-qrcode demo implementation</h1>
+
+  <div>
+    <qr-code [value]="value" [size]="450" background="#424242" foreground="white"></qr-code>
+  </div>
 </div>
-<div mat-dialog-actions>
-</div>
+
+
+<div mat-dialog-actions></div>

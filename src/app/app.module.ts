@@ -10,7 +10,7 @@ import { CardsBoardComponent } from './components/cards-board/cards-board.compon
 import { ShareComponent } from './components/share/share.component';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material';
 import { PopupComponent } from './components/share/popup/popup.component';
-import { QRCodeModule } from 'angularx-qrcode';
+import { QRCodeModule } from 'angular2-qrcode';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     BrowserAnimationsModule,
     MaterialModule,
     MatDialogModule,
-    QRCodeModule
+    QRCodeModule,
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
