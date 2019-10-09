@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-
 
 @Component({
   selector: 'app-popup',
@@ -8,11 +7,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   styleUrls: ['./popup.component.less']
 })
 export class PopupComponent {
-  value='http://localhost:4200/';
+  link = window.location.href;
 
   constructor(public dialogRef: MatDialogRef<PopupComponent>,
                 @Inject(MAT_DIALOG_DATA) public data) {
     console.log('AppComponent running');
   }
-
 }
