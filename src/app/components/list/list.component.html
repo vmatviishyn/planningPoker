@@ -1,0 +1,15 @@
+<h1 style="color: aliceblue;">list works!</h1>
+
+<label>
+    <input type="text" [(ngModel)]="listItem">
+    <button (click)="onAddItem()" [disabled]="!listItem.length">Add storie</button>
+</label>
+
+<div>
+    <mat-list>
+        <mat-list-item *ngFor="let item of listArray">
+            <mat-icon mat-list-icon>description</mat-icon>
+            <h4 mat-line>{{ item.name }}</h4>
+        </mat-list-item>
+    </mat-list>
+</div>
