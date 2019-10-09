@@ -4,34 +4,19 @@
 </mat-toolbar>
 
 <div class="container">
-  <div class="main">
-    <app-cards-board></app-cards-board>
+  <app-cards-board></app-cards-board>
 
+  <mat-list>
+    <h3 mat-subheader>Members</h3>
+    <mat-list-item *ngFor="let person of members">
+      <mat-icon mat-list-icon>person</mat-icon>
+      <h4 mat-line>{{ person.name }}</h4>
+    </mat-list-item>
+  </mat-list>
+</div>
+
+<div class="container">
+  <div class=" app-list">
     <app-list></app-list>
-
-    <app-chart></app-chart>
   </div>
-
-  <div class="right-side">
-
-    <mat-list>
-      <h3 mat-subheader>Members</h3>
-      <mat-list-item *ngFor="let person of members">
-        <mat-icon mat-list-icon>person</mat-icon>
-        <h4 mat-line>{{ person.name }}</h4>
-      </mat-list-item>
-    </mat-list>
-
-    <!-- djkfnbkjdnfbkjndkfjnb -->
-
-    <div>
-      <button>Button 1</button>
-      <button>Button 2</button>
-      <button>Button 3</button>
-      <button>Button 4</button>
-    </div>
-
-  </div>
-
-
 </div>
