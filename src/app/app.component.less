@@ -2,21 +2,33 @@
 
 .container {
   display: flex;
-  justify-content: space-between;
   flex-direction: row;
-  padding: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
 }
 
 .mat-list {
   background-color: @secondary-background;
   border-radius: 20px;
-  margin-top: 20px;
-  width: 400px;
+  margin: 0 40px;
+  width: 100%;
+
+  @media (max-width: 470px) {
+    margin-top: 20px;
+  }
+}
+
+.app-list {
+  background-color: @secondary-background;
+  border-radius: 20px;
+  margin: 0 40px;
+  width: 100%;
 }
 
 mat-toolbar {
+  align-items: center;
   background-color: @secondary-background;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }

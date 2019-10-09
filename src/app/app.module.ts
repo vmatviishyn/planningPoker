@@ -11,13 +11,18 @@ import { ShareComponent } from './components/share/share.component';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material';
 import { PopupComponent } from './components/share/popup/popup.component';
 import { QRCodeModule } from 'angular2-qrcode';
+import { ListComponent } from './components/list/list.component';
+import { ChartComponent } from './components/chart/chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
     AppComponent,
     CardsBoardComponent,
     ShareComponent,
-    PopupComponent
+    PopupComponent,
+    ListComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +32,7 @@ import { QRCodeModule } from 'angular2-qrcode';
     MaterialModule,
     MatDialogModule,
     QRCodeModule,
+    ChartsModule,
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
