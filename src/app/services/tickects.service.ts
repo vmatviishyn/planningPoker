@@ -21,5 +21,5 @@ interface Ticket {
   title?: string;
   href?: string;
   sessionId?: number;
-  timestamp?: string;
-};
+  timestamp?: any;
+}
