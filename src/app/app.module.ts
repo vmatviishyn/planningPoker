@@ -14,11 +14,9 @@ import { QRCodeModule } from 'angular2-qrcode';
 import { ListComponent } from './components/list/list.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { ChartsModule } from 'ng2-charts';
-import { UsersService } from './services/users.service';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-
 
 @NgModule({
   declarations: [

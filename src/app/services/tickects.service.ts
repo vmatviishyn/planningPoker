@@ -8,7 +8,7 @@ export class TickectsService {
   constructor(private afs: AngularFirestore) {}
 
   getTickets() {
-    return this.afs.collection('tickets').valueChanges();
+    return this.afs.collection('tickets', ref => ref.orderBy('timestamp')).valueChanges();
   }
 
   addTicket(ticket: Ticket) {
@@ -21,4 +21,5 @@ interface Ticket {
   title?: string;
   href?: string;
   sessionId?: number;
-}
+  timestamp?: string;
+};

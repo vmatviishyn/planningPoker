@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TickectsService } from 'src/app/services/tickects.service';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-list',
@@ -20,6 +21,7 @@ export class ListComponent implements OnInit {
     this.ticketsService.addTicket({
       title: this.ticket,
       sessionId: 1000,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     }).then(() => {
       this.ticket = '';
     });
