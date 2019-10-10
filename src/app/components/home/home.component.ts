@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from './../../services/auth.service';
 import { SessionService } from 'src/app/services/session.service';
@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private sessionService: SessionService,
+    private activateRoute: ActivatedRoute,
     private router: Router
   ) { }
 
@@ -41,7 +42,7 @@ export class HomeComponent implements OnInit {
       // session id is exists in database
       sessionId = this.sessionId;
     }
-    this.authService.loginWithGoogle(sessionId)
+    this.authService.loginWithGoogle(sessionId, !this.isSessionExists)
       .pipe(take(1))
       .subscribe((user: User) => {
         if (this.isSessionExists) {
@@ -65,7 +66,12 @@ export class HomeComponent implements OnInit {
         this.isSessionExists = isExists;
         if (isExists) {
           console.log('session is exists');
-          this.navigateToRoom(id);
+          this.router.navigate([],
+            {
+              relativeTo: this.activateRoute,
+              queryParams: { sessionId: this.sessionId },
+              queryParamsHandling: 'merge'
+            });
         } else {
           console.error(`Session with id=${id} is not exist!`);
         }

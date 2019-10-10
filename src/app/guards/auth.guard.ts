@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     console.log('"room" canActivate guard was called!');
-    return from(this.afauth.authState).pipe(switchMap(data => {
+    return from(this.afauth.authState).pipe(switchMap((data: firebase.User) => {
       if (data) {
         return of(true);
       }

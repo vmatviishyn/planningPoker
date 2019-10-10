@@ -15,18 +15,18 @@ export class AuthService {
 
   constructor(private afauth: AngularFireAuth, private userService: UsersService) {
     // For test purpose (user state)
-    this.afauth.authState.subscribe(user => {
+    this.afauth.authState.subscribe((user: firebase.User) => {
       console.log('user', user);
     });
   }
 
-  loginWithGoogle(sessionId: string): Observable<User> {
+  loginWithGoogle(sessionId: string, isAdmin: boolean): Observable<User> {
     // login to the system using google authentication
     return from(this.afauth.auth.signInWithPopup(new auth.GoogleAuthProvider()))
       .pipe(switchMap((userCredential: firebase.auth.UserCredential) => {
         this.authState = userCredential;
         // save user and session id to database
-        return this.userService.addUser(userCredential.user.displayName, sessionId);
+        return this.userService.addUser(userCredential.user.displayName, sessionId, isAdmin);
       }));
   }
 

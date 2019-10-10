@@ -1,5 +1,4 @@
 export interface Ticket {
-  id?: string;
   title?: string;
   href?: string;
   sessionId?: string;
