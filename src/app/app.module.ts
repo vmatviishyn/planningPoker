@@ -14,6 +14,11 @@ import { QRCodeModule } from 'angular2-qrcode';
 import { ListComponent } from './components/list/list.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { ChartsModule } from 'ng2-charts';
+import { UsersService } from './services/users.service';
+import { environment } from '../environments/environment';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+
 
 @NgModule({
   declarations: [
@@ -33,10 +38,12 @@ import { ChartsModule } from 'ng2-charts';
     MatDialogModule,
     QRCodeModule,
     ChartsModule,
+    AngularFirestoreModule,
+    AngularFireModule.initializeApp(environment.firebase, 'planningPoker'),
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef, useValue: {} }
+    { provide: MatDialogRef, useValue: {} },
   ],
   entryComponents: [
     PopupComponent

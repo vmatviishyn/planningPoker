@@ -5,18 +5,35 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 10px;
+  align-items: baseline;
+  padding: 40px;
+
+  @media (max-width: 470px) {
+    padding: 0;
+  }
+}
+
+app-cards-board {
+  width: 70%;
+
+  @media (max-width: 470px) {
+    width: 100%;
+  }
 }
 
 .mat-list {
   background-color: @secondary-background;
   border-radius: 20px;
-  margin: 0 40px;
-  width: 100%;
+  width: 30%;
 
   @media (max-width: 470px) {
-    margin-top: 20px;
+    margin: 20px 40px 0;
+    width: 100%;
   }
+}
+
+.mat-list-base {
+  padding-top: 0;
 }
 
 .app-list {

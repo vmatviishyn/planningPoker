@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TickectsService } from 'src/app/services/tickects.service';
 
 @Component({
   selector: 'app-list',
@@ -6,22 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list.component.less']
 })
 export class ListComponent implements OnInit {
-  listItem = '';
-  listArray = [
-    { name: 'WR-23413' },
-    { name: 'WR-23413' },
-    { name: 'WR-23413' },
-    { name: 'WR-23413' },
-  ];
+  ticket = '';
+  tickets = [];
 
-  constructor() { }
+  constructor(private ticketsService: TickectsService) { }
 
   ngOnInit() {
+    this.ticketsService.getTickets().subscribe(tickets => this.tickets = tickets);
   }
 
-  onAddItem() {
-    this.listArray.push({ name: this.listItem });
-    this.listItem = '';
+  onAddTicket() {
+    this.ticketsService.addTicket({
+      title: this.ticket,
+      sessionId: 1000,
+    }).then(() => {
+      this.ticket = '';
+    });
   }
 
 }
