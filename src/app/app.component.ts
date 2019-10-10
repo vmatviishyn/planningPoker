@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService } from './services/users.service';
+
+import { SessionService } from 'src/app/services/session.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,14 +9,13 @@ import { UsersService } from './services/users.service';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
-  members = [];
-
-  constructor(private usersService: UsersService) {}
+  constructor(private authService: AuthService, private sessionService: SessionService) {}
 
   ngOnInit() {
-    this.usersService.getUsers().subscribe(users => this.members = users);
+    this.sessionService.setSessionId()
   }
 
-
-
+  logout() {
+    this.authService.logout();
+  }
 }

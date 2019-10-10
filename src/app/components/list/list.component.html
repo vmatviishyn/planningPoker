@@ -1,18 +1,15 @@
-
-
-
 <div>
-    <mat-list>
-        <h3 mat-subheader>List of stories</h3>
-        <mat-list-item>
-            <label>
-                <input type="text" [(ngModel)]="ticket">
-                <button mat-raised-button (click)="onAddTicket()" [disabled]="!ticket.length">Add ticket</button>
-            </label>
-        </mat-list-item>
-        <mat-list-item *ngFor="let ticket of tickets">
-            <mat-icon mat-list-icon>description</mat-icon>
-            <h4 mat-line>{{ ticket.title }}</h4>
-        </mat-list-item>
-    </mat-list>
+  <mat-list>
+    <h3 mat-subheader>List of stories</h3>
+    <mat-list-item>
+      <label>
+        <input type="text" [(ngModel)]="ticket">
+        <button mat-raised-button (click)="onAddTicket()" [disabled]="!ticket.length">Add ticket</button>
+      </label>
+    </mat-list-item>
+    <mat-list-item *ngFor="let ticket of tickets$ | async">
+      <mat-icon mat-list-icon>description</mat-icon>
+      <h4 mat-line>{{ ticket.title }}</h4>
+    </mat-list-item>
+  </mat-list>
 </div>

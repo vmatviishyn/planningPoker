@@ -5,14 +5,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyBYWVKlMQACqQkO-Sn1sUEfZ1YgE7FL_JM",
-    authDomain: "planing-pocker.firebaseapp.com",
-    databaseURL: "https://planing-pocker.firebaseio.com",
-    projectId: "planing-pocker",
-    storageBucket: "planing-pocker.appspot.com",
-    messagingSenderId: "623244221117",
-    appId: "1:623244221117:web:212ef206cd495468c375d4",
-    measurementId: "G-KVHT2GN784"
+    'Your project settings'
   }
 };
 
