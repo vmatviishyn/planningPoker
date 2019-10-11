@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { auth } from 'firebase/app';
 import { SessionService } from './session.service';
 import { UsersService } from './users.service';
-import { User } from '../models/user.model';
-import { Session } from '../models';
+import { User } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +20,7 @@ export class AuthService {
     private userService: UsersService
   ) {
     // For test purpose (user state)
-    this.afauth.authState.subscribe((user: firebase.User) => {
+    this.getUserData().subscribe((user: firebase.User) => {
       console.log('user', user);
     });
   }
@@ -33,20 +32,22 @@ export class AuthService {
         this.authState = userCredential;
         // save user and session id to database
         const { displayName, photoURL } = userCredential.user;
-        return this.userService.addUser(displayName, photoURL, sessionId, isAdmin);
+        return this.userService.updateUser(displayName, photoURL, sessionId, isAdmin);
       }));
   }
 
-  logout() {
+  logout(user: firebase.User): Observable<void> {
     this.sessionService.clearSessionId();
-    return from(this.afauth.auth.signOut())
+
+    // remove user from current session
+    return this.userService.updateUser(user.displayName, user.photoURL, '', false)
       .pipe(
-        switchMap(() => {
-          return this.sessionService.removeOldSessions()
-        }),
-        switchMap((sessions: Session[]) => {
-          return of(sessions);
-        }),
-      )
+        // logout
+        switchMap(() => from(this.afauth.auth.signOut()))
+      );
+  }
+
+  getUserData(): Observable<firebase.User> {
+    return this.afauth.authState;
   }
 }

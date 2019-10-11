@@ -95,7 +95,7 @@ export class CardsBoardComponent implements OnInit {
 
   onCardClick(card: Card) {
     this.selected = card;
-    console.log(card.value);
+    console.log('Card', card.value);
   }
 
 }

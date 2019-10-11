@@ -30,7 +30,7 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser$ = this.userService.getCurrentUser();
-    this.tickets$ = this.ticketsService.getTickets(this.sessionService.getSessionId());
+    this.tickets$ = this.ticketsService.getTickets();
   }
 
   onAddTicket(): void {

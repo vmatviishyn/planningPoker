@@ -3,6 +3,7 @@ import { HttpParams } from '@angular/common/http';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import randomize from 'randomatic';
 
 import * as firebase from 'firebase/app';
 
@@ -22,7 +23,7 @@ export class SessionService {
   }
 
   checkSession(id: string): Observable<boolean> {
-    return this.afs.collection('sessions', ref => ref.where('id', '==', id)).valueChanges()
+    return this.afs.collection('sessions', (ref: firebase.firestore.CollectionReference) => ref.where('id', '==', id)).valueChanges()
       .pipe(switchMap((sessions: Session[]) => {
         return sessions.length ? of(true) : of(false);
       }));
@@ -53,8 +54,7 @@ export class SessionService {
   }
 
   generateSession() {
-    // @TODO: Replace with hash generator
-    return Math.random().toString(36).substring(7);
+    return randomize('Aa0', 16);
   }
 
   removeOldSessions() {

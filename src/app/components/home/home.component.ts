@@ -13,7 +13,7 @@ import { User } from 'src/app/models';
 })
 export class HomeComponent implements OnInit {
   sessionId: string;
-  isSessionExists: boolean;
+  isSessionExists = false;
 
   constructor(
     private authService: AuthService,
@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   }
 
   onLoginWithGoogle() {
-    console.log(this.isSessionExists);
+    console.log('isSessionExist', this.isSessionExists);
     // generate new session id
     let sessionId = this.sessionService.generateSession();
 

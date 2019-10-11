@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
-import { SessionService } from 'src/app/services/session.service';
 import { AuthService } from './services/auth.service';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +11,18 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
+  userData$: Observable<firebase.User>;
+
   constructor(private authService: AuthService, private sessionService: SessionService) {}
 
   ngOnInit() {
-    this.sessionService.setSessionId()
+    this.sessionService.setSessionId();
+    this.userData$ = this.authService.getUserData();
   }
 
-  logout() {
-    this.authService.logout().subscribe(data => console.log(data));
+  logout(user: firebase.User) {
+    this.authService.logout(user)
+      .pipe(take(1))
+      .subscribe(() => console.log('Logged out'));
   }
 }

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable, of, from } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
+
+import { SessionService } from 'src/app/services/session.service';
 import { User } from 'src/app/models';
 
 @Injectable({
@@ -12,9 +14,13 @@ import { User } from 'src/app/models';
 })
 export class UsersService {
 
-  constructor(private afs: AngularFirestore, private afauth: AngularFireAuth) {}
+  constructor(
+    private afs: AngularFirestore,
+    private afauth: AngularFireAuth,
+    private sessionService: SessionService
+  ) {}
 
-  addUser(name: string, photoURL: string, sessionId: string, isAdmin: boolean): Observable<User> {
+  updateUser(name: string, photoURL: string, sessionId: string, isAdmin: boolean): Observable<User> {
     const user: User = { name, photoURL, sessionId, isAdmin };
 
     return this.afauth.authState
@@ -25,8 +31,11 @@ export class UsersService {
       );
   }
 
-  getUsers(id: string) {
-    return this.afs.collection('users', ref => ref.where('sessionId', '==', id)).valueChanges();
+  getUsers() {
+    return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
+      .where('sessionId', '==', this.sessionService.getSessionId())
+      .orderBy('name'))
+      .valueChanges();
   }
 
   getCurrentUser(): Observable<User[]> {
@@ -34,7 +43,7 @@ export class UsersService {
     .pipe(
       switchMap((userData: firebase.User) => {
         return this.afs
-          .collection('users', ref => ref
+          .collection('users', (ref: firebase.firestore.CollectionReference) => ref
           .where(firebase.firestore.FieldPath.documentId(), '==', userData.uid))
           .valueChanges();
       })
