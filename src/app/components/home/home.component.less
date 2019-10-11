@@ -46,15 +46,6 @@
   transform: rotate(-10deg);
   transition: .3s;
   width: 50%;
-
-  // &:hover {
-  //   border: 3px solid @border-accent1;
-  //   transform: rotate(0deg);
-
-  //   .login-img:hover {
-  //     transform: rotate(0deg);
-  //   }
-  // }
 }
 
 .login-btn-wrapper {
@@ -110,3 +101,52 @@
     width: 90%;
   }
 }
+
+.hidden-mobile {
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.visible-mobile {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.mobile-home {
+  align-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  left: 50%;
+  position: absolute;
+  top: 52%;
+  transform: translate(-50%, -50%);
+}
+
+.mobile-button {
+  background-image: url('/assets/images/background.png');
+  background-size: cover;
+  width: 300px;
+  height: 500px;
+
+  &__text {
+    font-size: 24px;
+  }
+}
+
+::ng-deep .mat-button-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+
+
