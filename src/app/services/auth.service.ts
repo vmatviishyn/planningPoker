@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable, from } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { auth } from 'firebase/app';
+import { SessionService } from './session.service';
 import { UsersService } from './users.service';
 import { User } from '../models/user.model';
+import { Session } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,11 @@ import { User } from '../models/user.model';
 export class AuthService {
   private authState: firebase.auth.UserCredential;
 
-  constructor(private afauth: AngularFireAuth, private userService: UsersService) {
+  constructor(
+    private afauth: AngularFireAuth,
+    private sessionService: SessionService,
+    private userService: UsersService
+  ) {
     // For test purpose (user state)
     this.afauth.authState.subscribe((user: firebase.User) => {
       console.log('user', user);
@@ -31,8 +37,16 @@ export class AuthService {
       }));
   }
 
-  // For test purpose
   logout() {
-    this.afauth.auth.signOut();
+    this.sessionService.clearSessionId();
+    return from(this.afauth.auth.signOut())
+      .pipe(
+        switchMap(() => {
+          return this.sessionService.removeOldSessions()
+        }),
+        switchMap((sessions: Session[]) => {
+          return of(sessions);
+        }),
+      )
   }
 }

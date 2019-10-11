@@ -4,6 +4,8 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
+import * as firebase from 'firebase/app';
+
 import { Session } from '../models/session.model';
 
 @Injectable({
@@ -15,7 +17,8 @@ export class SessionService {
   constructor(private afs: AngularFirestore) { }
 
   createSession(id: string) {
-    return this.afs.collection('sessions').add({ id }).then(() => this.sessionId = id);
+    return this.afs.collection('sessions').add({ id, timestamp: firebase.firestore.FieldValue.serverTimestamp() })
+      .then(() => this.sessionId = id);
   }
 
   checkSession(id: string): Observable<boolean> {
@@ -45,8 +48,17 @@ export class SessionService {
     this.sessionId = this.getParamValueQueryString('sessionId');
   }
 
+  clearSessionId() {
+    this.sessionId = '';
+  }
+
   generateSession() {
     // @TODO: Replace with hash generator
     return Math.random().toString(36).substring(7);
+  }
+
+  removeOldSessions() {
+    // @TODO: Implement this method with removing old sessions
+    return this.afs.collection('sessions').valueChanges();
   }
 }
