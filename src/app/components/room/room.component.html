@@ -4,7 +4,7 @@
   <mat-list>
     <h3 mat-subheader>Members</h3>
     <mat-list-item *ngFor="let person of users$ | async">
-      <mat-icon mat-list-icon>person</mat-icon>
+      <img matListAvatar [src]="person.photoURL" alt="">
       <h4 mat-line>{{ person.name }}</h4>
     </mat-list-item>
   </mat-list>

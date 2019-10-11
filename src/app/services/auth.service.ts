@@ -26,7 +26,8 @@ export class AuthService {
       .pipe(switchMap((userCredential: firebase.auth.UserCredential) => {
         this.authState = userCredential;
         // save user and session id to database
-        return this.userService.addUser(userCredential.user.displayName, sessionId, isAdmin);
+        const { displayName, photoURL } = userCredential.user;
+        return this.userService.addUser(displayName, photoURL, sessionId, isAdmin);
       }));
   }
 
