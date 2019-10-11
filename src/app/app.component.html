@@ -3,20 +3,7 @@
   <app-share></app-share>
 </mat-toolbar>
 
-<div class="container">
-  <app-cards-board></app-cards-board>
+<!-- For test purpose -->
+<button style="text-align: center" routerLink="/home" (click)="logout()">Logout</button>
 
-  <mat-list>
-    <h3 mat-subheader>Members</h3>
-    <mat-list-item *ngFor="let person of members">
-      <mat-icon mat-list-icon>person</mat-icon>
-      <h4 mat-line>{{ person.name }}</h4>
-    </mat-list-item>
-  </mat-list>
-</div>
-
-<div class="container">
-  <div class="app-list">
-    <app-list></app-list>
-  </div>
-</div>
+<router-outlet></router-outlet>

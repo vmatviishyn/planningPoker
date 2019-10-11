@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { TickectsService } from 'src/app/services/tickects.service';
+import { Observable } from 'rxjs';
+
 import * as firebase from 'firebase/app';
+import { TickectsService } from 'src/app/services/tickects.service';
+import { SessionService } from './../../services/session.service';
+
+import { Ticket, User } from 'src/app/models';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-list',
@@ -8,19 +14,25 @@ import * as firebase from 'firebase/app';
   styleUrls: ['./list.component.less']
 })
 export class ListComponent implements OnInit {
+  currentUser$: Observable<User[]>;
   ticket = '';
-  tickets = [];
+  tickets$: Observable<Ticket[]>;
 
-  constructor(private ticketsService: TickectsService) { }
+  constructor(
+    private userService: UsersService,
+    private ticketsService: TickectsService,
+    private sessionService: SessionService
+  ) { }
 
   ngOnInit() {
-    this.ticketsService.getTickets().subscribe(tickets => this.tickets = tickets);
+    this.currentUser$ = this.userService.getCurrentUser();
+    this.tickets$ = this.ticketsService.getTickets(this.sessionService.getSessionId());
   }
 
   onAddTicket() {
     this.ticketsService.addTicket({
       title: this.ticket,
-      sessionId: 1000,
+      sessionId: this.sessionService.getSessionId(),
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     }).then(() => {
       this.ticket = '';
