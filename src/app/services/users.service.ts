@@ -14,8 +14,8 @@ export class UsersService {
 
   constructor(private afs: AngularFirestore, private afauth: AngularFireAuth) {}
 
-  addUser(name: string, sessionId: string, isAdmin: boolean): Observable<User> {
-    const user: User = { name, sessionId, isAdmin };
+  addUser(name: string, photoURL: string, sessionId: string, isAdmin: boolean): Observable<User> {
+    const user: User = { name, photoURL, sessionId, isAdmin };
 
     return this.afauth.authState
       .pipe(

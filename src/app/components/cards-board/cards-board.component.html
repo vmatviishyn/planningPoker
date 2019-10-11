@@ -1,5 +1,5 @@
 <div class="cards-wrapper">
-    <div class="card" *ngFor="let card of izyanArray" (click)="onCardClick(card.value)">
+    <div class="card" [class.card--selected]="card.value === selected?.value" *ngFor="let card of izyanArray" (click)="onCardClick(card)">
         <div class="card__header">
             <div>{{ card.secondaryText }}</div>
             <div>{{ card.secondaryText }}</div>
