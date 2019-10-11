@@ -29,16 +29,15 @@ export class UsersService {
     return this.afs.collection('users', ref => ref.where('sessionId', '==', id)).valueChanges();
   }
 
-  getCurrentUser(): Observable<any> {
+  getCurrentUser(): Observable<User[]> {
     return this.afauth.authState
     .pipe(
       switchMap((userData: firebase.User) => {
-        return of(this.afs
+        return this.afs
           .collection('users', ref => ref
           .where(firebase.firestore.FieldPath.documentId(), '==', userData.uid))
-          .valueChanges());
-      }),
-      switchMap((users$: Observable<User[]>) => users$)
+          .valueChanges();
+      })
     );
   }
 }
