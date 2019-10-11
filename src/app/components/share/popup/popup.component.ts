@@ -9,8 +9,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 export class PopupComponent {
   link = window.location.href;
 
-  constructor(public dialogRef: MatDialogRef<PopupComponent>,
-                @Inject(MAT_DIALOG_DATA) public data) {
-    console.log('AppComponent running');
+  constructor(@Inject(MAT_DIALOG_DATA) public data) {
   }
 }

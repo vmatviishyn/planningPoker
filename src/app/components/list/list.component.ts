@@ -7,6 +7,9 @@ import { SessionService } from './../../services/session.service';
 
 import { Ticket, User } from 'src/app/models';
 import { UsersService } from 'src/app/services/users.service';
+import { MatDialog } from '@angular/material';
+import { TextfieldPopupComponent } from './textfield-popup/textfield-popup.component';
+import DocumentReference = firebase.firestore.DocumentReference;
 
 @Component({
   selector: 'app-list',
@@ -21,7 +24,8 @@ export class ListComponent implements OnInit {
   constructor(
     private userService: UsersService,
     private ticketsService: TickectsService,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -29,13 +33,26 @@ export class ListComponent implements OnInit {
     this.tickets$ = this.ticketsService.getTickets(this.sessionService.getSessionId());
   }
 
-  onAddTicket() {
-    this.ticketsService.addTicket({
-      title: this.ticket,
+  onAddTicket(): void {
+    this.sendTicket(this.ticket)
+      .then(() => {
+        this.ticket = '';
+      });
+  }
+
+  addTicketsFromText(): void {
+    this.dialog.open(TextfieldPopupComponent, {
+      width: '70vw',
+    }).afterClosed().subscribe(result => {
+      result.forEach(this.sendTicket.bind(this));
+    });
+  }
+
+  private sendTicket(name: string): Promise<DocumentReference> {
+    return this.ticketsService.addTicket({
+      title: name,
       sessionId: this.sessionService.getSessionId(),
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    }).then(() => {
-      this.ticket = '';
     });
   }
 

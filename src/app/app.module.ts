@@ -29,6 +29,7 @@ import { PopupComponent } from './components/share/popup/popup.component';
 import { RoomComponent } from './components/room/room.component';
 
 import { environment } from '../environments/environment';
+import { TextfieldPopupComponent } from './components/list/textfield-popup/textfield-popup.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { environment } from '../environments/environment';
     PopupComponent,
     ListComponent,
     RoomComponent,
-    ChartComponent
+    ChartComponent,
+    TextfieldPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,8 @@ import { environment } from '../environments/environment';
     { provide: MatDialogRef, useValue: {} },
   ],
   entryComponents: [
-    PopupComponent
+    PopupComponent,
+    TextfieldPopupComponent
   ],
   bootstrap: [AppComponent]
 })
