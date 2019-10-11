@@ -16,8 +16,7 @@ export class ShareComponent implements OnInit {
 
   openPopup(): void {
     const dialog = this.dialog.open(PopupComponent, {
-      width: '70vh',
-      height: '70vh'
+      width: '80vh',
     });
   }
 

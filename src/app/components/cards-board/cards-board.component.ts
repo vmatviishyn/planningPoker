@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Card } from 'src/app/models';
+
 @Component({
   selector: 'app-cards-board',
   templateUrl: './cards-board.component.html',
   styleUrls: ['./cards-board.component.less']
 })
 export class CardsBoardComponent implements OnInit {
-  izyanArray = [
+  selected: Card;
+
+  izyanArray: Card[] = [
     {
       value: 1,
       mainText: 'изян',
@@ -89,8 +93,9 @@ export class CardsBoardComponent implements OnInit {
   ngOnInit() {
   }
 
-  onCardClick(value) {
-    console.log(value);
+  onCardClick(card: Card) {
+    this.selected = card;
+    console.log(card.value);
   }
 
 }

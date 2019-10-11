@@ -6,7 +6,9 @@
       <label class="add-ticket">
         <input class="ticket-input" type="text" [(ngModel)]="ticket">
         <button class="ticket-btn" mat-raised-button (click)="onAddTicket()" [disabled]="!ticket.length">Add ticket</button>
+        <button class="ticket-btn" mat-raised-button (click)="addTicketsFromText()">Add tickets from text</button>
       </label>
+
     </mat-list-item>
     <mat-list-item *ngFor="let ticket of tickets$ | async">
       <mat-icon mat-list-icon>description</mat-icon>
