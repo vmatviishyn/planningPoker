@@ -1,3 +1,20 @@
 <div class="home">
-  <button (click)="onLoginWithGoogle()" type="button" mat-raised-button>Login with Google</button>
+  <img class="login-img" src="/assets/images/background.png" alt="">
+  <div class="login-form">
+    <div class="login-btn-wrapper card">
+      <div class="card__header">
+        <div><img class="card-icon" src="/assets/images/poker.png" alt=""></div>
+        <div><img class="card-icon" src="/assets/images/poker.png" alt=""></div>
+      </div>
+      <div class="card__body">
+        <button (click)="onLoginWithGoogle()" type="button" mat-raised-button class="login-btn">
+          <img class="google-img" src="/assets/images/google.svg" alt="">
+        </button>
+      </div>
+      <div class="card__footer">
+        <div><img class="card-icon" src="/assets/images/poker.png" alt=""></div>
+        <div><img class="card-icon" src="/assets/images/poker.png" alt=""></div>
+      </div>
+    </div>
+  </div>
 </div>

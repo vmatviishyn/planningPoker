@@ -1,9 +1,9 @@
 <mat-toolbar>
-  <span>Planning Poker</span>
-  <app-share></app-share>
+  <div>Planing Poker</div>
+  <div class="nav-links">
+    <app-share></app-share>
+    <mat-icon class="logout-icon" routerLink="/home" (click)="logout()" mat-list-icon>exit_to_app</mat-icon>
+  </div>
 </mat-toolbar>
-
-<!-- For test purpose -->
-<button style="text-align: center" routerLink="/home" (click)="logout()">Logout</button>
 
 <router-outlet></router-outlet>
