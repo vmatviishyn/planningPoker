@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { take } from 'rxjs/operators';
 
 import { NotificationService } from './../../services/notification.service';
@@ -10,21 +10,18 @@ import { CardTypes } from './../../models/card.model';
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.less']
 })
-export class AdminPanelComponent implements OnInit {
+export class AdminPanelComponent {
   cardTypes = Object.keys(CardTypes);
   title = '';
 
   constructor(private sessionService: SessionService, private notificationService: NotificationService) { }
 
-  ngOnInit() {
-  }
-
   onUpdateTitle() {
     this.sessionService.updateValue('title', this.title)
       .pipe(take(1))
       .subscribe(() => {
+        this.notificationService.show(`Changed title to "${this.title}".`);
         this.title = '';
-        this.notificationService.show('Successfully updated title.');
       });
   }
 
@@ -32,8 +29,7 @@ export class AdminPanelComponent implements OnInit {
     this.sessionService.updateValue('cardsType', value)
       .pipe(take(1))
       .subscribe(() => {
-        this.title = '';
-        this.notificationService.show('Successfully updated cards type.');
+        this.notificationService.show(`Changed to "${value}" type.`);
       });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 import { Card, CardTypes } from 'src/app/models';
 
@@ -7,20 +7,14 @@ import { Card, CardTypes } from 'src/app/models';
   templateUrl: './cards-board.component.html',
   styleUrls: ['./cards-board.component.less']
 })
-export class CardsBoardComponent implements OnInit {
+export class CardsBoardComponent implements OnChanges {
   @Input() type: string;
 
   cards: Card[];
   selected: Card;
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-  // @TODO: Replace with stream
-  getCardTypes() {
-    return CardTypes[this.type || 'izyan'];
+  ngOnChanges() {
+    this.cards = CardTypes[this.type || 'izyan'];
   }
 
   onCardClick(card: Card) {

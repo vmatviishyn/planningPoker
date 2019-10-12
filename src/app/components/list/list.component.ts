@@ -35,9 +35,7 @@ export class ListComponent implements OnInit {
 
   onAddTicket(): void {
     this.sendTicket(this.ticket)
-      .then(() => {
-        this.ticket = '';
-      });
+      .then(() => this.ticket = '');
   }
 
   addTicketsFromText(): void {

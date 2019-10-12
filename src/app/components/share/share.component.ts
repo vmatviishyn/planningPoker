@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { PopupComponent } from './popup/popup.component';
 
@@ -7,15 +7,12 @@ import { PopupComponent } from './popup/popup.component';
   templateUrl: './share.component.html',
   styleUrls: ['./share.component.less']
 })
-export class ShareComponent implements OnInit {
+export class ShareComponent {
 
   constructor(public dialog: MatDialog) { }
 
-  ngOnInit() {
-  }
-
   openPopup(): void {
-    const dialog = this.dialog.open(PopupComponent, {
+    this.dialog.open(PopupComponent, {
       width: '80vh',
     });
   }
