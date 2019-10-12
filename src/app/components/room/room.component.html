@@ -1,9 +1,9 @@
 <div class="container">
   <app-cards-board></app-cards-board>
 
-  <mat-list>
+  <mat-list *ngIf="users$ | async as users">
     <h3 mat-subheader>Members</h3>
-    <mat-list-item *ngFor="let person of users$ | async">
+    <mat-list-item *ngFor="let person of users">
       <img matListAvatar [src]="person.photoURL" alt="">
       <h4 mat-line>{{ person.name }}</h4>
     </mat-list-item>
