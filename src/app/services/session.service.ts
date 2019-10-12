@@ -22,6 +22,19 @@ export class SessionService {
       .then(() => this.sessionId = id);
   }
 
+  getSessionData(): Observable<any> {
+    return this.afs.collection('sessions', (ref: firebase.firestore.CollectionReference) => ref
+      .where('id', '==', this.getSessionId())).valueChanges();
+  }
+
+  updateValue(key: string, value: string) {
+    return this.afs.collection('sessions', (ref: firebase.firestore.CollectionReference) => ref
+      .where('id', '==', this.getSessionId())).get()
+      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        return of(this.afs.doc(`sessions/${snapshot.docs[0].id}`).update({ [key]: value }));
+      }));
+  }
+
   checkSession(id: string): Observable<boolean> {
     return this.afs.collection('sessions', (ref: firebase.firestore.CollectionReference) => ref.where('id', '==', id)).valueChanges()
       .pipe(switchMap((sessions: Session[]) => {

@@ -31,17 +31,18 @@ export class UsersService {
       );
   }
 
-  getUsers() {
+  getUsers(): Observable<User[]> {
     return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId())
       .orderBy('name'))
       .valueChanges();
   }
 
-  getCurrentUser(): Observable<User[]> {
+  getCurrentUser(): Observable<User[] | boolean> {
     return this.afauth.authState
     .pipe(
       switchMap((userData: firebase.User) => {
+        if (!userData) { return of(false); }
         return this.afs
           .collection('users', (ref: firebase.firestore.CollectionReference) => ref
           .where(firebase.firestore.FieldPath.documentId(), '==', userData.uid))
