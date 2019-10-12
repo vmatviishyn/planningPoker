@@ -16,7 +16,7 @@ import { User, Session } from 'src/app/models';
 export class RoomComponent implements OnInit {
   currentUser: User;
   users$: Observable<User[]>;
-  session$: Observable<Session[]>;
+  session$: Observable<Session>;
 
   constructor(
     private notificationService: NotificationService,
@@ -33,8 +33,8 @@ export class RoomComponent implements OnInit {
   private geUserInfo() {
     this.userService.getCurrentUser()
       .pipe(take(1))
-      .subscribe((user: User[]) => {
-        this.currentUser = user[0];
+      .subscribe((user: User) => {
+        this.currentUser = user;
 
         if (this.currentUser) {
           this.notificationService.show(`Hi, ${this.currentUser.name}!`);

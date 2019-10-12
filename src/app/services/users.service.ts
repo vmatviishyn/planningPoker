@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
 
@@ -38,7 +38,7 @@ export class UsersService {
       .valueChanges();
   }
 
-  getCurrentUser(): Observable<User[] | boolean> {
+  getCurrentUser(): Observable<User | boolean> {
     return this.afauth.authState
     .pipe(
       switchMap((userData: firebase.User) => {
@@ -47,7 +47,8 @@ export class UsersService {
           .collection('users', (ref: firebase.firestore.CollectionReference) => ref
           .where(firebase.firestore.FieldPath.documentId(), '==', userData.uid))
           .valueChanges();
-      })
+      }),
+      map((users: User[]) => users[0])
     );
   }
 }

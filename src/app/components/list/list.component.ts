@@ -17,7 +17,7 @@ import DocumentReference = firebase.firestore.DocumentReference;
   styleUrls: ['./list.component.less']
 })
 export class ListComponent implements OnInit {
-  currentUser$: Observable<User[] | boolean>;
+  currentUser$: Observable<User | boolean>;
   ticket = '';
   tickets$: Observable<Ticket[]>;
 

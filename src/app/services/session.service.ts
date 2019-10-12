@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import randomize from 'randomatic';
 
@@ -22,9 +22,10 @@ export class SessionService {
       .then(() => this.sessionId = id);
   }
 
-  getSessionData(): Observable<any> {
+  getSessionData(): Observable<Session> {
     return this.afs.collection('sessions', (ref: firebase.firestore.CollectionReference) => ref
-      .where('id', '==', this.getSessionId())).valueChanges();
+      .where('id', '==', this.getSessionId())).valueChanges()
+      .pipe(map((sessions: Session[]) => sessions[0]));
   }
 
   updateValue(key: string, value: string) {
