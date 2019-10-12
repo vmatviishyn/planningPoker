@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
-import { SessionService } from './../../services/session.service';
 import { UsersService } from 'src/app/services/users.service';
 
 import { User } from 'src/app/models';
@@ -14,10 +13,10 @@ import { User } from 'src/app/models';
 export class RoomComponent implements OnInit {
   users$: Observable<User[]>;
 
-  constructor(private userService: UsersService, private sessionService: SessionService) { }
+  constructor(private userService: UsersService) { }
 
   ngOnInit() {
-    this.users$ = this.userService.getUsers(this.sessionService.getSessionId());
+    this.users$ = this.userService.getUsers();
   }
 
 }

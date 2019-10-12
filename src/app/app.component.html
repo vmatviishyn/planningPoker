@@ -2,7 +2,14 @@
   <div>Planing Poker</div>
   <div class="nav-links">
     <app-share></app-share>
-    <mat-icon class="logout-icon" routerLink="/home" (click)="logout()" mat-list-icon>exit_to_app</mat-icon>
+    <mat-icon
+      *ngIf="userData$ | async as user"
+      class="logout-icon"
+      routerLink="/home"
+      (click)="logout(user)"
+      mat-list-icon
+    >exit_to_app
+    </mat-icon>
   </div>
 </mat-toolbar>
 
