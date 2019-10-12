@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { AuthService } from './services/auth.service';
+import { NotificationService } from './services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
 
 @Component({
@@ -13,7 +14,11 @@ import { SessionService } from 'src/app/services/session.service';
 export class AppComponent implements OnInit {
   userData$: Observable<firebase.User>;
 
-  constructor(private authService: AuthService, private sessionService: SessionService) {}
+  constructor(
+    private authService: AuthService,
+    private notificationService: NotificationService,
+    private sessionService: SessionService
+  ) {}
 
   ngOnInit() {
     this.sessionService.setSessionId();
@@ -23,6 +28,6 @@ export class AppComponent implements OnInit {
   logout(user: firebase.User) {
     this.authService.logout(user)
       .pipe(take(1))
-      .subscribe(() => console.log('Logged out'));
+      .subscribe(() => this.notificationService.show('Successfully logged out.'));
   }
 }

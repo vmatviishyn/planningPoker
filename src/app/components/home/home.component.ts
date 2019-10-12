@@ -3,6 +3,7 @@ import { take } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from './../../services/auth.service';
+import { NotificationService } from './../../services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
 import { User } from 'src/app/models';
 
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit {
     private authService: AuthService,
     private sessionService: SessionService,
     private activateRoute: ActivatedRoute,
+    private notificationService: NotificationService,
     private router: Router
   ) { }
 
@@ -27,14 +29,12 @@ export class HomeComponent implements OnInit {
     this.sessionId = this.sessionService.getSessionId();
 
     if (this.sessionId) {
-      console.log('checking for session', this.sessionId);
       // if session id exists in url, check it from database
       this.checkSession(this.sessionId);
     }
   }
 
   onLoginWithGoogle() {
-    console.log('isSessionExist', this.isSessionExists);
     // generate new session id
     let sessionId = this.sessionService.generateSession();
 
@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
       .subscribe((isExists) => {
         this.isSessionExists = isExists;
         if (isExists) {
-          console.log('session is exists');
+          this.notificationService.show(`Session ${id} exists!`);
           this.router.navigate([],
             {
               relativeTo: this.activateRoute,
@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
               queryParamsHandling: 'merge'
             });
         } else {
-          console.error(`Session with id=${id} is not exist!`);
+          this.notificationService.show(`Session ${id} does not exist!`);
         }
       });
   }
