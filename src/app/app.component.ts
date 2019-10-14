@@ -16,7 +16,7 @@ import { User } from 'src/app/models';
 })
 export class AppComponent implements OnInit {
   user$: Observable<firebase.User>;
-  userData$: Observable<User | boolean>;
+  userData$: Observable<User>;
 
   constructor(
     private authService: AuthService,

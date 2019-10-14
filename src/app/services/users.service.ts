@@ -38,17 +38,17 @@ export class UsersService {
       .valueChanges();
   }
 
-  getCurrentUser(): Observable<User | boolean> {
+  getCurrentUser(): Observable<User> {
     return this.afauth.authState
     .pipe(
       switchMap((userData: firebase.User) => {
-        if (!userData) { return of(false); }
+        if (!userData) { return of(null); }
         return this.afs
           .collection('users', (ref: firebase.firestore.CollectionReference) => ref
           .where(firebase.firestore.FieldPath.documentId(), '==', userData.uid))
           .valueChanges();
       }),
-      map((users: User[]) => users[0])
+      map((users: User[]) => users && users[0] || null)
     );
   }
 }
