@@ -1,17 +1,24 @@
-<div class="container">
-  <app-cards-board></app-cards-board>
+<ng-container *ngIf="session$ | async as sessionData">
 
-  <mat-list *ngIf="users$ | async as users">
-    <h3 mat-subheader>Members</h3>
-    <mat-list-item *ngFor="let person of users">
-      <img matListAvatar [src]="person.photoURL" alt="">
-      <h4 mat-line>{{ person.name }}</h4>
-    </mat-list-item>
-  </mat-list>
-</div>
+  <h2 class="room-title">
+    {{ sessionData.title }}
+  </h2>
 
-<div class="container">
-  <div class="app-list">
-    <app-list></app-list>
+  <div class="container">
+    <app-cards-board [type]="sessionData.cardsType"></app-cards-board>
+
+    <mat-list *ngIf="users$ | async as users">
+      <h3 mat-subheader>Members</h3>
+      <mat-list-item *ngFor="let person of users">
+        <img matListAvatar [src]="person.photoURL" alt="">
+        <h4 mat-line>{{ person.name }}</h4>
+      </mat-list-item>
+    </mat-list>
   </div>
-</div>
+
+  <div class="container">
+    <div class="app-list">
+      <app-list></app-list>
+    </div>
+  </div>
+</ng-container>

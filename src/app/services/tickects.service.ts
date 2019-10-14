@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { Observable } from 'rxjs';
 
 import * as firebase from 'firebase/app';
 
@@ -12,7 +13,7 @@ import { Ticket } from '../models';
 export class TickectsService {
   constructor(private afs: AngularFirestore, private sessionService: SessionService) {}
 
-  getTickets() {
+  getTickets(): Observable<Ticket[]> {
     return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId())
       .orderBy('timestamp'))

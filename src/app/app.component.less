@@ -1,5 +1,18 @@
 @import "../assets/main-theme";
 
+mat-sidenav {
+  background-color: @main-accent;
+
+  &-container {
+    height: 100%;
+    width: 100%;
+  }
+
+  &-content {
+    background-color: @main-accent;
+  }
+}
+
 mat-toolbar {
   align-items: center;
   background-color: @secondary-background;
@@ -11,7 +24,7 @@ mat-toolbar {
   display: flex;
 }
 
-.logout-icon {
+.admin-icon {
   cursor: pointer;
   padding-left: 10px;
   transition: .3s;

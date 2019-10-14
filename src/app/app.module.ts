@@ -20,6 +20,7 @@ import { MaterialModule } from './material.module';
 
 // Components
 import { AppComponent } from './app.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { CardsBoardComponent } from './components/cards-board/cards-board.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { ListComponent } from './components/list/list.component';
@@ -27,13 +28,14 @@ import { HomeComponent } from './components/home/home.component';
 import { ShareComponent } from './components/share/share.component';
 import { PopupComponent } from './components/share/popup/popup.component';
 import { RoomComponent } from './components/room/room.component';
+import { TextfieldPopupComponent } from './components/list/textfield-popup/textfield-popup.component';
 
 import { environment } from '../environments/environment';
-import { TextfieldPopupComponent } from './components/list/textfield-popup/textfield-popup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AdminPanelComponent,
     CardsBoardComponent,
     HomeComponent,
     ShareComponent,

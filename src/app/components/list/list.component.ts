@@ -17,7 +17,7 @@ import DocumentReference = firebase.firestore.DocumentReference;
   styleUrls: ['./list.component.less']
 })
 export class ListComponent implements OnInit {
-  currentUser$: Observable<User[]>;
+  currentUser$: Observable<User>;
   ticket = '';
   tickets$: Observable<Ticket[]>;
 
@@ -35,9 +35,7 @@ export class ListComponent implements OnInit {
 
   onAddTicket(): void {
     this.sendTicket(this.ticket)
-      .then(() => {
-        this.ticket = '';
-      });
+      .then(() => this.ticket = '');
   }
 
   addTicketsFromText(): void {

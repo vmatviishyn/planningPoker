@@ -2,7 +2,7 @@
   <div>
     <mat-list>
       <h3 mat-subheader>List of stories</h3>
-      <mat-list-item *ngIf="currentUser[0].isAdmin">
+      <mat-list-item *ngIf="currentUser.isAdmin">
         <label class="add-ticket">
           <input class="ticket-input" type="text" [(ngModel)]="ticket">
           <button class="ticket-btn" mat-raised-button (click)="onAddTicket()" [disabled]="!ticket.length">Add ticket</button>

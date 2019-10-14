@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
 
@@ -31,22 +31,24 @@ export class UsersService {
       );
   }
 
-  getUsers() {
+  getUsers(): Observable<User[]> {
     return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId())
       .orderBy('name'))
       .valueChanges();
   }
 
-  getCurrentUser(): Observable<User[]> {
+  getCurrentUser(): Observable<User> {
     return this.afauth.authState
     .pipe(
       switchMap((userData: firebase.User) => {
+        if (!userData) { return of(null); }
         return this.afs
           .collection('users', (ref: firebase.firestore.CollectionReference) => ref
           .where(firebase.firestore.FieldPath.documentId(), '==', userData.uid))
           .valueChanges();
-      })
+      }),
+      map((users: User[]) => users && users[0] || null)
     );
   }
 }
