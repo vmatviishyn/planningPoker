@@ -9,17 +9,16 @@ import { Card, CardTypes } from 'src/app/models';
 })
 export class CardsBoardComponent implements OnChanges {
   @Input() type: string;
+  @Input() selected: Card;
   @Output() cardClicked = new EventEmitter();
 
   cards: Card[];
-  selected: Card;
 
   ngOnChanges() {
     this.cards = CardTypes[this.type || 'izyan'];
   }
 
   onCardClick(card: Card) {
-    this.selected = card;
     this.cardClicked.emit(card);
   }
 

@@ -13,7 +13,8 @@
   <app-cards-board
     *ngIf="!showResults"
     [type]="session?.cardsType"
-    (cardClicked)="onCardClicked($event)">
+    (cardClicked)="onCardClicked($event)"
+    [selected]="selectedCard">
   </app-cards-board>
 
   <app-chart
@@ -21,7 +22,7 @@
     [votes]="votes">
   </app-chart>
 
-  <div>
+  <div class="side-content">
     <mat-list *ngIf="users$ | async as users">
       <h3 mat-subheader>Members</h3>
       <mat-list-item *ngFor="let person of users">
@@ -30,9 +31,23 @@
       </mat-list-item>
     </mat-list>
 
-    <button mat-raised-button (click)="onStartVoting()">Start</button><br>
-    <button mat-raised-button (click)="onSkipTicket()">Skip</button>
-    <button mat-raised-button (click)="onFinishVoting()">Finish voting</button>
+    <div class="action-buttons">
+      <button
+        mat-raised-button
+        (click)="onStartVoting()"
+        class="start-button"
+        *ngIf="!isVotingStarted">
+        Start
+      </button>
+
+      <div *ngIf="isVotingStarted" class="main-buttons">
+        <button mat-raised-button>Reset Timer</button>
+        <button mat-raised-button>Flip Cards</button>
+        <button mat-raised-button (click)="onSkipTicket()" >Skip Story</button>
+        <button mat-raised-button (click)="onFinishVoting()">Finish Voting</button>
+      </div>
+    </div>
+
   </div>
 </div>
 

@@ -25,6 +25,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   activeTicket$: Observable<Ticket>;
   showResults = false;
   votes: any;
+  isVotingStarted = false;
+  selectedCard: Card;
 
   constructor(
     private notificationService: NotificationService,
@@ -53,6 +55,8 @@ export class RoomComponent implements OnInit, OnDestroy {
           return this.emptyListNotification();
         }
 
+        this.isVotingStarted = true;
+
         this.sessionService.updateValue('activeTicket', ticket.ticketId)
           .pipe(take(1))
           .subscribe();
@@ -63,9 +67,16 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   onCardClicked(card: Card) {
-    this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
-      .pipe(take(1))
-      .subscribe(() => console.log('card clicked'));
+    if (this.isVotingStarted) {
+      this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
+        .pipe(take(1))
+        .subscribe(() => {
+          this.selectedCard = card;
+          console.log('card clicked');
+        });
+    } else {
+      this.notificationService.showError('Click start button to begin voting.');
+    }
   }
 
   onSkipTicket() {
@@ -73,7 +84,20 @@ export class RoomComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.showResults = false;
-        this.onStartVoting();
+        this.ticketService.getFirst()
+        .pipe(take(1))
+        .subscribe((ticket: Ticket) => {
+          if (!ticket) {
+            return this.emptyListNotification();
+          }
+
+          this.sessionService.updateValue('activeTicket', ticket.ticketId)
+            .pipe(take(1))
+            .subscribe();
+
+          this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
+            .then(() => console.log('collection created'));
+        });
       });
   }
 
@@ -114,7 +138,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   private emptyListNotification() {
-    this.notificationService.show('Tickets list is empty. Please add new ticket for start voting');
+    this.notificationService.showError('Tickets list is empty. Please add new ticket for start voting');
   }
 
 }

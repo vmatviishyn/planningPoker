@@ -12,4 +12,8 @@ export class NotificationService {
   show(msg: string, buttonName = 'Close') {
     this.matSnackBar.open(msg, buttonName, { duration: 3000, panelClass: ['snack-bar'] });
   }
+
+  showError(msg: string, buttonName = 'Close') {
+    this.matSnackBar.open(msg, buttonName, { duration: 3000, panelClass: ['snack-bar--error'] });
+  }
 }
