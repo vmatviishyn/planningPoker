@@ -1,22 +1,25 @@
 <mat-sidenav-container>
-  <mat-sidenav #sidenav mode="over">
+  <mat-sidenav #sidenav mode="over" position="end">
     <app-admin-panel></app-admin-panel>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <mat-toolbar>
       <div>Planning Poker</div>
+      <ng-container *ngIf="session$ | async as session">
+        {{ session.title }}
+      </ng-container>
       <div class="nav-links">
         <app-share></app-share>
         <ng-container *ngIf="user$ | async as user">
-          <mat-icon class="admin-icon" routerLink="/home" (click)="logout(user)"
-            mat-list-icon>exit_to_app
-          </mat-icon>
           <ng-container *ngIf="userData$ | async as userData">
             <mat-icon *ngIf="userData.isAdmin" (click)="sidenav.toggle()" class="admin-icon" mat-list-icon>
               menu
             </mat-icon>
           </ng-container>
+          <mat-icon class="admin-icon" routerLink="/home" (click)="logout(user)"
+            mat-list-icon>exit_to_app
+          </mat-icon>
         </ng-container>
       </div>
     </mat-toolbar>

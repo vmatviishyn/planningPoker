@@ -1,26 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, pipe } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { NotificationService } from './../../services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UsersService } from 'src/app/services/users.service';
-
-import { User, Ticket, Card } from 'src/app/models';
 import { TickectsService } from 'src/app/services/tickects.service';
 import { VoteService } from 'src/app/services/vote.service';
 import { AuthService } from 'src/app/services/auth.service';
+
+import { User, Ticket, Session, Card } from 'src/app/models';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.less']
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
+  sessionSub: Subscription;
+
   currentUser: User;
   users$: Observable<User[]>;
-  session;
-  activeTicket$: Observable<Ticket[]>;
+  session: Session;
+  activeTicket$: Observable<Ticket>;
   showResults = false;
   votes: any;
 
@@ -35,40 +37,32 @@ export class RoomComponent implements OnInit {
 
   ngOnInit() {
     this.users$ = this.userService.getUsers();
-    this.sessionService.getSessionData().subscribe(data => {
-      this.session = data;
-      if (this.session.activeTicket) {
-        this.activeTicket$ = this.ticketService.getTicketById(this.session.activeTicket);
-      }
-    });
     this.geUserInfo();
+    this.getSessionData();
   }
 
-  private geUserInfo() {
-    this.userService.getCurrentUser()
-      .pipe(take(1))
-      .subscribe((user: User) => {
-        this.currentUser = user;
-
-        if (this.currentUser) {
-          this.notificationService.show(`Hi, ${this.currentUser.name}!`);
-        }
-      });
+  ngOnDestroy() {
+    this.sessionSub.unsubscribe();
   }
 
   onStartVoting() {
     this.ticketService.getFirst()
       .pipe(take(1))
-      .subscribe((ticket: any) => {
-        this.sessionService.updateValue('activeTicket', ticket[0].ticketId)
+      .subscribe((ticket: Ticket) => {
+        if (!ticket) {
+          return this.emptyListNotification();
+        }
+
+        this.sessionService.updateValue('activeTicket', ticket.ticketId)
           .pipe(take(1))
           .subscribe();
 
-        this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket[0].ticketId).then(() => console.log('collection created'));
+        this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
+          .then(() => console.log('collection created'));
       });
   }
 
-  onCardClicked(card) {
+  onCardClicked(card: Card) {
     this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
       .pipe(take(1))
       .subscribe(() => console.log('card clicked'));
@@ -87,9 +81,40 @@ export class RoomComponent implements OnInit {
     this.voteService.getResults(this.session.activeTicket)
       .pipe(take(1))
       .subscribe(data => {
-        this.showResults = true;
-        this.votes = data;
-      })
+        if (data && data.length) {
+          this.showResults = true;
+          this.votes = data;
+        } else {
+          this.emptyListNotification();
+        }
+      });
+  }
+
+  private getSessionData() {
+    this.sessionSub = this.sessionService.getSessionData()
+      .subscribe((data: Session) => {
+        this.session = data;
+
+        if (data.activeTicket) {
+          this.activeTicket$ = this.ticketService.getTicketById(this.session.activeTicket);
+        }
+    });
+  }
+
+  private geUserInfo() {
+    this.userService.getCurrentUser()
+      .pipe(take(1))
+      .subscribe((user: User) => {
+        this.currentUser = user;
+
+        if (this.currentUser) {
+          this.notificationService.show(`Hi, ${this.currentUser.name}!`);
+        }
+      });
+  }
+
+  private emptyListNotification() {
+    this.notificationService.show('Tickets list is empty. Please add new ticket for start voting');
   }
 
 }

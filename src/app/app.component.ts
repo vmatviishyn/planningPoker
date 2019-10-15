@@ -7,7 +7,7 @@ import { NotificationService } from './services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UsersService } from './services/users.service';
 
-import { User } from 'src/app/models';
+import { User, Session } from 'src/app/models';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +15,7 @@ import { User } from 'src/app/models';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
+  session$: Observable<Session>;
   user$: Observable<firebase.User>;
   userData$: Observable<User>;
 
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.sessionService.setSessionId();
+    this.session$ = this.sessionService.getSessionData();
     this.user$ = this.authService.getUserData();
     this.userData$ = this.userService.getCurrentUser();
   }

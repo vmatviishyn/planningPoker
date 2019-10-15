@@ -10,9 +10,9 @@ import { MultiDataSet, Label } from 'ng2-charts';
 export class ChartComponent implements OnInit {
   @Input() votes: any;
 
-  public doughnutChartLabels: Label[] = [];
-  public doughnutChartData: MultiDataSet = [[]];
-  public doughnutChartType: ChartType = 'doughnut';
+  doughnutChartLabels: Label[] = [];
+  doughnutChartData: MultiDataSet = [[]];
+  doughnutChartType: ChartType = 'doughnut';
   averageValue = 0;
 
   constructor() { }
@@ -33,11 +33,9 @@ export class ChartComponent implements OnInit {
     this.votes.forEach(field => {
       this.doughnutChartData[0].push(field.value);
       this.doughnutChartLabels.push(field.secondaryText);
-      this.averageValue+=field.value;
+      this.averageValue += field.value;
     });
+
     this.averageValue /= this.votes.length;
-
-
   }
-
 }

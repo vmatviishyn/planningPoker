@@ -43,7 +43,9 @@ export class ListComponent implements OnInit {
     this.dialog.open(TextfieldPopupComponent, {
       width: '70vw',
     }).afterClosed().subscribe(result => {
-      result.forEach(this.sendTicket.bind(this));
+      if (result) {
+        result.forEach(this.sendTicket.bind(this));
+      }
     });
   }
 

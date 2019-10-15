@@ -1,18 +1,22 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
 
 import { SessionService } from './session.service';
 import { Ticket } from '../models';
-import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TickectsService {
   constructor(private afs: AngularFirestore, private sessionService: SessionService) {}
+
+  addTicket(ticket: Ticket) {
+    return this.afs.collection('tickets').add(ticket);
+  }
 
   getTickets(): Observable<Ticket[]> {
     return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
@@ -22,25 +26,23 @@ export class TickectsService {
       .valueChanges();
   }
 
-  addTicket(ticket: Ticket) {
-    return this.afs.collection('tickets').add(ticket);
-  }
-
-  getFirst(): Observable<Ticket[]> {
+  getFirst(): Observable<Ticket> {
     return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId())
       .where('voted', '==', false)
-      .orderBy('timestamp').limit(1))
+      .orderBy('timestamp')
+      .limit(1))
       .valueChanges()
+      .pipe(map((tickets: Ticket[]) => tickets[0]));
   }
 
-  getTicketById(ticketId: string) {
+  getTicketById(ticketId: string): Observable<Ticket> {
     return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId())
       .where('voted', '==', false)
-      .where('ticketId', '==', ticketId)
-      .orderBy('timestamp'))
+      .where('ticketId', '==', ticketId))
       .valueChanges()
+      .pipe(map((tickets: Ticket[]) => tickets[0]));
   }
 
   updateValue(key: string, value: boolean, ticketId: string) {

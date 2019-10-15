@@ -1,41 +1,43 @@
 
 
-  <h2 class="room-title" *ngIf="activeTicket$ | async as activeTicket">
-    {{ activeTicket[0]?.title || "Planning Poker" }}
-  </h2>
+<h3 class="room-title">
+  <ng-container *ngIf="activeTicket$ | async as activeTicket else noSelected">
+    {{ activeTicket.title }}
+  </ng-container>
+  <ng-template #noSelected>
+    Please select a ticket for start voting
+  </ng-template>
+</h3>
 
-  <div class="container">
-    <app-cards-board
-      *ngIf="!showResults"
-      [type]="session?.cardsType"
-      (cardClicked)="onCardClicked($event)">
-    </app-cards-board>
+<div class="container">
+  <app-cards-board
+    *ngIf="!showResults"
+    [type]="session?.cardsType"
+    (cardClicked)="onCardClicked($event)">
+  </app-cards-board>
 
-    <app-chart
-      *ngIf="showResults"
-      [votes]="votes">
-    </app-chart>
+  <app-chart
+    *ngIf="showResults"
+    [votes]="votes">
+  </app-chart>
 
+  <div>
+    <mat-list *ngIf="users$ | async as users">
+      <h3 mat-subheader>Members</h3>
+      <mat-list-item *ngFor="let person of users">
+        <img matListAvatar [src]="person.photoURL" alt="">
+        <h4 mat-line>{{ person.name }}</h4>
+      </mat-list-item>
+    </mat-list>
 
-
-    <div>
-      <mat-list *ngIf="users$ | async as users">
-        <h3 mat-subheader>Members</h3>
-        <mat-list-item *ngFor="let person of users">
-          <img matListAvatar [src]="person.photoURL" alt="">
-          <h4 mat-line>{{ person.name }}</h4>
-        </mat-list-item>
-      </mat-list>
-
-      <button mat-raised-button (click)="onStartVoting()">Start</button><br>
-      <button mat-raised-button (click)="onSkipTicket()">Skip</button>
-      <button mat-raised-button (click)="onFinishVoting()">Finish voting</button>
-    </div>
+    <button mat-raised-button (click)="onStartVoting()">Start</button><br>
+    <button mat-raised-button (click)="onSkipTicket()">Skip</button>
+    <button mat-raised-button (click)="onFinishVoting()">Finish voting</button>
   </div>
+</div>
 
-  <div class="container">
-    <div class="app-list">
-      <app-list></app-list>
-    </div>
+<div class="container">
+  <div class="app-list">
+    <app-list></app-list>
   </div>
-
+</div>
