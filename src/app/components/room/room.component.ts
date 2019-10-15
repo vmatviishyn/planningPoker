@@ -6,7 +6,7 @@ import { NotificationService } from './../../services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UsersService } from 'src/app/services/users.service';
 
-import { User, Ticket } from 'src/app/models';
+import { User, Ticket, Card } from 'src/app/models';
 import { TickectsService } from 'src/app/services/tickects.service';
 import { VoteService } from 'src/app/services/vote.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,6 +21,8 @@ export class RoomComponent implements OnInit {
   users$: Observable<User[]>;
   session;
   activeTicket$: Observable<Ticket[]>;
+  showResults = false;
+  votes: any;
 
   constructor(
     private notificationService: NotificationService,
@@ -76,8 +78,18 @@ export class RoomComponent implements OnInit {
     this.ticketService.updateValue('voted', true, this.session.activeTicket)
       .pipe(take(1))
       .subscribe(() => {
+        this.showResults = false;
         this.onStartVoting();
       });
+  }
+
+  onFinishVoting() {
+    this.voteService.getResults(this.session.activeTicket)
+      .pipe(take(1))
+      .subscribe(data => {
+        this.showResults = true;
+        this.votes = data;
+      })
   }
 
 }

@@ -6,9 +6,17 @@
 
   <div class="container">
     <app-cards-board
+      *ngIf="!showResults"
       [type]="session?.cardsType"
       (cardClicked)="onCardClicked($event)">
     </app-cards-board>
+
+    <app-chart
+      *ngIf="showResults"
+      [votes]="votes">
+    </app-chart>
+
+
 
     <div>
       <mat-list *ngIf="users$ | async as users">
@@ -21,6 +29,7 @@
 
       <button mat-raised-button (click)="onStartVoting()">Start</button><br>
       <button mat-raised-button (click)="onSkipTicket()">Skip</button>
+      <button mat-raised-button (click)="onFinishVoting()">Finish voting</button>
     </div>
   </div>
 

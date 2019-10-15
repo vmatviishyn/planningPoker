@@ -30,4 +30,16 @@ export class VoteService {
         })
       );
   }
+
+  getResults(ticketId: string) {
+    return this.afs.collection('votes', (ref: firebase.firestore.CollectionReference) => ref
+      .where('sessionId', '==', this.sessionService.getSessionId())
+      .where('ticketId', '==', ticketId))
+      .get()
+      .pipe(
+        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+          return this.afs.doc(`votes/${snapshot.docs[0].id}`).collection('results').valueChanges();
+        })
+      );
+  }
 }
