@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+
+import { Vote } from './../models';
 
 import * as firebase from 'firebase/app';
 
@@ -20,9 +22,7 @@ export class VoteService {
   }
 
   vote(userId: string, card: Card, ticketId: string): Observable<void> {
-    return this.afs.collection('votes', (ref: firebase.firestore.CollectionReference) => ref
-      .where('sessionId', '==', this.sessionService.getSessionId())
-      .where('ticketId', '==', ticketId))
+    return this.getVotesCollectionByTicketId(ticketId)
       .get()
       .pipe(
         switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
@@ -32,14 +32,38 @@ export class VoteService {
   }
 
   getResults(ticketId: string) {
-    return this.afs.collection('votes', (ref: firebase.firestore.CollectionReference) => ref
-      .where('sessionId', '==', this.sessionService.getSessionId())
-      .where('ticketId', '==', ticketId))
+    return this.getVotesCollectionByTicketId(ticketId)
       .get()
       .pipe(
         switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
           return this.afs.doc(`votes/${snapshot.docs[0].id}`).collection('results').valueChanges();
         })
       );
+  }
+
+  getVoteByTicketId(ticketId: string): Observable<Vote> {
+    return this.getVotesCollectionByTicketId(ticketId)
+      .get()
+      .pipe(
+        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+          return this.afs.doc(`votes/${snapshot.docs[0].id}`).valueChanges();
+        })
+      );
+  }
+
+  finishVoting(ticketId: string): Observable<void> {
+    return this.getVotesCollectionByTicketId(ticketId)
+      .get()
+      .pipe(
+        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+          return this.afs.doc(`votes/${snapshot.docs[0].id}`).update({ voted: true });
+        })
+      );
+  }
+
+  private getVotesCollectionByTicketId(ticketId: string): AngularFirestoreCollection {
+    return this.afs.collection('votes', (ref: firebase.firestore.CollectionReference) => ref
+      .where('sessionId', '==', this.sessionService.getSessionId())
+      .where('ticketId', '==', ticketId));
   }
 }
