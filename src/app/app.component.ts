@@ -15,7 +15,6 @@ import { User, Session } from 'src/app/models';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit {
-  session$: Observable<Session>;
   user$: Observable<firebase.User>;
   userData$: Observable<User>;
 
@@ -28,7 +27,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.sessionService.setSessionId();
-    this.session$ = this.sessionService.getSessionData();
     this.user$ = this.authService.getUserData();
     this.userData$ = this.userService.getCurrentUser();
   }
