@@ -9,7 +9,7 @@ import { TickectsService } from 'src/app/services/tickects.service';
 import { VoteService } from 'src/app/services/vote.service';
 import { AuthService } from 'src/app/services/auth.service';
 
-import { User, Ticket, Session, Card } from 'src/app/models';
+import { User, Ticket, Session, Card, Vote } from 'src/app/models';
 
 @Component({
   selector: 'app-room',
@@ -67,6 +67,10 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   onCardClicked(card: Card) {
+    if (!this.session.activeTicket) {
+      return this.notificationService.show('Please, select a ticket for start voting');
+    }
+
     if (this.isVotingStarted) {
       this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
         .pipe(take(1))
@@ -80,28 +84,42 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   onSkipTicket() {
+    if (!this.session.activeTicket) {
+      return this.notificationService.show('Please, select a ticket for start voting');
+    }
+
     this.ticketService.updateValue('voted', true, this.session.activeTicket)
       .pipe(take(1))
       .subscribe(() => {
         this.showResults = false;
         this.ticketService.getFirst()
-        .pipe(take(1))
-        .subscribe((ticket: Ticket) => {
-          if (!ticket) {
-            return this.emptyListNotification();
-          }
+          .pipe(take(1))
+          .subscribe((ticket: Ticket) => {
+            if (!ticket) {
+              return this.emptyListNotification();
+            }
 
-          this.sessionService.updateValue('activeTicket', ticket.ticketId)
-            .pipe(take(1))
-            .subscribe();
+            this.sessionService.updateValue('activeTicket', ticket.ticketId)
+              .pipe(take(1))
+              .subscribe();
 
-          this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
-            .then(() => console.log('collection created'));
-        });
+            this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
+              .then(() => console.log('collection created'));
+          });
       });
   }
 
   onFinishVoting() {
+    this.finishVoting();
+  }
+
+  private finishVoting() {
+    this.voteService.finishVoting(this.session.activeTicket)
+      .pipe(take(1))
+      .subscribe(() => console.log('finished voting'));
+  }
+
+  private getResults() {
     this.voteService.getResults(this.session.activeTicket)
       .pipe(take(1))
       .subscribe(data => {
@@ -120,7 +138,21 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.session = data;
 
         if (data.activeTicket) {
+          console.log('active ticket', data.activeTicket);
           this.activeTicket$ = this.ticketService.getTicketById(this.session.activeTicket);
+
+          // when admin is clicked on vinish voting, 'voted' field will be set to 'true'
+          // and it will trigger getting results of current ticket for all users
+          const voteSub = this.voteService.getVoteByTicketId(this.session.activeTicket)
+            .subscribe((vote: Vote) => {
+              console.log('vote', vote);
+              if (vote.voted) {
+                this.getResults();
+              }
+            });
+
+          // save subscription to variable for unsubscribing when component will be destroyed
+          this.sessionSub.add(voteSub);
         }
     });
   }
