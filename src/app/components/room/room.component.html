@@ -1,19 +1,27 @@
-<ng-container *ngIf="session$ | async as sessionData">
 
-  <h2 class="room-title">
-    {{ sessionData.title }}
+
+  <h2 class="room-title" *ngIf="activeTicket$ | async as activeTicket">
+    {{ activeTicket[0]?.title || "Planning Poker" }}
   </h2>
 
   <div class="container">
-    <app-cards-board [type]="sessionData.cardsType"></app-cards-board>
+    <app-cards-board
+      [type]="session?.cardsType"
+      (cardClicked)="onCardClicked($event)">
+    </app-cards-board>
 
-    <mat-list *ngIf="users$ | async as users">
-      <h3 mat-subheader>Members</h3>
-      <mat-list-item *ngFor="let person of users">
-        <img matListAvatar [src]="person.photoURL" alt="">
-        <h4 mat-line>{{ person.name }}</h4>
-      </mat-list-item>
-    </mat-list>
+    <div>
+      <mat-list *ngIf="users$ | async as users">
+        <h3 mat-subheader>Members</h3>
+        <mat-list-item *ngFor="let person of users">
+          <img matListAvatar [src]="person.photoURL" alt="">
+          <h4 mat-line>{{ person.name }}</h4>
+        </mat-list-item>
+      </mat-list>
+
+      <button mat-raised-button (click)="onStartVoting()">Start</button><br>
+      <button mat-raised-button (click)="onSkipTicket()">Skip</button>
+    </div>
   </div>
 
   <div class="container">
@@ -21,4 +29,4 @@
       <app-list></app-list>
     </div>
   </div>
-</ng-container>
+

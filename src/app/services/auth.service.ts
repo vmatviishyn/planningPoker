@@ -13,6 +13,7 @@ import { User } from '../models';
 })
 export class AuthService {
   private authState: firebase.auth.UserCredential;
+  public user: firebase.User;
 
   constructor(
     private afauth: AngularFireAuth,
@@ -22,6 +23,7 @@ export class AuthService {
     // For test purpose (user state)
     this.getUserData().subscribe((user: firebase.User) => {
       console.log('user', user);
+      this.user = user;
     });
   }
 

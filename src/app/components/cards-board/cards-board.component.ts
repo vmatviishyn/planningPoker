@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 
 import { Card, CardTypes } from 'src/app/models';
 
@@ -9,6 +9,7 @@ import { Card, CardTypes } from 'src/app/models';
 })
 export class CardsBoardComponent implements OnChanges {
   @Input() type: string;
+  @Output() cardClicked = new EventEmitter();
 
   cards: Card[];
   selected: Card;
@@ -19,7 +20,7 @@ export class CardsBoardComponent implements OnChanges {
 
   onCardClick(card: Card) {
     this.selected = card;
-    console.log('Card', card.value);
+    this.cardClicked.emit(card);
   }
 
 }

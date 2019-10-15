@@ -3,4 +3,6 @@ export interface Ticket {
   href?: string;
   sessionId?: string;
   timestamp?: firebase.firestore.FieldValue;
+  ticketId?: string;
+  voted?: boolean;
 }

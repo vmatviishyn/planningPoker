@@ -10,6 +10,7 @@ import { UsersService } from 'src/app/services/users.service';
 import { MatDialog } from '@angular/material';
 import { TextfieldPopupComponent } from './textfield-popup/textfield-popup.component';
 import DocumentReference = firebase.firestore.DocumentReference;
+import randomize from 'randomatic';
 
 @Component({
   selector: 'app-list',
@@ -48,9 +49,11 @@ export class ListComponent implements OnInit {
 
   private sendTicket(name: string): Promise<DocumentReference> {
     return this.ticketsService.addTicket({
-      title: name,
       sessionId: this.sessionService.getSessionId(),
+      ticketId: randomize('Aa0', 20),
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      title: name,
+      voted: false
     });
   }
 

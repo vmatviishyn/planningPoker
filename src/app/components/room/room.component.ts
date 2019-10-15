@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { NotificationService } from './../../services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UsersService } from 'src/app/services/users.service';
 
-import { User, Session } from 'src/app/models';
+import { User, Ticket } from 'src/app/models';
+import { TickectsService } from 'src/app/services/tickects.service';
+import { VoteService } from 'src/app/services/vote.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-room',
@@ -16,17 +19,26 @@ import { User, Session } from 'src/app/models';
 export class RoomComponent implements OnInit {
   currentUser: User;
   users$: Observable<User[]>;
-  session$: Observable<Session>;
+  session;
+  activeTicket$: Observable<Ticket[]>;
 
   constructor(
     private notificationService: NotificationService,
     private sessionService: SessionService,
-    private userService: UsersService
+    private userService: UsersService,
+    private ticketService: TickectsService,
+    private voteService: VoteService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.users$ = this.userService.getUsers();
-    this.session$ = this.sessionService.getSessionData();
+    this.sessionService.getSessionData().subscribe(data => {
+      this.session = data;
+      if (this.session.activeTicket) {
+        this.activeTicket$ = this.ticketService.getTicketById(this.session.activeTicket);
+      }
+    });
     this.geUserInfo();
   }
 
@@ -39,6 +51,32 @@ export class RoomComponent implements OnInit {
         if (this.currentUser) {
           this.notificationService.show(`Hi, ${this.currentUser.name}!`);
         }
+      });
+  }
+
+  onStartVoting() {
+    this.ticketService.getFirst()
+      .pipe(take(1))
+      .subscribe((ticket: any) => {
+        this.sessionService.updateValue('activeTicket', ticket[0].ticketId)
+          .pipe(take(1))
+          .subscribe();
+
+        this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket[0].ticketId).then(() => console.log('collection created'));
+      });
+  }
+
+  onCardClicked(card) {
+    this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
+      .pipe(take(1))
+      .subscribe(() => console.log('card clicked'));
+  }
+
+  onSkipTicket() {
+    this.ticketService.updateValue('voted', true, this.session.activeTicket)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.onStartVoting();
       });
   }
 
