@@ -48,22 +48,11 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   onStartVoting() {
-    this.ticketService.getFirst()
-      .pipe(take(1))
-      .subscribe((ticket: Ticket) => {
-        if (!ticket) {
-          return this.emptyListNotification();
-        }
+    this.showResults = false;
 
-        this.isVotingStarted = true;
-
-        this.sessionService.updateValue('activeTicket', ticket.ticketId)
-          .pipe(take(1))
-          .subscribe();
-
-        this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
-          .then(() => console.log('collection created'));
-      });
+    this.getFirstTicket(() => {
+      this.isVotingStarted = true;
+    });
   }
 
   onCardClicked(card: Card) {
@@ -71,19 +60,17 @@ export class RoomComponent implements OnInit, OnDestroy {
       return this.notificationService.show('Please, select a ticket for start voting');
     }
 
-    if (this.isVotingStarted) {
-      this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.selectedCard = card;
-          console.log('card clicked');
-        });
-    } else {
-      this.notificationService.showError('Click start button to begin voting.');
-    }
+    this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.selectedCard = card;
+        console.log('card clicked');
+      });
   }
 
   onSkipTicket() {
+    this.showResults = false;
+
     if (!this.session.activeTicket) {
       return this.notificationService.show('Please, select a ticket for start voting');
     }
@@ -92,25 +79,34 @@ export class RoomComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.showResults = false;
-        this.ticketService.getFirst()
-          .pipe(take(1))
-          .subscribe((ticket: Ticket) => {
-            if (!ticket) {
-              return this.emptyListNotification();
-            }
 
-            this.sessionService.updateValue('activeTicket', ticket.ticketId)
-              .pipe(take(1))
-              .subscribe();
-
-            this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
-              .then(() => console.log('collection created'));
-          });
+        this.getFirstTicket();
       });
   }
 
   onFinishVoting() {
     this.finishVoting();
+  }
+
+  private getFirstTicket(cb?: () => void) {
+      this.ticketService.getFirst()
+        .pipe(take(1))
+        .subscribe((ticket: Ticket) => {
+          if (!ticket) {
+            return this.emptyListNotification();
+          }
+
+          if (typeof cb === 'function') {
+            cb();
+          }
+
+          this.sessionService.updateValue('activeTicket', ticket.ticketId)
+            .pipe(take(1))
+            .subscribe();
+
+          this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
+            .then(() => console.log('collection created'));
+        });
   }
 
   private finishVoting() {
@@ -123,6 +119,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.voteService.getResults(this.session.activeTicket)
       .pipe(take(1))
       .subscribe(data => {
+        this.selectedCard = null;
         if (data && data.length) {
           this.showResults = true;
           this.votes = data;
@@ -140,13 +137,14 @@ export class RoomComponent implements OnInit, OnDestroy {
         if (data.activeTicket) {
           console.log('active ticket', data.activeTicket);
           this.activeTicket$ = this.ticketService.getTicketById(this.session.activeTicket);
+          this.showResults = false;
 
           // when admin is clicked on vinish voting, 'voted' field will be set to 'true'
           // and it will trigger getting results of current ticket for all users
           const voteSub = this.voteService.getVoteByTicketId(this.session.activeTicket)
             .subscribe((vote: Vote) => {
               console.log('vote', vote);
-              if (vote.voted) {
+              if (vote && vote.voted) {
                 this.getResults();
               }
             });
