@@ -51,4 +51,12 @@ export class UsersService {
       map((users: User[]) => users && users[0] || null)
     );
   }
+
+  updateValue(key: string, value: string, sessionId: string) {
+    return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
+      .where('sessionId', '==', sessionId)).get()
+      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        return of(this.afs.doc(`users/${snapshot.docs[0].id}`).update({ [key]: value }));
+      }));
+  }
 }

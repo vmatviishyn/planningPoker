@@ -15,6 +15,10 @@ export class ChartComponent implements OnInit {
   doughnutChartType: ChartType = 'doughnut';
   averageValue = 0;
 
+  private options: any = {
+    legend: { position: 'right' }
+  }
+
   constructor() { }
 
   ngOnInit() {

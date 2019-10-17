@@ -3,4 +3,5 @@ export interface User {
   sessionId?: string;
   photoURL?: string;
   isAdmin?: boolean;
+  vote?: string;
 }

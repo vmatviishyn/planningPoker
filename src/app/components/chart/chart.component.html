@@ -1,7 +1,10 @@
 <div style="display: block">
   <canvas baseChart
+    height="300vh"
+    width="300vw"
     [data]="doughnutChartData"
     [labels]="doughnutChartLabels"
+    [options]="options"
     [chartType]="doughnutChartType">
   </canvas>
   Average value: {{averageValue}}
