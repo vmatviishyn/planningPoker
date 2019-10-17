@@ -52,4 +52,12 @@ export class TickectsService {
         return of(this.afs.doc(`tickets/${snapshot.docs[0].id}`).update({ [key]: value }));
       }));
   }
+
+  deleteTicket(ticket: Ticket) {
+    return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
+      .where('ticketId', '==', ticket.ticketId)).get()
+      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        return of(this.afs.doc(`tickets/${snapshot.docs[0].id}`).delete());
+      }));
+  }
 }

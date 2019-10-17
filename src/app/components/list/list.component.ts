@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { TextfieldPopupComponent } from './textfield-popup/textfield-popup.component';
 import DocumentReference = firebase.firestore.DocumentReference;
 import randomize from 'randomatic';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list',
@@ -47,6 +48,12 @@ export class ListComponent implements OnInit {
         result.forEach(this.sendTicket.bind(this));
       }
     });
+  }
+
+  onDeleteTicket(ticket: Ticket) {
+    this.ticketsService.deleteTicket(ticket)
+      .pipe(take(1))
+      .subscribe();
   }
 
   private sendTicket(name: string): Promise<DocumentReference> {

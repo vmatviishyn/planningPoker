@@ -14,6 +14,9 @@
         <mat-list-item *ngFor="let ticket of tickets">
           <mat-icon mat-list-icon>description</mat-icon>
           <h4 mat-line>{{ ticket.title }}</h4>
+          <button mat-icon-button (click)="onDeleteTicket(ticket)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
         </mat-list-item>
       </ng-container>
 

@@ -57,7 +57,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   onCardClicked(card: Card) {
     if (!this.session.activeTicket) {
-      return this.notificationService.show('Please, select a ticket for start voting');
+      return this.notificationService.showError('Please, select a ticket for start voting.');
     }
 
     this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
@@ -72,7 +72,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.showResults = false;
 
     if (!this.session.activeTicket) {
-      return this.notificationService.show('Please, select a ticket for start voting');
+      return this.notificationService.showError('Please, select a ticket for start voting.');
     }
 
     this.ticketService.updateValue('voted', true, this.session.activeTicket)
