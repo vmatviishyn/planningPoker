@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
 import { TickectsService } from 'src/app/services/tickects.service';
 import { SessionService } from './../../services/session.service';
+import { HashService } from './../../services/hash.service';
 
 import { Ticket, User, Session } from 'src/app/models';
 import { UsersService } from 'src/app/services/users.service';
-import { MatDialog } from '@angular/material';
 import { TextfieldPopupComponent } from './textfield-popup/textfield-popup.component';
 import DocumentReference = firebase.firestore.DocumentReference;
-import randomize from 'randomatic';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list',
@@ -30,6 +30,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private userService: UsersService,
     private ticketsService: TickectsService,
     private sessionService: SessionService,
+    private hashService: HashService,
     public dialog: MatDialog
   ) { }
 
@@ -75,7 +76,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private sendTicket(name: string): Promise<DocumentReference> {
     return this.ticketsService.addTicket({
       sessionId: this.sessionService.getSessionId(),
-      ticketId: randomize('Aa0', 20),
+      ticketId: this.hashService.generateHash(32),
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       title: name,
       voted: false

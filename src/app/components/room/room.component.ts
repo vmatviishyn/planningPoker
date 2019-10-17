@@ -25,7 +25,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   activeTicket$: Observable<Ticket>;
   showResults = false;
   votes: any;
-  isVotingStarted = false;
   selectedCard: Card;
 
   constructor(
@@ -50,9 +49,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   onStartVoting() {
     this.showResults = false;
 
-    this.getFirstTicket(() => {
-      this.isVotingStarted = true;
-    });
+    this.getFirstTicket();
   }
 
   onCardClicked(card: Card) {
@@ -62,13 +59,11 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
       .pipe(take(1))
-      .subscribe(() => {
-        this.selectedCard = card;
+      .subscribe(() => this.selectedCard = card);
 
-        this.userService.updateValue('vote', card.secondaryText, this.session.id, this.authService.user.uid)
-          .pipe(take(1))
-          .subscribe();
-      });
+    this.userService.setVote(card.secondaryText, this.session.id, this.authService.user.uid)
+      .pipe(take(1))
+      .subscribe();
   }
 
   onSkipTicket() {
@@ -78,11 +73,14 @@ export class RoomComponent implements OnInit, OnDestroy {
       return this.notificationService.showError('Please, select a ticket for start voting.');
     }
 
+    this.userService.clearVote(this.session.id, this.authService.user.uid)
+      .pipe(take(1))
+      .subscribe();
+
     this.ticketService.updateValue('voted', true, this.session.activeTicket)
       .pipe(take(1))
       .subscribe(() => {
         this.showResults = false;
-
         this.getFirstTicket();
       });
   }
@@ -91,25 +89,21 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.finishVoting();
   }
 
-  private getFirstTicket(cb?: () => void) {
-      this.ticketService.getFirst()
-        .pipe(take(1))
-        .subscribe((ticket: Ticket) => {
-          if (!ticket) {
-            return this.emptyListNotification();
-          }
+  private getFirstTicket() {
+    this.ticketService.getFirst()
+      .pipe(take(1))
+      .subscribe((ticket: Ticket) => {
+        if (!ticket) {
+          return this.emptyListNotification();
+        }
 
-          if (typeof cb === 'function') {
-            cb();
-          }
+        this.sessionService.updateValue('activeTicket', ticket.ticketId)
+          .pipe(take(1))
+          .subscribe();
 
-          this.sessionService.updateValue('activeTicket', ticket.ticketId)
-            .pipe(take(1))
-            .subscribe();
-
-          this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
-            .then(() => console.log('collection created'));
-        });
+        this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
+          .then(() => console.log('collection created'));
+      });
   }
 
   private finishVoting() {

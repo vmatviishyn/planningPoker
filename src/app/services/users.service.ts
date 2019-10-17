@@ -52,11 +52,17 @@ export class UsersService {
     );
   }
 
-  updateValue(key: string, value: string, sessionId: string, userUid: string) {
+  setVote(voteValue: string, sessionId: string, userUid: string) {
+    return this.vote({ vote: voteValue, voted: true }, sessionId, userUid);
+  }
+
+  clearVote(sessionId: string, userUid: string) {
+    return this.vote({ voted: false }, sessionId, userUid);
+  }
+
+  private vote(obj: { vote?: string, voted: boolean }, sessionId: string, userUid: string) {
     return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', sessionId)).get()
-      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-        return of(this.afs.doc(`users/${userUid}`).update({ [key]: value }));
-      }));
+      .pipe(switchMap(() => of(this.afs.doc(`users/${userUid}`).update(obj))));
   }
 }
