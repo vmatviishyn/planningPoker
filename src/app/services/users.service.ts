@@ -52,11 +52,11 @@ export class UsersService {
     );
   }
 
-  updateValue(key: string, value: string, sessionId: string) {
+  updateValue(key: string, value: string, sessionId: string, userUid: string) {
     return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', sessionId)).get()
       .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-        return of(this.afs.doc(`users/${snapshot.docs[0].id}`).update({ [key]: value }));
+        return of(this.afs.doc(`users/${userUid}`).update({ [key]: value }));
       }));
   }
 }

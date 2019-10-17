@@ -65,7 +65,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.selectedCard = card;
 
-        this.userService.updateValue('vote', card.secondaryText, this.session.id)
+        this.userService.updateValue('vote', card.secondaryText, this.session.id, this.authService.user.uid)
           .pipe(take(1))
           .subscribe();
       });
