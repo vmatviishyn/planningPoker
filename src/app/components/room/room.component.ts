@@ -59,11 +59,13 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
       .pipe(take(1))
-      .subscribe(() => this.selectedCard = card);
+      .subscribe(() => {
+        this.selectedCard = card;
 
-    this.userService.setVote(card.secondaryText, this.session.id, this.authService.user.uid)
-      .pipe(take(1))
-      .subscribe();
+        this.userService.setVote(card.secondaryText, this.session.id, this.authService.user.uid)
+          .pipe(take(1))
+          .subscribe();
+      });
   }
 
   onSkipTicket() {
