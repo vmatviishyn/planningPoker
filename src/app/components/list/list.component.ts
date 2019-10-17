@@ -21,9 +21,10 @@ import { take } from 'rxjs/operators';
 export class ListComponent implements OnInit, OnDestroy {
   currentUser$: Observable<User>;
   ticket = '';
-  tickets$: Observable<Ticket[]>;
+  tickets: Ticket[];
   session: Session;
   sessionSub: Subscription;
+  ticketsSub: Subscription;
 
   constructor(
     private userService: UsersService,
@@ -34,17 +35,20 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser$ = this.userService.getCurrentUser();
-    this.tickets$ = this.ticketsService.getTickets();
+    this.ticketsSub = this.ticketsService.getTickets()
+      .subscribe(data => {
+        this.tickets = data;
+      });
 
     this.sessionSub = this.sessionService.getSessionData()
       .subscribe(data => {
-        console.log('session', data.activeTicket);
         this.session = data;
       });
   }
 
   ngOnDestroy() {
     this.sessionSub.unsubscribe();
+    this.ticketsSub.unsubscribe();
   }
 
   onAddTicket(): void {

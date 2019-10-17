@@ -24,7 +24,10 @@
 
   <div class="side-content">
     <mat-list *ngIf="users$ | async as users">
-      <h3 mat-subheader>Members</h3>
+      <h3 mat-subheader class="list-header">
+        <span>Members</span>
+        <span class="timer">00:00:00</span>
+      </h3>
       <mat-list-item *ngFor="let person of users">
         <img matListAvatar [src]="person.photoURL" alt="">
         <h4 mat-line>{{ person.name }}</h4>
