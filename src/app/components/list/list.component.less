@@ -4,10 +4,13 @@
   flex-direction: row;
   align-items: center;
   width: 100%;
+  margin-bottom: 20px;
 
   @media (max-width: 470px) {
     flex-direction: column;
-    justify-content: center;
+    align-items: initial;
+    height: 100%;
+    width: 100%;
   }
 }
 
@@ -23,7 +26,8 @@
   width: 400px;
 
   @media (max-width: 470px) {
-    margin-right: 0;
+    margin: 5px 0;
+    padding: 0;
     width: 100%;
   }
 }
@@ -31,4 +35,17 @@
 .ticket-btn {
   border-radius: 10px;
   margin-left: 10px;
+
+  @media (max-width: 470px) {
+    margin: 5px 0;
+  }
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+  height: 100%;
+}
+
+.test {
+  background-color: #626565;
+  border-radius: 10px;
 }

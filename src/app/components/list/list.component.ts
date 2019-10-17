@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 import * as firebase from 'firebase/app';
 import { TickectsService } from 'src/app/services/tickects.service';
 import { SessionService } from './../../services/session.service';
 
-import { Ticket, User } from 'src/app/models';
+import { Ticket, User, Session } from 'src/app/models';
 import { UsersService } from 'src/app/services/users.service';
 import { MatDialog } from '@angular/material';
 import { TextfieldPopupComponent } from './textfield-popup/textfield-popup.component';
@@ -18,10 +18,12 @@ import { take } from 'rxjs/operators';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.less']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
   currentUser$: Observable<User>;
   ticket = '';
   tickets$: Observable<Ticket[]>;
+  session: Session;
+  sessionSub: Subscription;
 
   constructor(
     private userService: UsersService,
@@ -33,6 +35,16 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.currentUser$ = this.userService.getCurrentUser();
     this.tickets$ = this.ticketsService.getTickets();
+
+    this.sessionSub = this.sessionService.getSessionData()
+      .subscribe(data => {
+        console.log('session', data.activeTicket);
+        this.session = data;
+      });
+  }
+
+  ngOnDestroy() {
+    this.sessionSub.unsubscribe();
   }
 
   onAddTicket(): void {
@@ -65,5 +77,6 @@ export class ListComponent implements OnInit {
       voted: false
     });
   }
+
 
 }

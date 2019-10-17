@@ -5,7 +5,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 20px 40px 40px;
 
   @media (max-width: 470px) {
@@ -40,6 +40,10 @@ app-cards-board {
   border-radius: 20px;
   margin: 0 40px;
   width: 100%;
+
+  @media (max-width: 470px) {
+    margin: 20px 40px 0;
+  }
 }
 
 .room-title {

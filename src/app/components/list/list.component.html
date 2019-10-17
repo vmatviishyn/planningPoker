@@ -11,7 +11,7 @@
       </mat-list-item>
 
       <ng-container *ngIf="tickets$ | async as tickets">
-        <mat-list-item *ngFor="let ticket of tickets">
+        <mat-list-item *ngFor="let ticket of tickets" class="list" [class.test]="ticket.ticketId === session.activeTicket">
           <mat-icon mat-list-icon>description</mat-icon>
           <h4 mat-line>{{ ticket.title }}</h4>
           <button mat-icon-button (click)="onDeleteTicket(ticket)">
