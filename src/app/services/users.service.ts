@@ -21,7 +21,7 @@ export class UsersService {
   ) {}
 
   updateUser(name: string, photoURL: string, sessionId: string, isAdmin: boolean): Observable<User> {
-    const user: User = { name, photoURL, sessionId, isAdmin };
+    const user: User = { name, photoURL, sessionId, isAdmin, vote: null, voted: false };
 
     return this.afauth.authState
       .pipe(
