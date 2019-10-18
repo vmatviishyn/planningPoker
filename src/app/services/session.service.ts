@@ -22,6 +22,7 @@ export class SessionService {
   }
 
   getSessionData(): Observable<Session> {
+    if (!this.sessionId) { return of(null); }
     return this.afs.collection('sessions', (ref: firebase.firestore.CollectionReference) => ref
       .where('id', '==', this.getSessionId())).valueChanges()
       .pipe(map((sessions: Session[]) => sessions[0]));

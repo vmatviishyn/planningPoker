@@ -21,7 +21,7 @@ export class UsersService {
   ) {}
 
   updateUser(name: string, photoURL: string, sessionId: string, isAdmin: boolean): Observable<User> {
-    const user: User = { name, photoURL, sessionId, isAdmin };
+    const user: User = { name, photoURL, sessionId, isAdmin, vote: null, voted: false };
 
     return this.afauth.authState
       .pipe(
@@ -52,11 +52,11 @@ export class UsersService {
     );
   }
 
-  updateValue(key: string, value: string, sessionId: string, userUid: string) {
+  updateVotes(value: string, sessionId: string, userUid: string, voted: boolean) {
     return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', sessionId)).get()
-      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-        return of(this.afs.doc(`users/${userUid}`).update({ [key]: value }));
+      .pipe(switchMap(() => {
+        return of(this.afs.doc(`users/${userUid}`).update({ vote: value, voted }));
       }));
   }
 }

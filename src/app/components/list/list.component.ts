@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
@@ -9,7 +9,6 @@ import { SessionService } from './../../services/session.service';
 import { HashService } from './../../services/hash.service';
 
 import { Ticket, User, Session } from 'src/app/models';
-import { UsersService } from 'src/app/services/users.service';
 import { TextfieldPopupComponent } from './textfield-popup/textfield-popup.component';
 import DocumentReference = firebase.firestore.DocumentReference;
 
@@ -19,7 +18,8 @@ import DocumentReference = firebase.firestore.DocumentReference;
   styleUrls: ['./list.component.less']
 })
 export class ListComponent implements OnInit, OnDestroy {
-  currentUser$: Observable<User>;
+  @Input() currentUser: User;
+
   ticket = '';
   tickets: Ticket[];
   session: Session;
@@ -27,7 +27,6 @@ export class ListComponent implements OnInit, OnDestroy {
   ticketsSub: Subscription;
 
   constructor(
-    private userService: UsersService,
     private ticketsService: TickectsService,
     private sessionService: SessionService,
     private hashService: HashService,
@@ -35,7 +34,6 @@ export class ListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.currentUser$ = this.userService.getCurrentUser();
     this.ticketsSub = this.ticketsService.getTickets()
       .subscribe(data => {
         this.tickets = data;

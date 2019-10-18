@@ -25,7 +25,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   activeTicket$: Observable<Ticket>;
   showResults = false;
   votes: any;
-  isVotingStarted = false;
   selectedCard: Card;
 
   constructor(
@@ -49,10 +48,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   onStartVoting() {
     this.showResults = false;
-
-    this.getFirstTicket(() => {
-      this.isVotingStarted = true;
-    });
+    this.getFirstTicket();
   }
 
   onCardClicked(card: Card) {
@@ -65,7 +61,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.selectedCard = card;
 
-        this.userService.updateValue('vote', card.secondaryText, this.session.id, this.authService.user.uid)
+        this.userService.updateVotes(card.secondaryText, this.session.id, this.authService.user.uid, true)
           .pipe(take(1))
           .subscribe();
       });
@@ -91,25 +87,21 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.finishVoting();
   }
 
-  private getFirstTicket(cb?: () => void) {
-      this.ticketService.getFirst()
-        .pipe(take(1))
-        .subscribe((ticket: Ticket) => {
-          if (!ticket) {
-            return this.emptyListNotification();
-          }
+  private getFirstTicket() {
+    this.ticketService.getFirst()
+      .pipe(take(1))
+      .subscribe((ticket: Ticket) => {
+        if (!ticket) {
+          return this.emptyListNotification();
+        }
 
-          if (typeof cb === 'function') {
-            cb();
-          }
+        this.sessionService.updateValue('activeTicket', ticket.ticketId)
+          .pipe(take(1))
+          .subscribe();
 
-          this.sessionService.updateValue('activeTicket', ticket.ticketId)
-            .pipe(take(1))
-            .subscribe();
-
-          this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
-            .then(() => console.log('collection created'));
-        });
+        this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
+          .then(() => console.log('collection created'));
+      });
   }
 
   private finishVoting() {
@@ -136,6 +128,11 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.sessionSub = this.sessionService.getSessionData()
       .subscribe((data: Session) => {
         this.session = data;
+        this.selectedCard = null;
+
+        this.userService.updateVotes(null, this.session.id, this.authService.user.uid, false)
+          .pipe(take(1))
+          .subscribe();
 
         if (data.activeTicket) {
           console.log('active ticket', data.activeTicket);
