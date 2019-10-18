@@ -3,7 +3,6 @@ import { HttpParams } from '@angular/common/http';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { switchMap, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import randomize from 'randomatic';
 
 import * as firebase from 'firebase/app';
 
@@ -65,10 +64,6 @@ export class SessionService {
 
   clearSessionId() {
     this.sessionId = '';
-  }
-
-  generateSession() {
-    return randomize('Aa0', 16);
   }
 
   removeOldSessions() {

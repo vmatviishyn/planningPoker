@@ -3,6 +3,7 @@ import { take } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from './../../services/auth.service';
+import { HashService } from './../../services/hash.service';
 import { NotificationService } from './../../services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
 import { User } from 'src/app/models';
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit {
     private sessionService: SessionService,
     private activateRoute: ActivatedRoute,
     private notificationService: NotificationService,
+    private hashService: HashService,
     private router: Router
   ) { }
 
@@ -36,7 +38,7 @@ export class HomeComponent implements OnInit {
 
   onLoginWithGoogle() {
     // generate new session id
-    let sessionId = this.sessionService.generateSession();
+    let sessionId = this.hashService.generateHash();
 
     if (this.isSessionExists) {
       // session id is exists in database

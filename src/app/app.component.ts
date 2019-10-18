@@ -7,7 +7,7 @@ import { NotificationService } from './services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UsersService } from './services/users.service';
 
-import { User, Session } from 'src/app/models';
+import { User } from 'src/app/models';
 
 @Component({
   selector: 'app-root',
