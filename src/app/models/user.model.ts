@@ -4,5 +4,4 @@ export interface User {
   photoURL?: string;
   isAdmin?: boolean;
   vote?: string;
-  voted?: boolean;
 }

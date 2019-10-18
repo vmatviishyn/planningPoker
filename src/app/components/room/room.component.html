@@ -30,7 +30,6 @@
         <img matListAvatar [src]="person.photoURL" alt="">
         <h4 mat-line>{{ person.name }}</h4>
         <span *ngIf="showResults" class="user-vote">{{ person.vote }}</span>
-        <mat-icon *ngIf="!showResults && person.voted" class="user-status" aria-hidden="true">check_circle</mat-icon>
       </mat-list-item>
     </mat-list>
 
