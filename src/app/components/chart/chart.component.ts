@@ -10,10 +10,13 @@ import { MultiDataSet, Label } from 'ng2-charts';
 export class ChartComponent implements OnInit {
   @Input() votes: any;
 
-  doughnutChartLabels: Label[] = [];
-  doughnutChartData: MultiDataSet = [[]];
+  doughnutChartLabels: Label[] = ['1', '2', '3'];
+  doughnutChartData: MultiDataSet = [];
   doughnutChartType: ChartType = 'doughnut';
   averageValue = 0;
+
+  result = [];
+  obj = {};
 
   private options: any = {
     legend: { position: 'right' }
@@ -34,12 +37,30 @@ export class ChartComponent implements OnInit {
   }
 
   private getValues() {
-    this.votes.forEach(field => {
-      this.doughnutChartData[0].push(field.value);
-      this.doughnutChartLabels.push(field.secondaryText);
-      this.averageValue += field.value;
-    });
+    // this.votes.forEach(field => {
+    //   // this.doughnutChartData[0].push(field.value);
+    //   // this.doughnutChartLabels.push(field.secondaryText);
 
-    this.averageValue /= this.votes.length;
+
+
+    //   this.averageValue += field.value;
+    // });
+
+    this.obj = this.votes.reduce((acc, curr) => {
+      if (!acc[curr]) {
+        acc[curr] = 1;
+      } else {
+        acc[curr]++;
+      }
+      return acc;
+    }, {});
+
+    for (let item in this.obj) {
+      this.result.push((this.obj[item] / this.votes.length) * 100);
+    }
+
+    this.doughnutChartData.push(this.result);
+
+    // this.averageValue /= this.votes.length;
   }
 }
