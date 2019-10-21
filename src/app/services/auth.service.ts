@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable, from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, from, of } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 
 import { auth } from 'firebase/app';
 import { SessionService } from './session.service';
@@ -20,10 +20,11 @@ export class AuthService {
     private sessionService: SessionService,
     private userService: UsersService
   ) {
-    // For test purpose (user state)
-    this.getUserData().subscribe((user: firebase.User) => {
-      console.log('user', user);
-      this.user = user;
+    this.getUserData()
+      .pipe(take(1))
+      .subscribe((user: firebase.User) => {
+        console.log('user', user);
+        this.user = user;
     });
   }
 
@@ -33,20 +34,20 @@ export class AuthService {
       .pipe(switchMap((userCredential: firebase.auth.UserCredential) => {
         this.authState = userCredential;
         // save user and session id to database
-        const { displayName, photoURL } = userCredential.user;
-        return this.userService.updateUser(displayName, photoURL, sessionId, isAdmin);
+        const { displayName, email, photoURL } = userCredential.user;
+        return this.userService.updateCurrentUser(displayName, email, photoURL, sessionId, isAdmin);
       }));
   }
 
-  logout(user: firebase.User): Observable<void> {
+  logout(): Observable<void> {
     this.sessionService.clearSessionId();
 
-    // remove user from current session
-    return this.userService.updateUser(user.displayName, user.photoURL, '', false)
+    return this.getUserData()
       .pipe(
-        // logout
-        switchMap(() => from(this.afauth.auth.signOut()))
-      );
+        switchMap((user: firebase.User) => this.userService.updateCurrentUser(user.displayName, user.email, user.photoURL, '', false)),
+        switchMap(() => from(this.afauth.auth.signOut())
+      )
+    );
   }
 
   getUserData(): Observable<firebase.User> {

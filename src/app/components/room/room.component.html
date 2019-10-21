@@ -31,6 +31,9 @@
         <h4 mat-line>{{ person.name }}</h4>
         <span *ngIf="showResults" class="user-vote">{{ person.vote }}</span>
         <mat-icon *ngIf="!showResults && person.voted" class="user-status" aria-hidden="true">check_circle</mat-icon>
+        <button *ngIf="currentUser?.isAdmin && currentUser.email !== person?.email" mat-icon-button (click)="onRemoveUser(person)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
       </mat-list-item>
     </mat-list>
 

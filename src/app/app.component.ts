@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { AuthService } from './services/auth.service';
@@ -14,7 +14,10 @@ import { Session, User } from 'src/app/models';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  private userDataSub: Subscription;
+
+  userData: User;
   user$: Observable<firebase.User>;
   userData$: Observable<User>;
   session$: Observable<Session>;
@@ -30,12 +33,27 @@ export class AppComponent implements OnInit {
     this.sessionService.setSessionId();
     this.session$ = this.sessionService.getSessionData();
     this.user$ = this.authService.getUserData();
-    this.userData$ = this.userService.getCurrentUser();
+    // this.userData$ = this.userService.getCurrentUser();
+    this.getCurrentUser();
   }
 
-  logout(user: firebase.User) {
-    this.authService.logout(user)
+  ngOnDestroy() {
+    this.userDataSub.unsubscribe();
+  }
+
+  logout() {
+    this.authService.logout()
       .pipe(take(1))
       .subscribe(() => this.notificationService.show('Successfully logged out.'));
+  }
+
+  private getCurrentUser() {
+    this.userDataSub = this.userService.getCurrentUser()
+      .subscribe((user: User) => {
+        this.userData = user;
+        if (user && !user.sessionId) {
+          console.log('logout');
+        }
+      });
   }
 }

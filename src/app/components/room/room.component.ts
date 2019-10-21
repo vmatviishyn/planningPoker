@@ -87,6 +87,12 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.finishVoting();
   }
 
+  onRemoveUser(user: User) {
+    this.userService.removeUserFromSession(user)
+      .pipe(take(1))
+      .subscribe();
+  }
+
   private getFirstTicket() {
     this.ticketService.getFirst()
       .pipe(take(1))
@@ -130,9 +136,11 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.session = data;
         this.selectedCard = null;
 
-        this.userService.updateVotes(null, this.session.id, this.authService.user.uid, false)
-          .pipe(take(1))
-          .subscribe();
+        if (this.authService.user.uid) {
+          this.userService.updateVotes(null, this.session.id, this.authService.user.uid, false)
+            .pipe(take(1))
+            .subscribe();
+        }
 
         if (data.activeTicket) {
           console.log('active ticket', data.activeTicket);
