@@ -36,13 +36,6 @@ export class SessionService {
       }));
   }
 
-  checkSession(id: string): Observable<boolean> {
-    return this.afs.collection('sessions', (ref: firebase.firestore.CollectionReference) => ref.where('id', '==', id)).valueChanges()
-      .pipe(switchMap((sessions: Session[]) => {
-        return sessions.length ? of(true) : of(false);
-      }));
-  }
-
   // get query params from url
   // activateRoute is not working because of guard (it clears route snapshot)
   getParamValueQueryString(paramName: string) {
@@ -65,10 +58,5 @@ export class SessionService {
 
   clearSessionId() {
     this.sessionId = '';
-  }
-
-  removeOldSessions() {
-    // @TODO: Implement this method with removing old sessions
-    return this.afs.collection('sessions').valueChanges();
   }
 }

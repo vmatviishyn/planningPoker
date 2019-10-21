@@ -105,15 +105,14 @@ export class RoomComponent implements OnInit, OnDestroy {
           .pipe(take(1))
           .subscribe();
 
-        this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
-          .then(() => console.log('collection created'));
+        this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId);
       });
   }
 
   private finishVoting() {
     this.voteService.finishVoting(this.session.activeTicket)
       .pipe(take(1))
-      .subscribe(() => console.log('finished voting'));
+      .subscribe();
   }
 
   private getResults() {
@@ -131,16 +130,16 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   private getSessionData() {
+    let voteSub: Subscription;
+
     this.sessionSub = this.sessionService.getSessionData()
       .subscribe((data: Session) => {
         this.session = data;
         this.selectedCard = null;
 
-        if (this.authService.user) {
-          this.userService.updateVotes(null, this.session.id, this.authService.user.uid, false)
-            .pipe(take(1))
-            .subscribe();
-        }
+        this.userService.updateVotes(null, this.session.id, this.authService.user.uid, false)
+          .pipe(take(1))
+          .subscribe();
 
         if (data.activeTicket) {
           console.log('active ticket', data.activeTicket);
@@ -149,7 +148,10 @@ export class RoomComponent implements OnInit, OnDestroy {
 
           // when admin is clicked on vinish voting, 'voted' field will be set to 'true'
           // and it will trigger getting results of current ticket for all users
-          const voteSub = this.voteService.getVoteByTicketId(this.session.activeTicket)
+          // Prevent multiple subscriptions
+          if (voteSub) { voteSub.unsubscribe(); }
+
+          voteSub = this.voteService.getVoteByTicketId(this.session.activeTicket)
             .subscribe((vote: Vote) => {
               console.log('vote', vote);
               if (vote && vote.voted) {

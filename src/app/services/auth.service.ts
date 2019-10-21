@@ -1,7 +1,7 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable, from, of } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { Observable, from, Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { auth } from 'firebase/app';
 import { SessionService } from './session.service';
@@ -13,7 +13,7 @@ import { User } from '../models';
 })
 export class AuthService {
   private authState: firebase.auth.UserCredential;
-  private signUp = new EventEmitter<void>();
+  private signUp = new Subject<void>();
 
   user: firebase.User;
   signUp$ = this.signUp.asObservable();
@@ -37,7 +37,9 @@ export class AuthService {
         this.authState = userCredential;
         // save user and session id to database
         const { displayName, email, photoURL } = userCredential.user;
-        return this.userService.updateCurrentUser({ name: displayName, email, photoURL, sessionId, isAdmin, removedByAdmin: false });
+        return this.userService.updateCurrentUser({
+          name: displayName, email, photoURL, sessionId, isAdmin, removedByAdmin: false
+        });
       }));
   }
 
