@@ -6,4 +6,5 @@ export interface User {
   isAdmin?: boolean;
   vote?: string;
   voted?: boolean;
+  removedByAdmin?: boolean;
 }

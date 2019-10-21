@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { MultiDataSet, Label } from 'ng2-charts';
 
@@ -28,9 +28,7 @@ export class ChartComponent implements OnInit {
         fontSize: 16
       }
     },
-  }
-
-  constructor() { }
+  };
 
   ngOnInit() {
     this.getValues();

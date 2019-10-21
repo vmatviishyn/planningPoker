@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -15,44 +16,57 @@ import { Session, User } from 'src/app/models';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private authSub: Subscription;
   private userDataSub: Subscription;
 
   userData: User;
   user$: Observable<firebase.User>;
-  userData$: Observable<User>;
   session$: Observable<Session>;
 
   constructor(
     private authService: AuthService,
     private notificationService: NotificationService,
+    private router: Router,
     private sessionService: SessionService,
     private userService: UsersService,
   ) {}
 
   ngOnInit() {
     this.sessionService.setSessionId();
-    this.session$ = this.sessionService.getSessionData();
     this.user$ = this.authService.getUserData();
-    // this.userData$ = this.userService.getCurrentUser();
+    this.getSessionData();
     this.getCurrentUser();
+    this.sessionChange();
   }
 
   ngOnDestroy() {
+    this.authSub.unsubscribe();
     this.userDataSub.unsubscribe();
   }
 
   logout() {
     this.authService.logout()
       .pipe(take(1))
-      .subscribe(() => this.notificationService.show('Successfully logged out.'));
+      .subscribe(() => {
+        this.notificationService.show('Successfully logged out.');
+        this.router.navigate(['home']);
+      });
+  }
+
+  private sessionChange() {
+    this.authSub = this.authService.signUp$.subscribe(() => this.getSessionData());
+  }
+
+  private getSessionData() {
+    this.session$ = this.sessionService.getSessionData();
   }
 
   private getCurrentUser() {
     this.userDataSub = this.userService.getCurrentUser()
       .subscribe((user: User) => {
         this.userData = user;
-        if (user && !user.sessionId) {
-          console.log('logout');
+        if (user && user.removedByAdmin) {
+          this.logout();
         }
       });
   }

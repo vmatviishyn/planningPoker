@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable, from, of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
@@ -13,7 +13,10 @@ import { User } from '../models';
 })
 export class AuthService {
   private authState: firebase.auth.UserCredential;
-  public user: firebase.User;
+  private signUp = new EventEmitter<void>();
+
+  user: firebase.User;
+  signUp$ = this.signUp.asObservable();
 
   constructor(
     private afauth: AngularFireAuth,
@@ -21,7 +24,6 @@ export class AuthService {
     private userService: UsersService
   ) {
     this.getUserData()
-      .pipe(take(1))
       .subscribe((user: firebase.User) => {
         console.log('user', user);
         this.user = user;
@@ -35,7 +37,7 @@ export class AuthService {
         this.authState = userCredential;
         // save user and session id to database
         const { displayName, email, photoURL } = userCredential.user;
-        return this.userService.updateCurrentUser(displayName, email, photoURL, sessionId, isAdmin);
+        return this.userService.updateCurrentUser({ name: displayName, email, photoURL, sessionId, isAdmin, removedByAdmin: false });
       }));
   }
 
@@ -44,7 +46,16 @@ export class AuthService {
 
     return this.getUserData()
       .pipe(
-        switchMap((user: firebase.User) => this.userService.updateCurrentUser(user.displayName, user.email, user.photoURL, '', false)),
+        switchMap((user: firebase.User) => {
+          return this.userService.updateCurrentUser({
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            sessionId: null,
+            isAdmin: false,
+            removedByAdmin: false
+          });
+        }),
         switchMap(() => from(this.afauth.auth.signOut())
       )
     );
@@ -52,5 +63,9 @@ export class AuthService {
 
   getUserData(): Observable<firebase.User> {
     return this.afauth.authState;
+  }
+
+  dispatchSignUp() {
+    this.signUp.next();
   }
 }

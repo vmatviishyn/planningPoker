@@ -82,6 +82,7 @@ export class HomeComponent implements OnInit {
 
   private navigateToRoom(id: string) {
     this.router.navigate(['room'], { queryParams: { sessionId: id } });
+    this.authService.dispatchSignUp();
   }
 
 }

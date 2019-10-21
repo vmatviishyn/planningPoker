@@ -136,7 +136,7 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.session = data;
         this.selectedCard = null;
 
-        if (this.authService.user.uid) {
+        if (this.authService.user) {
           this.userService.updateVotes(null, this.session.id, this.authService.user.uid, false)
             .pipe(take(1))
             .subscribe();

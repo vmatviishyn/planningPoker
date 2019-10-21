@@ -20,9 +20,7 @@ export class UsersService {
     private sessionService: SessionService
   ) {}
 
-  updateCurrentUser(name: string, email: string, photoURL: string, sessionId: string, isAdmin: boolean): Observable<User> {
-    const user: User = { name, email, photoURL, sessionId, isAdmin, vote: null, voted: false };
-
+  updateCurrentUser(user: User): Observable<User> {
     return this.afauth.authState
       .pipe(
         // create new user or update existing with new session id
@@ -35,7 +33,7 @@ export class UsersService {
     return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
       .where('email', '==', user.email)).get()
       .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-        return this.afs.doc(`users/${snapshot.docs[0].id}`).update({ sessionId: null, isAdmin: false, vote: null, voted: false });
+        return this.afs.doc(`users/${snapshot.docs[0].id}`).update({ removedByAdmin: true });
       }));
   }
 
