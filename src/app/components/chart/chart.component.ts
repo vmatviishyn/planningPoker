@@ -11,12 +11,23 @@ export class ChartComponent implements OnInit {
   @Input() votes: any;
 
   doughnutChartLabels: Label[] = [];
-  doughnutChartData: MultiDataSet = [[]];
+  doughnutChartData: MultiDataSet = [];
   doughnutChartType: ChartType = 'doughnut';
   averageValue = 0;
 
+  result = [];
+  labels = [];
+
+  obj = {};
+
   private options: any = {
-    legend: { position: 'right' }
+    legend: {
+      position: 'right',
+      labels: {
+        fontColor: 'white',
+        fontSize: 16
+      }
+    },
   }
 
   constructor() { }
@@ -34,12 +45,27 @@ export class ChartComponent implements OnInit {
   }
 
   private getValues() {
-    this.votes.forEach(field => {
-      this.doughnutChartData[0].push(field.value);
-      this.doughnutChartLabels.push(field.secondaryText);
-      this.averageValue += field.value;
-    });
+    this.obj = this.votes.reduce((acc, curr) => {
+      if (!acc[curr.value]) {
+        acc[curr.value] = 1;
+      } else {
+        acc[curr.value]++;
+      }
+      this.averageValue += curr.value;
+
+      return acc;
+    }, {});
+
+    for (let item in this.obj) {
+      let player = this.obj[item] > 1
+        ? `${this.obj[item]} players`
+        : `${this.obj[item]} player`;
+      this.result.push((this.obj[item] / this.votes.length) * 100);
+      this.labels.push(`${item} - (${player})`);
+    }
 
     this.averageValue /= this.votes.length;
+    this.doughnutChartLabels = this.labels;
+    this.doughnutChartData.push(this.result);
   }
 }
