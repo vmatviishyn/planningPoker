@@ -29,6 +29,7 @@ import { ShareComponent } from './components/share/share.component';
 import { PopupComponent } from './components/share/popup/popup.component';
 import { RoomComponent } from './components/room/room.component';
 import { TextfieldPopupComponent } from './components/list/textfield-popup/textfield-popup.component';
+import { UserDetailsComponent } from './components/room/user-details/user-details.component';
 
 import { environment } from '../environments/environment';
 
@@ -43,7 +44,8 @@ import { environment } from '../environments/environment';
     ListComponent,
     RoomComponent,
     ChartComponent,
-    TextfieldPopupComponent
+    TextfieldPopupComponent,
+    UserDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +66,8 @@ import { environment } from '../environments/environment';
   ],
   entryComponents: [
     PopupComponent,
-    TextfieldPopupComponent
+    TextfieldPopupComponent,
+    UserDetailsComponent
   ],
   bootstrap: [AppComponent]
 })

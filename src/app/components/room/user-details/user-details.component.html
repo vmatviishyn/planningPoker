@@ -1,0 +1,21 @@
+<mat-card>
+  <mat-card-header>
+    <img mat-card-avatar [src]="data.user.photoURL" alt="">
+    <mat-card-title>
+      {{ data.user.name }}
+      <ng-container *ngIf="data.user.isAdmin">
+        (Admin)
+      </ng-container>
+    </mat-card-title>
+    <mat-card-subtitle>{{ data.user.email }}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image [src]="data.user.photoURL" alt="">
+  <mat-card-content *ngIf="data.user.vote as vote">
+    <p>
+      Last vote: {{ vote }}
+    </p>
+  </mat-card-content>
+  <mat-card-actions *ngIf="data.currentUser.isAdmin && data.currentUser.email !== data.user.email">
+    <button (click)="onRemoveFromSession(data.user)" mat-button>Remove from session</button>
+  </mat-card-actions>
+</mat-card>

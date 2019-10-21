@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -8,6 +9,7 @@ import { UsersService } from 'src/app/services/users.service';
 import { TickectsService } from 'src/app/services/tickects.service';
 import { VoteService } from 'src/app/services/vote.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserDetailsComponent } from './user-details/user-details.component';
 
 import { User, Ticket, Session, Card, Vote } from 'src/app/models';
 
@@ -33,7 +35,8 @@ export class RoomComponent implements OnInit, OnDestroy {
     private userService: UsersService,
     private ticketService: TickectsService,
     private voteService: VoteService,
-    private authService: AuthService
+    private authService: AuthService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -87,10 +90,14 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.finishVoting();
   }
 
-  onRemoveUser(user: User) {
-    this.userService.removeUserFromSession(user)
-      .pipe(take(1))
-      .subscribe();
+  onUserClick(user: User) {
+    this.dialog.open(UserDetailsComponent, {
+      width: '60vh',
+      data: {
+        user,
+        currentUser: this.currentUser
+      }
+    });
   }
 
   private getFirstTicket() {
