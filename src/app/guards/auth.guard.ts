@@ -4,13 +4,16 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { AuthService } from './../services/auth.service';
+import { SessionService } from '../services/session.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private sessionService: SessionService
   ) { }
 
   canActivate(
@@ -20,7 +23,7 @@ export class AuthGuard implements CanActivate {
     return this.authService.getUserData()
       .pipe(
         switchMap((data: firebase.User) => {
-          if (data) {
+          if (data && !!this.sessionService.getSessionId()) {
             return of(true);
           }
 

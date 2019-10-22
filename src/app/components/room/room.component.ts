@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -36,7 +37,8 @@ export class RoomComponent implements OnInit, OnDestroy {
     private ticketService: TickectsService,
     private voteService: VoteService,
     private authService: AuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -142,6 +144,10 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     this.sessionSub = this.sessionService.getSessionData()
       .subscribe((data: Session) => {
+        if (!data) {
+          return this.router.navigate(['home']);
+        }
+
         this.session = data;
         this.selectedCard = null;
 
