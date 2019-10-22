@@ -1,7 +1,9 @@
-<div mat-dialog-content>
-  <textarea #text class="text-input" rows="30" cdkFocusInitial></textarea>
-</div>
-<div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="[]">Cancel</button>
-  <button mat-button [mat-dialog-close]="getLinksArray(text.value)">Ok</button>
+<div class="textfield-popup">
+  <div mat-dialog-content>
+    <textarea #text class="textfield-popup__input" rows="30" cdkFocusInitial></textarea>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="[]">Cancel</button>
+    <button mat-button [mat-dialog-close]="getLinksArray(text.value)">Ok</button>
+  </div>
 </div>

@@ -1,13 +1,13 @@
-<div class="cards-wrapper">
-  <div class="card" [class.card--selected]="card.value === selected?.value" *ngFor="let card of cards" (click)="onCardClick(card)">
-    <div class="card__header">
+<div class="cards-board">
+  <div class="cards-board__card" [class.cards-board__card--selected]="card.value === selected?.value" *ngFor="let card of cards" (click)="onCardClick(card)">
+    <div class="cards-board__header">
       <div>{{ card.secondaryText }}</div>
       <div>{{ card.secondaryText }}</div>
     </div>
-    <div class="card__body">
+    <div class="cards-board__body">
       {{ card.mainText }}
     </div>
-    <div class="card__footer">
+    <div class="cards-board__footer">
       <div>{{ card.secondaryText }}</div>
       <div>{{ card.secondaryText }}</div>
     </div>

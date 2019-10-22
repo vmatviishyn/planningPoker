@@ -1,13 +1,6 @@
-.average {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  color: #8c2e2e;
-  font-size: 23px;
-  font-weight: 600;
-}
+@import './../../../assets/main-theme';
 
-.chart-wrapper {
+.chart {
   display: block;
   position: relative;
   width: 50vw;
@@ -17,7 +10,16 @@
     margin-bottom: 20px;
   }
 
-  @media (max-width: 768px) {
+  &__average {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: @red;
+    font-size: 23px;
+    font-weight: 600;
+  }
+
+  @media (max-width: @screen-sm-max) {
     width: 90vw;
     margin: 20px 0px;
   }

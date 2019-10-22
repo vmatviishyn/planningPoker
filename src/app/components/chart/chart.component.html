@@ -1,11 +1,11 @@
-<div class="chart-wrapper">
+<div class="chart">
   <canvas baseChart
     [data]="doughnutChartData"
     [labels]="doughnutChartLabels"
     [options]="options"
     [chartType]="doughnutChartType">
   </canvas>
-  <div class="average">
+  <div class="chart__average">
     <span>
       Average value: {{ averageValue | number : '1.0-0' }}
     </span>

@@ -1,34 +1,39 @@
 @import "../../../assets/main-theme";
 
-.cards-wrapper {
+.cards-board {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-}
 
-.card {
-  background-color: @secondary-background;
-  border-radius: 10px;
-  color: @main-font-color;
-  cursor: pointer;
-  flex-direction: column;
-  justify-content: space-between;
-  display: flex;
-  margin: 8px;
-  transition: .3s;
-  padding: 5px;
-  width: 130px;
-  height: 150px;
-  box-sizing: border-box;
+  &__card {
+    background-color: @secondary-background;
+    border-radius: 10px;
+    color: @main-font-color;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: space-between;
+    display: flex;
+    margin: 8px;
+    transition: .3s;
+    padding: 5px;
+    width: 130px;
+    height: 150px;
+    box-sizing: border-box;
 
-  @media (max-width: 470px) {
-    width: 70px;
-  }
+    &:hover {
+      border: 3px solid @border-accent1;
+      transform: scale(1.1, 1.1);
+    }
 
-  &:hover {
-    border: 3px solid @border-accent1;
-    transform: scale(1.1, 1.1);
+    &--selected {
+      background-color: @light-background;
+      color: @dark-font-color;
+    }
+
+    @media (max-width: @screen-xs-max) {
+      width: 70px;
+    }
   }
 
   &__header {
@@ -52,10 +57,5 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     transform: rotateY(-180deg);
-  }
-
-  &--selected {
-    background-color: @light-background;
-    color: @dark-font-color;
   }
 }

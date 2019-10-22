@@ -96,7 +96,8 @@ export class RoomComponent implements OnInit, OnDestroy {
       data: {
         user,
         currentUser: this.currentUser
-      }
+      },
+      panelClass: 'full-container'
     });
   }
 

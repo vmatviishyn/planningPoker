@@ -14,6 +14,7 @@ export class ShareComponent {
   openPopup(): void {
     this.dialog.open(PopupComponent, {
       width: '80vh',
+      panelClass: 'full-container'
     });
   }
 
