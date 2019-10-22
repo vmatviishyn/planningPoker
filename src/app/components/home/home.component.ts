@@ -6,7 +6,7 @@ import { AuthService } from './../../services/auth.service';
 import { HashService } from './../../services/hash.service';
 import { NotificationService } from './../../services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
-import { User } from 'src/app/models';
+import { User, Session } from 'src/app/models';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
 
     if (this.sessionId) {
       // if session id exists in url, check it from database
-      this.checkSession(this.sessionId);
+      this.checkSession();
     }
   }
 
@@ -61,13 +61,13 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  private checkSession(id: string) {
-    this.sessionService.checkSession(id)
+  private checkSession() {
+    this.sessionService.getSessionData()
       .pipe(take(1))
-      .subscribe((isExists) => {
-        this.isSessionExists = isExists;
-        if (isExists) {
-          this.notificationService.show(`Session ${id} exists!`);
+      .subscribe((session: Session) => {
+        this.isSessionExists = !!session;
+        if (session) {
+          this.notificationService.show(`Session ${session.id} exists!`);
           this.router.navigate([],
             {
               relativeTo: this.activateRoute,
@@ -75,13 +75,14 @@ export class HomeComponent implements OnInit {
               queryParamsHandling: 'merge'
             });
         } else {
-          this.notificationService.show(`Session ${id} does not exist!`);
+          this.notificationService.show(`Session ${this.sessionId} does not exist!`);
         }
       });
   }
 
   private navigateToRoom(id: string) {
     this.router.navigate(['room'], { queryParams: { sessionId: id } });
+    this.authService.dispatchSignUp();
   }
 
 }

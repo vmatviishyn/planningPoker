@@ -79,16 +79,16 @@ app-cards-board {
   }
 }
 
-.user-vote {
-  color: @error-background;
-  padding-left: 10px;
-  font-size: 24px;
-  font-weight: 600;
-}
-
+.user-vote,
 .user-status {
   color: @error-background;
+  cursor: pointer;
   margin-left: 10px;
+}
+
+.user-vote {
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .list-header {
@@ -101,4 +101,8 @@ app-cards-board {
   color: #8c2e2e;
   font-size: 16px;
   font-weight: 600;
+}
+
+img {
+  cursor: pointer;
 }

@@ -20,15 +20,21 @@ export class UsersService {
     private sessionService: SessionService
   ) {}
 
-  updateUser(name: string, photoURL: string, sessionId: string, isAdmin: boolean): Observable<User> {
-    const user: User = { name, photoURL, sessionId, isAdmin, vote: null, voted: false };
-
+  updateCurrentUser(user: User): Observable<User> {
     return this.afauth.authState
       .pipe(
         // create new user or update existing with new session id
         switchMap((userData: firebase.User) => of(this.afs.doc(`users/${userData.uid}`).set(user))),
         switchMap(() => of(user)),
       );
+  }
+
+  removeUserFromSession(user: User): Observable<void> {
+    return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
+      .where('email', '==', user.email)).get()
+      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        return this.afs.doc(`users/${snapshot.docs[0].id}`).update({ removedByAdmin: true });
+      }));
   }
 
   getUsers(): Observable<User[]> {
