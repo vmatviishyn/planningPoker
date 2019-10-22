@@ -1,31 +1,28 @@
-<div class="hidden-mobile">
-  <div class="home">
-    <img class="login-img" src="/assets/images/background.png" alt="">
-    <div class="login-form">
-      <div class="login-btn-wrapper card">
-        <div class="card__header">
-          <div><img class="card-icon" src="/assets/images/poker.png" alt=""></div>
-          <div><img class="card-icon" src="/assets/images/poker.png" alt=""></div>
+<div class="home">
+  <div class="home--desktop">
+    <img class="home__login-img" src="/assets/images/background.png" alt="">
+    <div class="home__login-form">
+      <div class="home__login-btn-wrapper home__card">
+        <div class="home__card__header">
+          <div><img class="home__card-icon" src="/assets/images/poker.png" alt=""></div>
+          <div><img class="home__card-icon" src="/assets/images/poker.png" alt=""></div>
         </div>
-        <div class="card__body">
-          <button (click)="onLoginWithGoogle()" type="button" mat-raised-button class="login-btn">
-            <img class="google-img" src="/assets/images/google.svg" alt="">
+        <div class="home__card__body">
+          <button (click)="onLoginWithGoogle()" type="button" mat-raised-button class="home__login-btn">
+            <img class="home__google-img" src="/assets/images/google.svg" alt="">
           </button>
         </div>
-        <div class="card__footer">
-          <div><img class="card-icon" src="/assets/images/poker.png" alt=""></div>
-          <div><img class="card-icon" src="/assets/images/poker.png" alt=""></div>
+        <div class="home__card__footer">
+          <div><img class="home__card-icon" src="/assets/images/poker.png" alt=""></div>
+          <div><img class="home__card-icon" src="/assets/images/poker.png" alt=""></div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<div class="visible-mobile">
-  <div class="mobile-home">
-    <button class="mobile-button" mat-raised-button (click)="onLoginWithGoogle()">
-      <span class="mobile-button__text">Login with Google</span>
-      <img class="google-img" src="/assets/images/google.svg" alt="">
+  <div class="home--mobile">
+    <button class="home__mobile-button" mat-raised-button (click)="onLoginWithGoogle()">
+      <span class="home__mobile-button__text">Login with Google</span>
+      <img class="home__google-img" src="/assets/images/google.svg" alt="">
     </button>
   </div>
 </div>

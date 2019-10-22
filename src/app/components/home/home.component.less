@@ -1,154 +1,140 @@
 @import './../../../assets/main-theme';
 
 .home {
-  align-content: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  left: 50%;
-  position: absolute;
-  top: 52%;
-  transform: translate(-50%, -50%);
 
-  &:hover {
-    .login-form {
-      transform: rotate(0deg);
-      margin-left: 10px;
-    }
-
-    .login-img {
-      transform: rotate(0deg);
-      margin-right: 10px;
-
-    }
-  }
-}
-
-.card-icon {
-  height: 36px;
-  width: 36px;
-}
-
-.login-img {
-  border-radius: 20px;
-  height: auto;
-  transform: rotate(10deg);
-  width: 50%;
-  z-index: 1;
-  transition: .3s;
-}
-
-.login-form {
-  background: #acacac;
-  border-radius: 20px;
-  color: wheat;
-  height: auto;
-  transform: rotate(-10deg);
-  transition: .3s;
-  width: 50%;
-}
-
-.login-btn-wrapper {
-  align-items: center;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-}
-
-.login-btn {
-  background: transparent;
-  box-shadow: none;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-
-.google-img {
-  height: 50%;
-  width: 50%;
-}
-
-.card {
-  box-sizing: border-box;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  &__header {
-    color: white;
+  &--desktop {
+    align-content: center;
     display: flex;
     flex-direction: row;
-    font-size: 36px;
-    justify-content: space-between;
-    padding-top: 5%;
-    width: 90%;
+    justify-content: center;
+    left: 50%;
+    position: absolute;
+    top: 52%;
+    transform: translate(-50%, -50%);
+
+    @media (max-width: @screen-sm-max) {
+      display: none;
+    }
+
+    &:hover {
+      .home {
+        &__login-form {
+          margin-left: 5px;
+          transform: rotate(0deg);
+        }
+
+        &__login-img {
+          margin-right: 5px;
+          transform: rotate(0deg);
+        }
+      }
+    }
   }
 
-  &__body {
-    align-self: center;
-    margin: 10px;
-    padding: 10px;
-    text-align: center;
-    user-select: none;
-  }
-
-  &__footer {
-    color: white;
-    display: flex;
-    flex-direction: row;
-    font-size: 36px;
-    justify-content: space-between;
-    padding-bottom: 5%;
-    transform: rotateY(-180deg);
-    width: 90%;
-  }
-}
-
-.hidden-mobile {
-  display: block;
-
-  @media (max-width: 768px) {
+  &--mobile {
     display: none;
+
+    @media (max-width: @screen-sm-max) {
+      align-content: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      left: 50%;
+      position: absolute;
+      top: 52%;
+      transform: translate(-50%, -50%);
+    }
   }
-}
 
-.visible-mobile {
-  display: none;
-
-  @media (max-width: 768px) {
-    display: block;
+  &__card-icon {
+    height: 36px;
+    width: 36px;
   }
-}
 
-.mobile-home {
-  align-content: center;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  left: 50%;
-  position: absolute;
-  top: 52%;
-  transform: translate(-50%, -50%);
-}
-
-.mobile-button {
-  background-image: url('/assets/images/background.png');
-  background-size: cover;
-  width: 300px;
-  height: 500px;
-
-  &__text {
-    font-size: 24px;
+  &__login-img {
+    border-radius: 20px;
+    height: auto;
+    transform: rotate(10deg);
+    width: 50%;
+    z-index: 1;
+    transition: .3s;
   }
-}
 
-::ng-deep .mat-button-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  &__login-form {
+    background: #acacac;
+    border-radius: 20px;
+    color: wheat;
+    height: auto;
+    transform: rotate(-10deg);
+    transition: .3s;
+    width: 50%;
+  }
+
+  &__login-btn-wrapper {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+  }
+
+  &__login-btn {
+    background: transparent;
+    box-shadow: none;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  &__google-img {
+    height: 50%;
+    width: 50%;
+  }
+
+  &__card {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__header,
+    &__footer {
+      color: white;
+      display: flex;
+      flex-direction: row;
+      font-size: 36px;
+      justify-content: space-between;
+      padding-top: 5%;
+      width: 90%;
+    }
+
+    &__body {
+      align-self: center;
+      margin: 10px;
+      padding: 10px;
+      text-align: center;
+      user-select: none;
+    }
+  }
+
+  &__mobile-button {
+    background-image: url('/assets/images/background.png');
+    background-size: cover;
+    width: 300px;
+    height: 500px;
+
+    &__text {
+      font-size: 24px;
+    }
+  }
+
+  ::ng-deep .mat-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
 }
