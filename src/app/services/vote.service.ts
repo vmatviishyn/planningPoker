@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from 'angularfire2/firestore';
 import { switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 
 import { Vote } from './../models';
 
@@ -17,8 +17,8 @@ export class VoteService {
 
   constructor(private afs: AngularFirestore, private sessionService: SessionService) { }
 
-  createVoteCollection(sessionId: string, ticketId: string) {
-    return this.afs.collection('votes').add({ sessionId, ticketId });
+  createVoteCollection(sessionId: string, ticketId: string): Observable<DocumentReference> {
+    return from(this.afs.collection('votes').add({ sessionId, ticketId }));
   }
 
   vote(userId: string, card: Card, ticketId: string): Observable<void> {

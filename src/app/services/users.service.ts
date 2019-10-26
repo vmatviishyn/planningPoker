@@ -33,7 +33,12 @@ export class UsersService {
     return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
       .where('email', '==', user.email)).get()
       .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-        return this.afs.doc(`users/${snapshot.docs[0].id}`).update({ removedByAdmin: true });
+        return this.afs.doc(`users/${snapshot.docs[0].id}`).set({
+          name: user.name,
+          email: user.email,
+          photoURL: user.photoURL,
+          removedByAdmin: true
+        });
       }));
   }
 

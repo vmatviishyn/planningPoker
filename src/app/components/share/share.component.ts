@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { PopupComponent } from './popup/popup.component';
 
 @Component({
   selector: 'app-share',
   templateUrl: './share.component.html',
-  styleUrls: ['./share.component.less']
+  styleUrls: ['./share.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShareComponent {
 

@@ -49,7 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.notificationService.show('Successfully logged out.');
-        this.router.navigate(['home']);
+        this.navigateToHome();
       });
   }
 
@@ -66,8 +66,13 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((user: User) => {
         this.userData = user;
         if (user && user.removedByAdmin) {
-          this.logout();
+          this.sessionService.clearSessionId();
+          this.navigateToHome();
         }
       });
+  }
+
+  private navigateToHome() {
+    this.router.navigate(['home']);
   }
 }
