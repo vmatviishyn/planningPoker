@@ -30,7 +30,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   session: Session;
   activeTicket$: Observable<Ticket>;
   showResults = false;
-  votes: any;
+  vote: Vote;
+  votes: { data: Card[], vote: Vote };
   selectedCard: Card;
   tickets: Ticket[];
 
@@ -132,6 +133,12 @@ export class RoomComponent implements OnInit, OnDestroy {
       });
   }
 
+  onSetAverage(average: number) {
+    this.voteService.setAverage(this.session.activeTicket, average)
+      .pipe(take(1))
+      .subscribe();
+  }
+
   private finishVoting() {
     this.voteService.finishVoting(this.session.activeTicket)
       .pipe(take(1))
@@ -141,11 +148,11 @@ export class RoomComponent implements OnInit, OnDestroy {
   private getResults() {
     this.voteService.getResults(this.session.activeTicket)
       .pipe(take(1))
-      .subscribe(data => {
+      .subscribe((data: Card[]) => {
         this.selectedCard = null;
         if (data && data.length) {
           this.showResults = true;
-          this.votes = data;
+          this.votes = { data, vote: this.vote };
         } else {
           this.emptyListNotification();
         }
@@ -181,6 +188,7 @@ export class RoomComponent implements OnInit, OnDestroy {
             .subscribe((vote: Vote) => {
               console.log('vote', vote);
               if (vote && vote.voted) {
+                this.vote = vote;
                 this.getResults();
               }
             });

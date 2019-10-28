@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference, DocumentData } from 'angularfire2/firestore';
 import { switchMap } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
 
@@ -31,7 +31,7 @@ export class VoteService {
       );
   }
 
-  getResults(ticketId: string) {
+  getResults(ticketId: string): Observable<DocumentData[]> {
     return this.getVotesCollectionByTicketId(ticketId)
       .get()
       .pipe(
@@ -57,6 +57,16 @@ export class VoteService {
       .pipe(
         switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
           return this.afs.doc(`votes/${snapshot.docs[0].id}`).update({ voted: true });
+        })
+      );
+  }
+
+  setAverage(ticketId: string, value: number): Observable<void> {
+    return this.getVotesCollectionByTicketId(ticketId)
+      .get()
+      .pipe(
+        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+          return this.afs.doc(`votes/${snapshot.docs[0].id}`).update({ average: value });
         })
       );
   }

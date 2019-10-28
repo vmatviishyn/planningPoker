@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { MultiDataSet, Label } from 'ng2-charts';
+
+import { Card, Vote, User } from 'src/app/models';
 
 @Component({
   selector: 'app-chart',
@@ -9,12 +11,15 @@ import { MultiDataSet, Label } from 'ng2-charts';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChartComponent implements OnInit {
-  @Input() votes: any;
+  @Input() votes: { data: Card[], vote: Vote };
+  @Input() currentUser: User;
+  @Output() setAverage = new EventEmitter<number>();
 
+  averageValue = 0;
   doughnutChartLabels: Label[] = [];
   doughnutChartData: MultiDataSet = [];
   doughnutChartType: ChartType = 'doughnut';
-  averageValue = 0;
+  isEditing = false;
 
   result = [];
   labels = [];
@@ -35,6 +40,20 @@ export class ChartComponent implements OnInit {
     this.getValues();
   }
 
+  onEditAverage(value: number) {
+    if (value !== this.averageValue) {
+      this.setAverage.emit(value);
+      this.averageValue = value;
+      this.toggleEditing();
+    }
+  }
+
+  toggleEditing() {
+    if (this.currentUser.isAdmin) {
+      this.isEditing = !this.isEditing;
+    }
+  }
+
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);
   }
@@ -44,7 +63,9 @@ export class ChartComponent implements OnInit {
   }
 
   private getValues() {
-    this.obj = this.votes.reduce((acc, curr) => {
+    const average = this.votes.vote.average;
+
+    this.obj = this.votes.data.reduce((acc, curr) => {
       if (!acc[curr.value]) {
         acc[curr.value] = 1;
       } else {
@@ -59,12 +80,21 @@ export class ChartComponent implements OnInit {
       let player = this.obj[item] > 1
         ? `${this.obj[item]} players`
         : `${this.obj[item]} player`;
-      this.result.push((this.obj[item] / this.votes.length) * 100);
+      this.result.push((this.obj[item] / this.votes.data.length) * 100);
       this.labels.push(`${item} - (${player})`);
     }
 
-    this.averageValue /= this.votes.length;
+    if (average) {
+      this.averageValue = average;
+    } else {
+      this.averageValue /= this.votes.data.length;
+    }
+
     this.doughnutChartLabels = this.labels;
     this.doughnutChartData.push(this.result);
+
+    if (this.currentUser.isAdmin && !this.votes.vote.average) {
+      this.setAverage.emit(this.averageValue);
+    }
   }
 }

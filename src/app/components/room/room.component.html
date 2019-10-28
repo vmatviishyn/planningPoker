@@ -23,8 +23,10 @@
 
     <app-chart
       *ngIf="showResults"
-      [votes]="votes">
-    </app-chart>
+      [currentUser]="currentUser"
+      [votes]="votes"
+      (setAverage)="onSetAverage($event)"
+    ></app-chart>
 
     <div class="room__side-content">
       <mat-list *ngIf="users$ | async as users">
