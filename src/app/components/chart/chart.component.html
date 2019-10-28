@@ -6,8 +6,20 @@
     [chartType]="doughnutChartType">
   </canvas>
   <div class="chart__average">
-    <span>
-      Average value: {{ averageValue | number : '1.0-0' }}
+    Average value:
+    <span *ngIf="!isEditing" [class.chart__average--text]="currentUser?.isAdmin">{{ averageValue | number : '1.0-0' }}
+      <mat-icon class="chart__edit-icon" (click)="toggleEditing()" mat-list-icon>edit</mat-icon>
     </span>
+    <ng-container *ngIf="isEditing">
+      <mat-form-field>
+        <input #average autofocus matInput [value]="averageValue" type="number">
+      </mat-form-field>
+      <button mat-mini-fab color="warn" (click)="onEditAverage(average.value)">
+        <mat-icon aria-hidden="true">done</mat-icon>
+      </button>
+      <button mat-mini-fab color="pimary" (click)="toggleEditing()">
+        <mat-icon aria-hidden="true">cancel</mat-icon>
+      </button>
+    </ng-container>
   </div>
 </div>

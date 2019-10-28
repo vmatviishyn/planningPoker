@@ -11,16 +11,36 @@
   }
 
   &__average {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
     color: @red;
     font-size: 23px;
     font-weight: 600;
+    text-align: center;
+
+    &--text:hover {
+      cursor: pointer;
+
+      .chart {
+        &__edit-icon {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  &__edit-icon {
+    bottom: 5px;
+    display: none;
+    font-size: 0.8em;
+    position: relative;
   }
 
   @media (max-width: @screen-sm-max) {
     width: 90vw;
     margin: 20px 0px;
   }
+}
+
+::ng-deep .mat-form-field-infix {
+  padding: 0;
+  border: none;
 }
