@@ -7,7 +7,7 @@
   </canvas>
   <div class="chart__average">
     Average value:
-    <span *ngIf="!isEditing" class="chart__average--text">{{ averageValue | number : '1.0-0' }}
+    <span *ngIf="!isEditing" [class.chart__average--text]="currentUser?.isAdmin">{{ averageValue | number : '1.0-0' }}
       <mat-icon class="chart__edit-icon" (click)="toggleEditing()" mat-list-icon>edit</mat-icon>
     </span>
     <ng-container *ngIf="isEditing">

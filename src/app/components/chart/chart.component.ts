@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, OnChanges } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { MultiDataSet, Label } from 'ng2-charts';
 
@@ -10,7 +10,7 @@ import { Card, Vote, User } from 'src/app/models';
   styleUrls: ['./chart.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent implements OnInit, OnChanges {
   @Input() votes: { data: Card[], vote: Vote };
   @Input() currentUser: User;
   @Output() setAverage = new EventEmitter<number>();
@@ -38,6 +38,12 @@ export class ChartComponent implements OnInit {
 
   ngOnInit() {
     this.getValues();
+  }
+
+  ngOnChanges() {
+    if (this.votes.vote.average) {
+      this.averageValue = this.votes.vote.average;
+    }
   }
 
   onEditAverage(value: number) {
