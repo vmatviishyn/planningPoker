@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { AuthService } from './../../services/auth.service';
-import { HashService } from './../../services/hash.service';
-import { NotificationService } from './../../services/notification.service';
-import { SessionService } from 'src/app/services/session.service';
+import { AuthService, HashService, NotificationService, SessionService } from 'src/app/services';
 import { User, Session } from 'src/app/models';
 
 @Component({

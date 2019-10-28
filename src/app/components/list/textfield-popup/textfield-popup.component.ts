@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { UrlParserService } from '../../../services/url-parser.service';
+
+import { UrlParserService } from '../../../services';
 
 @Component({
   selector: 'app-textfield-popup',

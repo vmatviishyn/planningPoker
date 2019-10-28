@@ -1,9 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { take } from 'rxjs/operators';
 
-import { NotificationService } from './../../services/notification.service';
-import { SessionService } from 'src/app/services/session.service';
-import { CardTypes } from './../../models/card.model';
+import { NotificationService, SessionService } from 'src/app/services';
+import { CardTypes } from './../../models';
 
 @Component({
   selector: 'app-admin-panel',

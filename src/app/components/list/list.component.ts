@@ -2,16 +2,16 @@ import { Component, Input, ChangeDetectionStrategy, EventEmitter, Output } from 
 import { MatDialog } from '@angular/material';
 
 import * as firebase from 'firebase/app';
-import { SessionService } from './../../services/session.service';
-import { HashService } from './../../services/hash.service';
 
 import { Ticket, User, Session } from 'src/app/models';
 import { TextfieldPopupComponent } from './textfield-popup/textfield-popup.component';
+import { HashService, SessionService, UrlParserService } from 'src/app/services';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.less'],
+  providers: [UrlParserService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListComponent {
@@ -26,6 +26,7 @@ export class ListComponent {
   constructor(
     private sessionService: SessionService,
     private hashService: HashService,
+    private urlParseService: UrlParserService,
     public dialog: MatDialog
   ) { }
 
@@ -50,12 +51,17 @@ export class ListComponent {
   }
 
   private sendTicket(title: string) {
-    this.addTicket.emit({
+    const ticket: Ticket = {
       sessionId: this.sessionService.getSessionId(),
       ticketId: this.hashService.generateHash(32),
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       title,
       voted: false
-    });
+    };
+
+    if (this.urlParseService.parseUrls(title)) {
+      Object.assign(ticket, { href: title });
+    }
+    this.addTicket.emit(ticket);
   }
 }

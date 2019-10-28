@@ -4,14 +4,16 @@ import { Router } from '@angular/router';
 import { Observable, Subscription, forkJoin } from 'rxjs';
 import { take, withLatestFrom } from 'rxjs/operators';
 
-import { NotificationService } from './../../services/notification.service';
-import { SessionService } from 'src/app/services/session.service';
-import { UsersService } from 'src/app/services/users.service';
-import { TicketsService } from 'src/app/services/tickets.service';
-import { VoteService } from 'src/app/services/vote.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { UserDetailsComponent } from './user-details/user-details.component';
+import {
+  AuthService,
+  NotificationService,
+  SessionService,
+  TicketsService,
+  UsersService,
+  VoteService,
+} from 'src/app/services';
 
+import { UserDetailsComponent } from './user-details/user-details.component';
 import { User, Ticket, Session, Card, Vote } from 'src/app/models';
 
 @Component({
