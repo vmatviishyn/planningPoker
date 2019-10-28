@@ -134,13 +134,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   onSetAverage(average: number) {
-    this.voteService.setAverage(this.session.activeTicket, average)
+    this.voteService.updateValue(this.session.activeTicket, 'average', average)
       .pipe(take(1))
       .subscribe();
   }
 
   private finishVoting() {
-    this.voteService.finishVoting(this.session.activeTicket)
+    this.voteService.updateValue(this.session.activeTicket, 'voted', true)
       .pipe(take(1))
       .subscribe();
   }

@@ -51,24 +51,14 @@ export class VoteService {
       );
   }
 
-  finishVoting(ticketId: string): Observable<void> {
+  updateValue(ticketId: string, key: string, value: boolean | number): Observable<void> {
     return this.getVotesCollectionByTicketId(ticketId)
-      .get()
-      .pipe(
-        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-          return this.afs.doc(`votes/${snapshot.docs[0].id}`).update({ voted: true });
-        })
-      );
-  }
-
-  setAverage(ticketId: string, value: number): Observable<void> {
-    return this.getVotesCollectionByTicketId(ticketId)
-      .get()
-      .pipe(
-        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-          return this.afs.doc(`votes/${snapshot.docs[0].id}`).update({ average: value });
-        })
-      );
+    .get()
+    .pipe(
+      switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        return this.afs.doc(`votes/${snapshot.docs[0].id}`).update({ [key]: value });
+      })
+    );
   }
 
   private getVotesCollectionByTicketId(ticketId: string): AngularFirestoreCollection {

@@ -14,7 +14,7 @@
       <mat-form-field>
         <input #average autofocus matInput [value]="averageValue" type="number">
       </mat-form-field>
-      <button mat-mini-fab color="warn" (click)="onEditAverage(average.value)">
+      <button [disabled]="!average.value.length" mat-mini-fab color="warn" (click)="onEditAverage(average.value)">
         <mat-icon aria-hidden="true">done</mat-icon>
       </button>
       <button mat-mini-fab color="pimary" (click)="toggleEditing()">
