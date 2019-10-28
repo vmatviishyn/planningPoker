@@ -1,23 +1,47 @@
 <div class="list">
-  <mat-list>
-    <h3 mat-subheader><span [matBadge]="tickets?.length" matBadgeOverlap="false">List of tickets</span></h3>
-    <mat-list-item *ngIf="currentUser?.isAdmin">
-      <label class="list__add-ticket">
-        <input class="list__ticket-input" type="text" [(ngModel)]="ticket">
-        <button class="list__ticket-btn" mat-raised-button (click)="onAddTicket()" [disabled]="!ticket.length">Add ticket</button>
-        <button class="list__ticket-btn" mat-raised-button (click)="addTicketsFromText()">Add tickets from text</button>
-      </label>
-    </mat-list-item>
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span [matBadge]="tickets?.length" matBadgeOverlap="false">Active Tickets</span>
+      </ng-template>
 
-    <ng-container *ngIf="tickets?.length">
-      <mat-list-item *ngFor="let ticket of tickets" class="list__mat-list" [class.list__mat-list--active]="ticket.ticketId === session?.activeTicket">
-        <mat-icon mat-list-icon>description</mat-icon>
-        <h4 mat-line>{{ ticket.title }}</h4>
-        <button *ngIf="currentUser?.isAdmin" mat-icon-button (click)="onRemoveTicket(ticket)">
-          <mat-icon>delete_forever</mat-icon>
-        </button>
-      </mat-list-item>
-    </ng-container>
+      <mat-list>
+        <mat-list-item *ngIf="currentUser?.isAdmin">
+          <label class="list__add-ticket">
+            <mat-form-field>
+              <input matInput class="list__ticket-input" placeholder="Enter new ticket" [(ngModel)]="ticket">
+            </mat-form-field>
+            <button class="list__ticket-btn" mat-raised-button (click)="onAddTicket()" [disabled]="!ticket.length">Add ticket</button>
+            <button class="list__ticket-btn" mat-raised-button (click)="addTicketsFromText()">Add tickets from text</button>
+          </label>
+        </mat-list-item>
 
-  </mat-list>
+        <ng-container *ngIf="tickets?.length">
+          <mat-list-item *ngFor="let ticket of tickets" class="list__mat-list" [class.list__mat-list--active]="ticket.ticketId === session?.activeTicket">
+            <mat-icon mat-list-icon>description</mat-icon>
+            <h4 mat-line>{{ ticket.title }}</h4>
+            <button *ngIf="currentUser?.isAdmin" mat-icon-button (click)="onRemoveTicket(ticket)">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+          </mat-list-item>
+        </ng-container>
+      </mat-list>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        Completed Tickets
+      </ng-template>
+
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        All Tickets
+      </ng-template>
+
+    </mat-tab>
+
+  </mat-tab-group>
+
 </div>

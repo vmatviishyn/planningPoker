@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatInputModule,
     MatRadioModule,
     MatBadgeModule,
+    MatTabsModule,
   ],
   exports: [
     MatButtonModule,
@@ -39,6 +41,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatInputModule,
     MatRadioModule,
     MatBadgeModule,
+    MatTabsModule,
   ],
 })
 export class MaterialModule { }
