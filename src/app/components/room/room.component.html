@@ -60,7 +60,13 @@
 
   <div class="room__container">
     <div class="room__app-list">
-      <app-list [currentUser]="currentUser"></app-list>
+      <app-list
+        [currentUser]="currentUser"
+        [session]="session"
+        [tickets]="tickets"
+        (addTicket)="onAddTicket($event)"
+        (removeTicket)="onRemoveTicket($event)"
+      ></app-list>
     </div>
   </div>
 </div>

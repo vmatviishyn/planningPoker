@@ -120,7 +120,12 @@ const tshirt: Card[] = [
   }
 ];
 
+const days: Card[] = Array.from({ length: 15 }, (item, idx) => {
+  return { value: idx + 1, mainText: idx + 1 + '', secondaryText: idx + 1 + '' };
+});
+
 export const CardTypes = {
   izyan,
-  tshirt
+  tshirt,
+  days,
 };

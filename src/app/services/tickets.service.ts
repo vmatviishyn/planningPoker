@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { Observable, of } from 'rxjs';
+import { AngularFirestore, DocumentReference } from 'angularfire2/firestore';
+import { Observable, of, from } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
@@ -11,11 +11,11 @@ import { Ticket } from '../models';
 @Injectable({
   providedIn: 'root'
 })
-export class TickectsService {
+export class TicketsService {
   constructor(private afs: AngularFirestore, private sessionService: SessionService) {}
 
-  addTicket(ticket: Ticket) {
-    return this.afs.collection('tickets').add(ticket);
+  addTicket(ticket: Ticket): Observable<DocumentReference> {
+    return from(this.afs.collection('tickets').add(ticket));
   }
 
   getTickets(): Observable<Ticket[]> {
@@ -53,7 +53,7 @@ export class TickectsService {
       }));
   }
 
-  deleteTicket(ticket: Ticket) {
+  removeTicket(ticket: Ticket) {
     return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
       .where('ticketId', '==', ticket.ticketId)).get()
       .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {

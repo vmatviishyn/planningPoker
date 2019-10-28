@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Observable, Subscription, forkJoin } from 'rxjs';
+import { take, withLatestFrom } from 'rxjs/operators';
 
 import { NotificationService } from './../../services/notification.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UsersService } from 'src/app/services/users.service';
-import { TickectsService } from 'src/app/services/tickects.service';
+import { TicketsService } from 'src/app/services/tickets.service';
 import { VoteService } from 'src/app/services/vote.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserDetailsComponent } from './user-details/user-details.component';
@@ -21,6 +21,7 @@ import { User, Ticket, Session, Card, Vote } from 'src/app/models';
 })
 export class RoomComponent implements OnInit, OnDestroy {
   sessionSub: Subscription;
+  ticketsSub: Subscription;
 
   currentUser: User;
   users$: Observable<User[]>;
@@ -29,12 +30,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   showResults = false;
   votes: any;
   selectedCard: Card;
+  tickets: Ticket[];
 
   constructor(
     private notificationService: NotificationService,
     private sessionService: SessionService,
     private userService: UsersService,
-    private ticketService: TickectsService,
+    private ticketsService: TicketsService,
     private voteService: VoteService,
     private authService: AuthService,
     public dialog: MatDialog,
@@ -45,10 +47,12 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.users$ = this.userService.getUsers();
     this.geUserInfo();
     this.getSessionData();
+    this.getTickets();
   }
 
   ngOnDestroy() {
     this.sessionSub.unsubscribe();
+    this.ticketsSub.unsubscribe();
   }
 
   onStartVoting() {
@@ -62,14 +66,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
 
     this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.selectedCard = card;
-
-        this.userService.updateVotes(card.secondaryText, this.session.id, this.authService.user.uid, true)
-          .pipe(take(1))
-          .subscribe();
-      });
+      .pipe(
+        withLatestFrom(this.userService.updateVotes(card.secondaryText, this.session.id, this.authService.user.uid, true)),
+        take(1)
+      ).subscribe(() => this.selectedCard = card);
   }
 
   onSkipTicket() {
@@ -79,11 +79,10 @@ export class RoomComponent implements OnInit, OnDestroy {
       return this.notificationService.showError('Please, select a ticket for start voting.');
     }
 
-    this.ticketService.updateValue('voted', true, this.session.activeTicket)
+    this.ticketsService.updateValue('voted', true, this.session.activeTicket)
       .pipe(take(1))
       .subscribe(() => {
         this.showResults = false;
-
         this.getFirstTicket();
       });
   }
@@ -103,19 +102,31 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
   }
 
+  onAddTicket(ticket: Ticket) {
+    this.ticketsService.addTicket(ticket)
+      .pipe(take(1))
+      .subscribe();
+  }
+
+  onRemoveTicket(ticket: Ticket) {
+    this.ticketsService.removeTicket(ticket)
+      .pipe(take(1))
+      .subscribe();
+  }
+
   private getFirstTicket() {
-    this.ticketService.getFirst()
+    this.ticketsService.getFirst()
       .pipe(take(1))
       .subscribe((ticket: Ticket) => {
         if (!ticket) {
           return this.emptyListNotification();
         }
 
-        this.sessionService.updateValue('activeTicket', ticket.ticketId)
-          .pipe(take(1))
-          .subscribe();
-
-        this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId);
+        forkJoin(
+          this.sessionService.updateValue('activeTicket', ticket.ticketId),
+          this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
+        ).pipe(take(1))
+         .subscribe();
       });
   }
 
@@ -150,14 +161,13 @@ export class RoomComponent implements OnInit, OnDestroy {
 
         this.session = data;
         this.selectedCard = null;
-
         this.userService.updateVotes(null, this.session.id, this.authService.user.uid, false)
           .pipe(take(1))
           .subscribe();
 
         if (data.activeTicket) {
           console.log('active ticket', data.activeTicket);
-          this.activeTicket$ = this.ticketService.getTicketById(this.session.activeTicket);
+          this.activeTicket$ = this.ticketsService.getTicketById(this.session.activeTicket);
           this.showResults = false;
 
           // when admin is clicked on vinish voting, 'voted' field will be set to 'true'
@@ -188,6 +198,13 @@ export class RoomComponent implements OnInit, OnDestroy {
         if (this.currentUser) {
           this.notificationService.show(`Hi, ${this.currentUser.name}!`);
         }
+      });
+  }
+
+  private getTickets() {
+    this.ticketsSub = this.ticketsService.getTickets()
+      .subscribe((tickets: Ticket[]) => {
+        this.tickets = tickets;
       });
   }
 
