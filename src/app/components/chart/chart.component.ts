@@ -47,7 +47,7 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   onEditAverage(value: number) {
-    if (value !== this.averageValue) {
+    if (value && value > 0 && value !== this.averageValue) {
       this.setAverage.emit(value);
       this.averageValue = value;
       this.toggleEditing();

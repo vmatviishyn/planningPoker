@@ -14,7 +14,7 @@
       <mat-form-field>
         <input #average autofocus matInput [value]="averageValue" type="number">
       </mat-form-field>
-      <button class="chart__done-icon" mat-mini-fab (click)="onEditAverage(average.value)">
+      <button [disabled]="!average.value.length" class="chart__done-icon" mat-mini-fab (click)="onEditAverage(average.value)">
         <mat-icon aria-hidden="true">done</mat-icon>
       </button>
       <button class="chart__cancel-icon" mat-mini-fab (click)="toggleEditing()">
