@@ -32,7 +32,6 @@
       <mat-list *ngIf="users$ | async as users">
         <h3 mat-subheader class="room__list-header">
           <span>Members</span>
-          <span class="room__timer">00:00:00</span>
         </h3>
         <mat-list-item *ngFor="let person of users">
           <img class="room__user-img" (click)="onUserClick(person)" matListAvatar [src]="person.photoURL" alt="">
@@ -45,9 +44,7 @@
       <ng-container *ngIf="currentUser?.isAdmin">
         <ng-container *ngIf="activeTicket$ | async as activeTicket else noActiveTicket">
           <div class="room__action-buttons room__action-buttons--primary">
-            <button class="room__button" mat-raised-button>Flip Cards</button>
             <button class="room__button" mat-raised-button (click)="onSkipTicket()">{{ showResults ? 'Next Ticket' : 'Skip Ticket' }}</button>
-            <button class="room__button" mat-raised-button>Reset Timer</button>
             <button class="room__button" mat-raised-button (click)="onFinishVoting()" *ngIf="!showResults">Finish Voting</button>
           </div>
         </ng-container>

@@ -28,10 +28,21 @@
   }
 
   &__edit-icon {
-    bottom: 5px;
+    bottom: 0;
+    color: @main-font-color;
     display: none;
     font-size: 0.8em;
-    position: relative;
+    position: absolute;
+  }
+
+  &__done-icon {
+    background-color: transparent;
+    color: #00d600;
+  }
+
+  &__cancel-icon {
+    background-color: transparent;
+    color: #8c2e2e;
   }
 
   @media (max-width: @screen-sm-max) {

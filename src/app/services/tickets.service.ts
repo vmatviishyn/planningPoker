@@ -21,7 +21,6 @@ export class TicketsService {
   getTickets(): Observable<Ticket[]> {
     return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId())
-      .where('voted', '==', false)
       .orderBy('timestamp'))
       .valueChanges();
   }

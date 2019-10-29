@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, EventEmitter, Output, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import * as firebase from 'firebase/app';
@@ -14,7 +14,7 @@ import { HashService, SessionService, UrlParserService } from 'src/app/services'
   providers: [UrlParserService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListComponent {
+export class ListComponent implements OnChanges {
   @Input() currentUser: User;
   @Input() session: Session;
   @Input() tickets: Ticket[];
@@ -23,12 +23,23 @@ export class ListComponent {
 
   ticket = '';
 
+  activeTickets: Ticket[];
+  completedTickets: Ticket[];
+
+
   constructor(
     private sessionService: SessionService,
     private hashService: HashService,
     private urlParseService: UrlParserService,
     public dialog: MatDialog
   ) { }
+
+  ngOnChanges() {
+    if (this.tickets) {
+      this.activeTickets = this.tickets.filter(ticket => !ticket.voted);
+      this.completedTickets = this.tickets.filter(ticket => ticket.voted);
+    }
+  }
 
   onAddTicket(): void {
     this.sendTicket(this.ticket);
