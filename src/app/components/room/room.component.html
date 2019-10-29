@@ -41,6 +41,13 @@
         </mat-list-item>
       </mat-list>
 
+      <div class="room__action-buttons">
+        <button
+          mat-raised-button class="room__button room__button--full-width"
+          [routerLink]="['/report', session?.id]"
+        >Open Report</button>
+      </div>
+
       <ng-container *ngIf="currentUser?.isAdmin">
         <ng-container *ngIf="activeTicket$ | async as activeTicket else noActiveTicket">
           <div class="room__action-buttons room__action-buttons--primary">
@@ -53,7 +60,7 @@
             <button
               mat-raised-button
               (click)="onStartVoting()"
-              class="room__button room__button--start"
+              class="room__button room__button--full-width"
             >Start
           </button>
         </div>

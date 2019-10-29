@@ -26,6 +26,7 @@ import { ChartComponent } from './components/chart/chart.component';
 import { ListComponent } from './components/list/list.component';
 import { HomeComponent } from './components/home/home.component';
 import { ShareComponent } from './components/share/share.component';
+import { ReportComponent } from './components/report/report.component';
 import { PopupComponent } from './components/share/popup/popup.component';
 import { RoomComponent } from './components/room/room.component';
 import { TextfieldPopupComponent } from './components/list/textfield-popup/textfield-popup.component';
@@ -42,6 +43,7 @@ import { environment } from '../environments/environment';
     ShareComponent,
     PopupComponent,
     ListComponent,
+    ReportComponent,
     RoomComponent,
     ChartComponent,
     TextfieldPopupComponent,
