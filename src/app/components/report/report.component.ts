@@ -14,7 +14,9 @@ import { Location } from '@angular/common';
   styleUrls: ['./report.component.less']
 })
 export class ReportComponent implements OnInit, OnDestroy {
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
+    if (this.dataSource) { this.dataSource.sort = sort; }
+  }
   @ViewChild('exporter', { static: false }) exporter: MatTableExporterDirective;
 
   private tickets: Ticket[];
@@ -22,7 +24,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 
   showTable = false;
   showError = false;
-  report: Report[];
+  report: Report[] = [];
   sessionId: string;
   displayedColumns: string[] = ['index', 'title', 'average'];
   dataSource: MatTableDataSource<Report>;
@@ -32,7 +34,7 @@ export class ReportComponent implements OnInit, OnDestroy {
     private location: Location,
     private headerService: HeaderService,
     private ticketsService: TicketsService,
-    private voteService: VoteService
+    private voteService: VoteService,
     ) { }
 
   ngOnInit() {
@@ -73,16 +75,16 @@ export class ReportComponent implements OnInit, OnDestroy {
   }
 
   private populateReport() {
-    this.report = this.votes.map((vote: Vote) => {
+    this.votes.forEach((vote: Vote, index: number) => {
       const ticket = this.tickets.find((t: Ticket) => vote.ticketId === t.ticketId);
-
-      if (ticket) { return {...vote, title: ticket.title }; }
-    }).filter(data => data);
+      if (ticket) {
+        this.report.push({...vote, title: ticket.title, index: index + 1 });
+      }
+    });
 
     if (this.report.length) {
       this.showTable = true;
       this.dataSource = new MatTableDataSource(this.report);
-      this.dataSource.sort = this.sort;
     } else {
       this.showError = true;
     }
