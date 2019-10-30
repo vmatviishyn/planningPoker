@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { AuthService } from './services/auth.service';
-import { NotificationService } from './services/notification.service';
-import { SessionService } from 'src/app/services/session.service';
-import { UsersService } from './services/users.service';
+import { AuthService, HeaderService, NotificationService, SessionService, UsersService } from './services';
 
 import { Session, User } from 'src/app/models';
 
@@ -20,11 +18,14 @@ export class AppComponent implements OnInit, OnDestroy {
   private userDataSub: Subscription;
 
   userData: User;
+  showBackButton$ = this.headerService.showBackButton$;
   user$: Observable<firebase.User>;
   session$: Observable<Session>;
 
   constructor(
     private authService: AuthService,
+    private headerService: HeaderService,
+    private location: Location,
     private notificationService: NotificationService,
     private router: Router,
     private sessionService: SessionService,
@@ -44,12 +45,16 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userDataSub.unsubscribe();
   }
 
+  onGoBack() {
+    this.location.back();
+  }
+
   logout() {
     this.authService.logout()
       .pipe(take(1))
       .subscribe(() => {
         this.notificationService.show('Successfully logged out.');
-        this.router.navigate(['home']);
+        this.navigateToHome();
       });
   }
 
@@ -66,8 +71,13 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((user: User) => {
         this.userData = user;
         if (user && user.removedByAdmin) {
-          this.logout();
+          this.sessionService.clearSessionId();
+          this.navigateToHome();
         }
       });
+  }
+
+  private navigateToHome() {
+    this.router.navigate(['home']);
   }
 }

@@ -1,14 +1,15 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { User } from './../../../models';
-import { UsersService } from 'src/app/services/users.service';
+import { UsersService } from 'src/app/services';
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.less']
+  styleUrls: ['./user-details.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserDetailsComponent {
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference, DocumentData } from 'angularfire2/firestore';
 import { switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 
 import { Vote } from './../models';
 
@@ -17,8 +17,8 @@ export class VoteService {
 
   constructor(private afs: AngularFirestore, private sessionService: SessionService) { }
 
-  createVoteCollection(sessionId: string, ticketId: string) {
-    return this.afs.collection('votes').add({ sessionId, ticketId });
+  createVoteCollection(sessionId: string, ticketId: string): Observable<DocumentReference> {
+    return from(this.afs.collection('votes').add({ sessionId, ticketId }));
   }
 
   vote(userId: string, card: Card, ticketId: string): Observable<void> {
@@ -31,7 +31,7 @@ export class VoteService {
       );
   }
 
-  getResults(ticketId: string) {
+  getResults(ticketId: string): Observable<DocumentData[]> {
     return this.getVotesCollectionByTicketId(ticketId)
       .get()
       .pipe(
@@ -51,14 +51,19 @@ export class VoteService {
       );
   }
 
-  finishVoting(ticketId: string): Observable<void> {
+  getVotesBySessionId(sessionId: string): Observable<Vote[]> {
+    return this.afs.collection('votes', (ref: firebase.firestore.CollectionReference) => ref
+      .where('sessionId', '==', sessionId)).valueChanges();
+  }
+
+  updateValue(ticketId: string, key: string, value: boolean | number): Observable<void> {
     return this.getVotesCollectionByTicketId(ticketId)
-      .get()
-      .pipe(
-        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-          return this.afs.doc(`votes/${snapshot.docs[0].id}`).update({ voted: true });
-        })
-      );
+    .get()
+    .pipe(
+      switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        return this.afs.doc(`votes/${snapshot.docs[0].id}`).update({ [key]: value });
+      })
+    );
   }
 
   private getVotesCollectionByTicketId(ticketId: string): AngularFirestoreCollection {

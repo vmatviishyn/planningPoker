@@ -24,6 +24,11 @@ body {
   }
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 ::-webkit-scrollbar {
   width: 5px;
@@ -46,4 +51,8 @@ body {
 
 ::-webkit-scrollbar-thumb:window-inactive {
   background-color: @red;
+}
+
+.hidden {
+  display: none !important;
 }

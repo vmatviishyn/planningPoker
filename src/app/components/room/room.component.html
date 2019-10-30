@@ -1,7 +1,12 @@
 <div class="room">
   <h3 class="room__title">
     <ng-container *ngIf="activeTicket$ | async as activeTicket else noSelected">
-      {{ activeTicket.title }}
+      <ng-container *ngIf="activeTicket.href as href; else text">
+        <a class="room__title room__title--link" [href]="href" target="_blank">{{ href }}</a>
+      </ng-container>
+      <ng-template #text>
+        {{ activeTicket.title }}
+      </ng-template>
     </ng-container>
     <ng-template #noSelected>
       Please select a ticket for start voting
@@ -18,14 +23,15 @@
 
     <app-chart
       *ngIf="showResults"
-      [votes]="votes">
-    </app-chart>
+      [currentUser]="currentUser"
+      [votes]="votes"
+      (setAverage)="onSetAverage($event)"
+    ></app-chart>
 
     <div class="room__side-content">
       <mat-list *ngIf="users$ | async as users">
         <h3 mat-subheader class="room__list-header">
           <span>Members</span>
-          <span class="room__timer">00:00:00</span>
         </h3>
         <mat-list-item *ngFor="let person of users">
           <img class="room__user-img" (click)="onUserClick(person)" matListAvatar [src]="person.photoURL" alt="">
@@ -35,12 +41,17 @@
         </mat-list-item>
       </mat-list>
 
+      <div class="room__action-buttons">
+        <button
+          mat-raised-button class="room__button room__button--full-width"
+          [routerLink]="['/report', session?.id]"
+        >Open Report</button>
+      </div>
+
       <ng-container *ngIf="currentUser?.isAdmin">
         <ng-container *ngIf="activeTicket$ | async as activeTicket else noActiveTicket">
           <div class="room__action-buttons room__action-buttons--primary">
-            <button class="room__button" mat-raised-button>Flip Cards</button>
             <button class="room__button" mat-raised-button (click)="onSkipTicket()">{{ showResults ? 'Next Ticket' : 'Skip Ticket' }}</button>
-            <button class="room__button" mat-raised-button>Reset Timer</button>
             <button class="room__button" mat-raised-button (click)="onFinishVoting()" *ngIf="!showResults">Finish Voting</button>
           </div>
         </ng-container>
@@ -49,7 +60,7 @@
             <button
               mat-raised-button
               (click)="onStartVoting()"
-              class="room__button room__button--start"
+              class="room__button room__button--full-width"
             >Start
           </button>
         </div>
@@ -60,7 +71,13 @@
 
   <div class="room__container">
     <div class="room__app-list">
-      <app-list [currentUser]="currentUser"></app-list>
+      <app-list
+        [currentUser]="currentUser"
+        [session]="session"
+        [tickets]="tickets"
+        (addTicket)="onAddTicket($event)"
+        (removeTicket)="onRemoveTicket($event)"
+      ></app-list>
     </div>
   </div>
 </div>

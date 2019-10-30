@@ -1,85 +1,78 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, EventEmitter, Output, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
-import { TickectsService } from 'src/app/services/tickects.service';
-import { SessionService } from './../../services/session.service';
-import { HashService } from './../../services/hash.service';
 
 import { Ticket, User, Session } from 'src/app/models';
 import { TextfieldPopupComponent } from './textfield-popup/textfield-popup.component';
-import DocumentReference = firebase.firestore.DocumentReference;
+import { HashService, SessionService, UrlParserService } from 'src/app/services';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.less']
+  styleUrls: ['./list.component.less'],
+  providers: [UrlParserService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListComponent implements OnInit, OnDestroy {
+export class ListComponent implements OnChanges {
   @Input() currentUser: User;
+  @Input() session: Session;
+  @Input() tickets: Ticket[];
+  @Output() addTicket = new EventEmitter<Ticket>();
+  @Output() removeTicket = new EventEmitter<Ticket>();
 
   ticket = '';
-  tickets: Ticket[];
-  session: Session;
-  sessionSub: Subscription;
-  ticketsSub: Subscription;
+
+  activeTickets: Ticket[];
+  completedTickets: Ticket[];
+
 
   constructor(
-    private ticketsService: TickectsService,
     private sessionService: SessionService,
     private hashService: HashService,
+    private urlParseService: UrlParserService,
     public dialog: MatDialog
   ) { }
 
-  ngOnInit() {
-    this.ticketsSub = this.ticketsService.getTickets()
-      .subscribe(data => {
-        this.tickets = data;
-      });
-
-    this.sessionSub = this.sessionService.getSessionData()
-      .subscribe(data => {
-        this.session = data;
-      });
-  }
-
-  ngOnDestroy() {
-    this.sessionSub.unsubscribe();
-    this.ticketsSub.unsubscribe();
+  ngOnChanges() {
+    if (this.tickets) {
+      this.activeTickets = this.tickets.filter(ticket => !ticket.voted);
+      this.completedTickets = this.tickets.filter(ticket => ticket.voted);
+    }
   }
 
   onAddTicket(): void {
-    this.sendTicket(this.ticket)
-      .then(() => this.ticket = '');
+    this.sendTicket(this.ticket);
+    this.ticket = '';
   }
 
   addTicketsFromText(): void {
     this.dialog.open(TextfieldPopupComponent, {
       width: '70vw',
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        result.forEach(this.sendTicket.bind(this));
-      }
+    }).afterClosed()
+      .subscribe(result => {
+        if (result) {
+          result.forEach(this.sendTicket.bind(this));
+        }
     });
   }
 
-  onDeleteTicket(ticket: Ticket) {
-    this.ticketsService.deleteTicket(ticket)
-      .pipe(take(1))
-      .subscribe();
+  onRemoveTicket(ticket: Ticket) {
+    this.removeTicket.emit(ticket);
   }
 
-  private sendTicket(name: string): Promise<DocumentReference> {
-    return this.ticketsService.addTicket({
+  private sendTicket(title: string) {
+    const ticket: Ticket = {
       sessionId: this.sessionService.getSessionId(),
       ticketId: this.hashService.generateHash(32),
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      title: name,
+      title,
       voted: false
-    });
+    };
+
+    if (this.urlParseService.parseUrls(title)) {
+      Object.assign(ticket, { href: title });
+    }
+    this.addTicket.emit(ticket);
   }
-
-
 }

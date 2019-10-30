@@ -1,0 +1,39 @@
+<div class="report">
+
+  <ng-container *ngIf="showTable">
+    <div class="report__table-wrapper">
+      <button mat-raised-button (click)="onExportToExcel()">Export to Excel</button>
+
+      <table
+        [dataSource]="dataSource"
+        class="report__table"
+        matTableExporter
+        mat-table
+        matSort
+        #exporter="matTableExporter">
+
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>№</th>
+          <td mat-cell *matCellDef="let element">{{ element.index }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+          <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="average">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Result</th>
+          <td mat-cell *matCellDef="let element">{{ element.average }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="showError">
+    <h2 class="report__error">Results are empty!</h2>
+  </ng-container>
+</div>

@@ -53,12 +53,9 @@ export class AuthService {
             name: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
-            sessionId: null,
-            isAdmin: false,
-            removedByAdmin: false
           });
         }),
-        switchMap(() => from(this.afauth.auth.signOut())
+        switchMap(() => this.afauth.auth.signOut()
       )
     );
   }

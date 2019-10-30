@@ -4,7 +4,7 @@ Planning Poker is the fun, easy way for your team to effectively plan and execut
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.6.
 
-[See Demo](https://planing-pocker.web.app/home)
+[See Demo](https://planing-pocker.firebaseapp.com)
 
 ## Development server
 
