@@ -11,6 +11,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 // Additional modules
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material';
+import { MatTableExporterModule } from 'mat-table-exporter';
 import { QRCodeModule } from 'angular2-qrcode';
 import { ChartsModule } from 'ng2-charts';
 
@@ -56,6 +57,7 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     MaterialModule,
     MatDialogModule,
+    MatTableExporterModule,
     QRCodeModule,
     ChartsModule,
     AngularFirestoreModule,

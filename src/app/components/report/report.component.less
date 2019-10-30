@@ -1,7 +1,25 @@
-table {
-  width: 100%;
-}
+@import '../../../assets/main-theme';
 
-th.mat-sort-header-sorted {
-  color: black;
+.report {
+  padding-bottom: 20px;
+  width: 100%;
+
+  &__table-wrapper {
+    margin: 30px auto 0;
+    max-width: 75%;
+    width: 100%;
+
+    @media (max-width: @screen-sm-max) {
+      max-width: 100%;
+    }
+  }
+
+  &__table {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  &__error {
+    text-align: center;
+  }
 }

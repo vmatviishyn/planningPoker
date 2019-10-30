@@ -1,27 +1,12 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableExporterDirective } from 'mat-table-exporter';
+import { take, combineLatest, map } from 'rxjs/operators';
 
-import { HeaderService } from './../../services';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+import { HeaderService, TicketsService, VoteService } from './../../services';
+import { Ticket, Vote, Report } from 'src/app/models';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-report',
@@ -29,21 +14,77 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./report.component.less']
 })
 export class ReportComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild('exporter', { static: false }) exporter: MatTableExporterDirective;
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  private tickets: Ticket[];
+  private votes: Vote[];
 
-  constructor(private headerService: HeaderService) { }
+  showTable = false;
+  showError = false;
+  report: Report[];
+  sessionId: string;
+  displayedColumns: string[] = ['index', 'title', 'average'];
+  dataSource: MatTableDataSource<Report>;
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private location: Location,
+    private headerService: HeaderService,
+    private ticketsService: TicketsService,
+    private voteService: VoteService
+    ) { }
 
   ngOnInit() {
     this.headerService.dispatchShowBackButton();
-    this.dataSource.sort = this.sort;
+    this.sessionId = this.activatedRoute.snapshot.params.id;
+
+    if (this.sessionId) {
+      this.getReportData();
+    } else {
+      this.location.back();
+    }
   }
 
   ngOnDestroy() {
     this.headerService.dispatchShowBackButton(false);
   }
 
+  onExportToExcel() {
+    this.exporter.exportTable('xlsx', {
+      fileName: `report_${this.sessionId}_${(new Date()).toLocaleDateString('en-US')}`,
+    });
+  }
 
+  private getReportData() {
+    this.voteService.getVotesBySessionId(this.sessionId)
+      .pipe(
+        combineLatest(this.ticketsService.getTickets(this.sessionId)),
+        take(1),
+        map(([votes, tickets]) => {
+          return { votes, tickets };
+        })
+      )
+      .subscribe((obj: { votes: Vote[], tickets: Ticket[] }) => {
+        this.votes = obj.votes;
+        this.tickets = obj.tickets;
+        this.populateReport();
+      });
+  }
+
+  private populateReport() {
+    this.report = this.votes.map((vote: Vote) => {
+      const ticket = this.tickets.find((t: Ticket) => vote.ticketId === t.ticketId);
+
+      if (ticket) { return {...vote, title: ticket.title }; }
+    }).filter(data => data);
+
+    if (this.report.length) {
+      this.showTable = true;
+      this.dataSource = new MatTableDataSource(this.report);
+      this.dataSource.sort = this.sort;
+    } else {
+      this.showError = true;
+    }
+  }
 }
