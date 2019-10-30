@@ -51,6 +51,11 @@ export class VoteService {
       );
   }
 
+  getVotesBySessionId(sessionId: string): Observable<Vote[]> {
+    return this.afs.collection('votes', (ref: firebase.firestore.CollectionReference) => ref
+      .where('sessionId', '==', sessionId)).valueChanges();
+  }
+
   updateValue(ticketId: string, key: string, value: boolean | number): Observable<void> {
     return this.getVotesCollectionByTicketId(ticketId)
     .get()

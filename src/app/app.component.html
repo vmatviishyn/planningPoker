@@ -5,7 +5,8 @@
 
   <mat-sidenav-content>
     <mat-toolbar>
-      <div>Planning Poker</div>
+      <mat-icon mat-list-icon class="back-icon" [class.hidden]="!(showBackButton$ | async)" (click)="onGoBack()">arrow_back_ios</mat-icon>
+      <div class="title">Planning Poker</div>
       <ng-container *ngIf="session$ | async as session">
         {{ session?.title }}
       </ng-container>

@@ -11,6 +11,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 // Additional modules
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material';
+import { MatTableExporterModule } from 'mat-table-exporter';
 import { QRCodeModule } from 'angular2-qrcode';
 import { ChartsModule } from 'ng2-charts';
 
@@ -26,6 +27,7 @@ import { ChartComponent } from './components/chart/chart.component';
 import { ListComponent } from './components/list/list.component';
 import { HomeComponent } from './components/home/home.component';
 import { ShareComponent } from './components/share/share.component';
+import { ReportComponent } from './components/report/report.component';
 import { PopupComponent } from './components/share/popup/popup.component';
 import { RoomComponent } from './components/room/room.component';
 import { TextfieldPopupComponent } from './components/list/textfield-popup/textfield-popup.component';
@@ -42,6 +44,7 @@ import { environment } from '../environments/environment';
     ShareComponent,
     PopupComponent,
     ListComponent,
+    ReportComponent,
     RoomComponent,
     ChartComponent,
     TextfieldPopupComponent,
@@ -54,6 +57,7 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     MaterialModule,
     MatDialogModule,
+    MatTableExporterModule,
     QRCodeModule,
     ChartsModule,
     AngularFirestoreModule,

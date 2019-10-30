@@ -18,9 +18,9 @@ export class TicketsService {
     return from(this.afs.collection('tickets').add(ticket));
   }
 
-  getTickets(): Observable<Ticket[]> {
+  getTickets(sessionId = this.sessionService.getSessionId()): Observable<Ticket[]> {
     return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
-      .where('sessionId', '==', this.sessionService.getSessionId())
+      .where('sessionId', '==', sessionId)
       .orderBy('timestamp'))
       .valueChanges();
   }

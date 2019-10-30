@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -28,6 +30,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatRadioModule,
     MatBadgeModule,
     MatTabsModule,
+    MatTableModule,
+    MatSortModule,
   ],
   exports: [
     MatButtonModule,
@@ -42,6 +46,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatRadioModule,
     MatBadgeModule,
     MatTabsModule,
+    MatTableModule,
+    MatSortModule,
   ],
 })
 export class MaterialModule { }
