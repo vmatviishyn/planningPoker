@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 // Firebase
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 // Additional modules
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material';
@@ -31,6 +31,7 @@ import { ReportComponent } from './components/report/report.component';
 import { PopupComponent } from './components/share/popup/popup.component';
 import { RoomComponent } from './components/room/room.component';
 import { TextfieldPopupComponent } from './components/list/textfield-popup/textfield-popup.component';
+import { TicketPreviewComponent } from './components/room/ticket-preview/ticket-preview.component';
 import { UserDetailsComponent } from './components/room/user-details/user-details.component';
 
 import { environment } from '../environments/environment';
@@ -48,6 +49,7 @@ import { environment } from '../environments/environment';
     RoomComponent,
     ChartComponent,
     TextfieldPopupComponent,
+    TicketPreviewComponent,
     UserDetailsComponent
   ],
   imports: [

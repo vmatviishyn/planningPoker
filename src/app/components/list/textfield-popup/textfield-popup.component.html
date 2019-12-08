@@ -1,6 +1,12 @@
 <div class="textfield-popup">
   <div mat-dialog-content>
-    <textarea #text class="textfield-popup__input" rows="30" cdkFocusInitial></textarea>
+    <textarea
+      #text
+      class="textfield-popup__input"
+      rows="30"
+      cdkFocusInitial
+      placeholder="This will automatically exclude all text except of links"
+    ></textarea>
   </div>
   <div mat-dialog-actions>
     <button mat-button [mat-dialog-close]="[]">Cancel</button>

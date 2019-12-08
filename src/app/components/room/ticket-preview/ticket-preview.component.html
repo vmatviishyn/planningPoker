@@ -1,0 +1,8 @@
+<span class="ticket-preview">
+  <ng-container *ngIf="ticket.href as href; else text">
+    <a class="ticket-preview--link" [href]="href" target="_blank">{{ href }}</a>
+  </ng-container>
+  <ng-template #text>
+    {{ ticket.title }}
+  </ng-template>
+</span>

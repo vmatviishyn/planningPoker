@@ -1,13 +1,6 @@
 <div class="room">
   <h3 class="room__title">
-    <ng-container *ngIf="activeTicket$ | async as activeTicket else noSelected">
-      <ng-container *ngIf="activeTicket.href as href; else text">
-        <a class="room__title room__title--link" [href]="href" target="_blank">{{ href }}</a>
-      </ng-container>
-      <ng-template #text>
-        {{ activeTicket.title }}
-      </ng-template>
-    </ng-container>
+    <app-ticket-preview *ngIf="activeTicket$ | async as activeTicket else noSelected" [ticket]="activeTicket"></app-ticket-preview>
     <ng-template #noSelected>
       Please select a ticket for start voting
     </ng-template>

@@ -16,7 +16,7 @@ export class CardsBoardComponent implements OnChanges {
   cards: Card[];
 
   ngOnChanges() {
-    this.cards = CardTypes[this.type || 'izyan'];
+    this.cards = CardTypes[this.type || 'days'];
   }
 
   onCardClick(card: Card) {
