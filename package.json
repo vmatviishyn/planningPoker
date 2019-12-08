@@ -1,12 +1,34 @@
 {
   "name": "planning-poker",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Planning Poker is the fun, easy way for your team to effectively plan and execute a sprint planning session.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vmatviishyn/planningPoker"
+  },
+  "contributors": [
+    {
+      "name": "Andrii Dubchak",
+      "email": "andriydubchak09@gmail.com",
+      "url": "https://github.com/andriydubchak"
+    },
+    {
+      "name": "Vitalii Matviishyn",
+      "email": "vmatviishyn@gmail.com",
+      "url": "https://github.com/vmatviishyn"
+    },
+    {
+      "name": "Taras Moskovych",
+      "email": "moskovych.taras@gmail.com",
+      "url": "https://github.com/TarasMoskovych"
+    }
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "deploy": "ng build && firebase deploy",
+    "deploy": "firebase login && ng build --prod && firebase deploy",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -17,20 +39,18 @@
     "@angular/common": "~8.2.8",
     "@angular/compiler": "~8.2.8",
     "@angular/core": "~8.2.8",
+    "@angular/fire": "^5.2.3",
     "@angular/forms": "~8.2.8",
     "@angular/material": "^8.2.2",
     "@angular/platform-browser": "~8.2.8",
     "@angular/platform-browser-dynamic": "~8.2.8",
     "@angular/router": "~8.2.8",
     "angular2-qrcode": "^2.0.3",
-    "angularfire2": "^5.2.1",
-    "angularx-qrcode": "^1.6.4",
     "chart.js": "^2.8.0",
-    "firebase": "^7.1.0",
+    "firebase": "^7.5.2",
     "hammerjs": "^2.0.8",
     "mat-table-exporter": "^1.2.2",
     "ng2-charts": "^2.3.0",
-    "ngx-qrcode2": "0.0.9",
     "randomatic": "^3.1.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
