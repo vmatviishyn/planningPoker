@@ -1,0 +1,23 @@
+@import './../../../../assets/main-theme';
+
+.ticket-preview {
+  text-align: center;
+  word-break: break-all;
+
+  &--link {
+    color: @main-font-color;
+    margin-bottom: 0;
+    text-decoration: none;
+    transition: .3s;
+
+    &:hover {
+      color: @red;
+      text-decoration: underline;
+    }
+
+    &:active {
+      color: @dark-font-color;
+    }
+  }
+}
+

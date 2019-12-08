@@ -124,8 +124,19 @@ const days: Card[] = Array.from({ length: 15 }, (item, idx) => {
   return { value: idx + 1, mainText: idx + 1 + '', secondaryText: idx + 1 + '' };
 });
 
+const hours: Card[] = Array.from({ length: 3 }, (item, idx) => {
+  const res = idx * 2 || 1;
+  return { value: res, mainText: res + '', secondaryText: res + '' };
+}).concat(
+  Array.from({ length: 12 }, (item, idx) => {
+    const res = (idx + 1) * 8;
+    return { value: res, mainText: res + '', secondaryText: res + '' };
+  })
+);
+
 export const CardTypes = {
   izyan,
   tshirt,
   days,
+  hours,
 };

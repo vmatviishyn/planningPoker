@@ -13,10 +13,10 @@
       <div class="nav-links">
         <app-share></app-share>
         <ng-container *ngIf="user$ | async as user">
-          <mat-icon *ngIf="userData?.isAdmin" (click)="sidenav.toggle()" class="admin-icon" mat-list-icon>
+          <mat-icon *ngIf="userData?.isAdmin" matTooltip="Open Admin panel" (click)="sidenav.toggle()" class="admin-icon" mat-list-icon>
             menu
           </mat-icon>
-          <mat-icon class="admin-icon" (click)="logout()"
+          <mat-icon matTooltip="Logout" class="admin-icon" (click)="logout()"
             mat-list-icon>exit_to_app
           </mat-icon>
         </ng-container>

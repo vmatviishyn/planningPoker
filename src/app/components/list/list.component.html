@@ -19,7 +19,9 @@
         <ng-container *ngIf="activeTickets?.length">
           <mat-list-item *ngFor="let ticket of activeTickets" class="list__mat-list" [class.list__mat-list--active]="ticket.ticketId === session?.activeTicket">
             <mat-icon mat-list-icon>description</mat-icon>
-            <h4 mat-line>{{ ticket.title }}</h4>
+            <h4 mat-line>
+              <app-ticket-preview [ticket]="ticket"></app-ticket-preview>
+            </h4>
             <button *ngIf="currentUser?.isAdmin" mat-icon-button (click)="onRemoveTicket(ticket)">
               <mat-icon>delete_forever</mat-icon>
             </button>
@@ -37,7 +39,9 @@
         <ng-container *ngIf="completedTickets?.length">
           <mat-list-item *ngFor="let ticket of completedTickets" class="list__mat-list">
             <mat-icon mat-list-icon>description</mat-icon>
-            <h4 mat-line>{{ ticket.title }}</h4>
+            <h4 mat-line>
+              <app-ticket-preview [ticket]="ticket"></app-ticket-preview>
+            </h4>
             <button *ngIf="currentUser?.isAdmin" mat-icon-button (click)="onRemoveTicket(ticket)">
               <mat-icon>delete_forever</mat-icon>
             </button>
@@ -56,7 +60,9 @@
         <ng-container *ngIf="tickets?.length">
           <mat-list-item *ngFor="let ticket of tickets" class="list__mat-list">
             <mat-icon mat-list-icon>description</mat-icon>
-            <h4 mat-line>{{ ticket.title }}</h4>
+            <h4 mat-line>
+              <app-ticket-preview [ticket]="ticket"></app-ticket-preview>
+            </h4>
             <button *ngIf="currentUser?.isAdmin" mat-icon-button (click)="onRemoveTicket(ticket)">
               <mat-icon>delete_forever</mat-icon>
             </button>
