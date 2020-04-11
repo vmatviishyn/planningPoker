@@ -16,25 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-
 @NgModule({
-  imports: [
-    MatButtonModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatListModule,
-    MatIconModule,
-    MatSnackBarModule,
-    MatSidenavModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRadioModule,
-    MatBadgeModule,
-    MatTabsModule,
-    MatTableModule,
-    MatSortModule,
-    MatTooltipModule,
-  ],
   exports: [
     MatButtonModule,
     MatToolbarModule,

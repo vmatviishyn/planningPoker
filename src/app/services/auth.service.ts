@@ -31,7 +31,7 @@ export class AuthService {
 
   loginWithGoogle(sessionId: string, isAdmin: boolean): Observable<User> {
     // login to the system using google authentication
-    return from(this.afauth.auth.signInWithPopup(new auth.GoogleAuthProvider()))
+    return from(this.afauth.signInWithPopup(new auth.GoogleAuthProvider()))
       .pipe(switchMap((userCredential: firebase.auth.UserCredential) => {
         this.authState = userCredential;
         // save user and session id to database
@@ -54,7 +54,7 @@ export class AuthService {
             photoURL: user.photoURL,
           });
         }),
-        switchMap(() => this.afauth.auth.signOut()
+        switchMap(() => this.afauth.signOut()
       )
     );
   }
