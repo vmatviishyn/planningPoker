@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, OnChanges } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { ChartType } from 'chart.js';
 import { MultiDataSet, Label } from 'ng2-charts';
 
@@ -8,7 +9,8 @@ import { Card, Vote, User } from 'src/app/models';
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DecimalPipe],
 })
 export class ChartComponent implements OnInit, OnChanges {
   @Input() votes: { data: Card[], vote: Vote };
@@ -35,6 +37,8 @@ export class ChartComponent implements OnInit, OnChanges {
       }
     },
   };
+
+  constructor(private decimalPipe: DecimalPipe) { }
 
   ngOnInit() {
     this.getValues();
@@ -93,7 +97,7 @@ export class ChartComponent implements OnInit, OnChanges {
     if (average) {
       this.averageValue = average;
     } else {
-      this.averageValue /= this.votes.data.length;
+      this.averageValue = +this.decimalPipe.transform(this.averageValue / this.votes.data.length, '1.2-2');
     }
 
     this.doughnutChartLabels = this.labels;
