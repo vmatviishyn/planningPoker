@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatTableExporterDirective } from 'mat-table-exporter';
 import { take, combineLatest, map } from 'rxjs/operators';
 
@@ -13,11 +14,11 @@ import { Location } from '@angular/common';
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.less']
 })
-export class ReportComponent implements OnInit, OnDestroy {
-  @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
+export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(MatSort) set content(sort: MatSort) {
     if (this.dataSource) { this.dataSource.sort = sort; }
   }
-  @ViewChild('exporter', { static: false }) exporter: MatTableExporterDirective;
+  @ViewChild('exporter') exporter: MatTableExporterDirective;
 
   private tickets: Ticket[];
   private votes: Vote[];
@@ -38,7 +39,6 @@ export class ReportComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.headerService.dispatchShowBackButton();
     this.sessionId = this.activatedRoute.snapshot.params.id;
 
     if (this.sessionId) {
@@ -46,6 +46,10 @@ export class ReportComponent implements OnInit, OnDestroy {
     } else {
       this.location.back();
     }
+  }
+
+  ngAfterViewInit() {
+    this.headerService.dispatchShowBackButton();
   }
 
   ngOnDestroy() {

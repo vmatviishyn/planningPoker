@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, Subscription, forkJoin } from 'rxjs';
 import { take, withLatestFrom } from 'rxjs/operators';
@@ -175,7 +175,6 @@ export class RoomComponent implements OnInit, OnDestroy {
           .subscribe();
 
         if (data.activeTicket) {
-          console.log('active ticket', data.activeTicket);
           this.activeTicket$ = this.ticketsService.getTicketById(this.session.activeTicket);
           this.showResults = false;
 
@@ -186,7 +185,6 @@ export class RoomComponent implements OnInit, OnDestroy {
 
           voteSub = this.voteService.getVoteByTicketId(this.session.activeTicket)
             .subscribe((vote: Vote) => {
-              console.log('vote', vote);
               if (vote && vote.voted) {
                 this.vote = vote;
                 this.getResults();
