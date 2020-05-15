@@ -26,7 +26,7 @@
         <h3 mat-subheader class="room__list-header">
           <span>Members</span>
         </h3>
-        <mat-list-item *ngFor="let person of users">
+        <mat-list-item *ngFor="let person of users | orderBy: 'name'">
           <img class="room__user-img" (click)="onUserClick(person)" matListAvatar [src]="person.photoURL" alt="">
           <h4 mat-line>{{ person.name }}</h4>
           <span *ngIf="showResults" class="room__vote">{{ person.vote }}</span>
