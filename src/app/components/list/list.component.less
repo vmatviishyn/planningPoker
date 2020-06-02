@@ -39,11 +39,22 @@
     &-btn {
       border-radius: 10px;
       margin-left: 10px;
+      margin-bottom: 5px;
 
       @media (max-width: @screen-xs-max) {
-        margin: 5px 0;
+        margin: 5px;
+      }
+
+      mat-slide-toggle {
+        padding-left: 10px;
       }
     }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   &__mat-list {

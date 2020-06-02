@@ -2,7 +2,7 @@
   <h3 class="room__title">
     <app-ticket-preview *ngIf="activeTicket$ | async as activeTicket else noSelected" [ticket]="activeTicket"></app-ticket-preview>
     <ng-template #noSelected>
-      Please select a ticket for start voting
+      {{ messages.notSelected }}
     </ng-template>
   </h3>
 
