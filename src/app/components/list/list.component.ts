@@ -60,7 +60,7 @@ export class ListComponent implements OnChanges {
     }).afterClosed()
       .subscribe(result => {
         if (result) {
-          result.forEach(this.sendTicket.bind(this));
+          result.forEach((title: string) => this.sendTicket(title));
         }
     });
   }
@@ -73,7 +73,7 @@ export class ListComponent implements OnChanges {
     this.removeTicket.emit(ticket);
   }
 
-  private sendTicket(title: string, timestamp: firebase.firestore.FieldValue) {
+  private sendTicket(title: string, timestamp?: firebase.firestore.FieldValue) {
     const ticket: Ticket = {
       sessionId: this.sessionService.getSessionId(),
       ticketId: this.hashService.generateHash(32),
