@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 
 import { AuthService, HeaderService, NotificationService, SessionService, UsersService } from './services';
 
-import { Session, User } from 'src/app/models';
+import { Session, User, messages } from 'src/app/models';
 
 @Component({
   selector: 'app-root',
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.logout()
       .pipe(take(1))
       .subscribe(() => {
-        this.notificationService.show('Successfully logged out.');
+        this.notificationService.show(messages.loggedOut);
         this.navigateToHome();
       });
   }

@@ -44,8 +44,7 @@ export class UsersService {
 
   getUsers(): Observable<User[]> {
     return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
-      .where('sessionId', '==', this.sessionService.getSessionId())
-      .orderBy('name'))
+      .where('sessionId', '==', this.sessionService.getSessionId()))
       .valueChanges();
   }
 

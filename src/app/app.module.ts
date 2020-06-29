@@ -14,6 +14,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { QRCodeModule } from 'angular2-qrcode';
 import { ChartsModule } from 'ng2-charts';
+import { OrderModule } from 'ngx-order-pipe';
 
 // Custom Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -62,6 +63,7 @@ import { environment } from '../environments/environment';
     MatTableExporterModule,
     QRCodeModule,
     ChartsModule,
+    OrderModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireModule.initializeApp(environment.firebase, 'planningPoker'),

@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, EventEmitter, Output, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 import * as firebase from 'firebase/app';
 
@@ -25,7 +26,7 @@ export class ListComponent implements OnChanges {
 
   activeTickets: Ticket[];
   completedTickets: Ticket[];
-
+  insertBefore = false;
 
   constructor(
     private sessionService: SessionService,
@@ -42,7 +43,14 @@ export class ListComponent implements OnChanges {
   }
 
   onAddTicket(): void {
-    this.sendTicket(this.ticket);
+    let timestamp:firebase.firestore.FieldValue = null;
+
+    if (this.insertBefore && this.tickets.length) {
+      const nextDate = (this.tickets[0].timestamp as firebase.firestore.Timestamp).toDate();
+      timestamp = firebase.firestore.Timestamp.fromDate(new Date(Number(nextDate) - 10));
+    }
+
+    this.sendTicket(this.ticket, timestamp);
     this.ticket = '';
   }
 
@@ -52,20 +60,24 @@ export class ListComponent implements OnChanges {
     }).afterClosed()
       .subscribe(result => {
         if (result) {
-          result.forEach(this.sendTicket.bind(this));
+          result.forEach((title: string) => this.sendTicket(title));
         }
     });
+  }
+
+  onToggleChange(e: MatSlideToggleChange) {
+    this.insertBefore = e.checked;
   }
 
   onRemoveTicket(ticket: Ticket) {
     this.removeTicket.emit(ticket);
   }
 
-  private sendTicket(title: string) {
+  private sendTicket(title: string, timestamp?: firebase.firestore.FieldValue) {
     const ticket: Ticket = {
       sessionId: this.sessionService.getSessionId(),
       ticketId: this.hashService.generateHash(32),
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      timestamp: timestamp || firebase.firestore.FieldValue.serverTimestamp(),
       title,
       voted: false
     };

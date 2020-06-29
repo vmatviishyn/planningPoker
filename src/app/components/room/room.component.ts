@@ -14,7 +14,7 @@ import {
 } from 'src/app/services';
 
 import { UserDetailsComponent } from './user-details/user-details.component';
-import { User, Ticket, Session, Card, Vote } from 'src/app/models';
+import { User, Ticket, Session, Card, Vote, messages } from 'src/app/models';
 
 @Component({
   selector: 'app-room',
@@ -34,6 +34,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   votes: { data: Card[], vote: Vote };
   selectedCard: Card;
   tickets: Ticket[];
+
+  messages = messages;
 
   constructor(
     private notificationService: NotificationService,
@@ -65,7 +67,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   onCardClicked(card: Card) {
     if (!this.session.activeTicket) {
-      return this.notificationService.showError('Please, select a ticket for start voting.');
+      return this.notificationService.showError(this.messages.notSelected);
     }
 
     this.voteService.vote(this.authService.user.uid, card, this.session.activeTicket)
@@ -79,7 +81,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.showResults = false;
 
     if (!this.session.activeTicket) {
-      return this.notificationService.showError('Please, select a ticket for start voting.');
+      return this.notificationService.showError(this.messages.notSelected);
     }
 
     this.ticketsService.updateValue('voted', true, this.session.activeTicket)
@@ -217,7 +219,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   private emptyListNotification() {
-    this.notificationService.showError('Tickets list is empty. Please add new ticket for start voting');
+    this.notificationService.showError(this.messages.emptyList);
   }
 
 }

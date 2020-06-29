@@ -11,8 +11,17 @@
             <mat-form-field>
               <input matInput class="list__ticket-input" placeholder="Enter new ticket" [(ngModel)]="ticket">
             </mat-form-field>
-            <button class="list__ticket-btn" mat-raised-button (click)="onAddTicket()" [disabled]="!ticket.length">Add ticket</button>
-            <button class="list__ticket-btn" mat-raised-button (click)="addTicketsFromText()">Add tickets from text</button>
+            <div class="list__actions">
+              <button class="list__ticket-btn" mat-raised-button (click)="onAddTicket()" [disabled]="!ticket.length">
+                <span class="list__ticket-text">Add ticket</span>
+                <mat-slide-toggle
+                  [matTooltip]="insertBefore ? 'Insert before' : 'Insert after'"
+                  (click)="$event.stopPropagation()"
+                  (change)="onToggleChange($event)"
+                ></mat-slide-toggle>
+              </button>
+              <button class="list__ticket-btn" mat-raised-button (click)="addTicketsFromText()">Add tickets from text</button>
+            </div>
           </label>
         </mat-list-item>
 
