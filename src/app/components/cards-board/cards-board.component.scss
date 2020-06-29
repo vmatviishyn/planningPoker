@@ -1,4 +1,4 @@
-@import "../../../assets/main-theme";
+@import "../../../assets/scss/main-theme";
 
 .cards-board {
   display: flex;
@@ -7,9 +7,9 @@
   justify-content: center;
 
   &__card {
-    background-color: @secondary-background;
+    background-color: $secondary-background;
     border-radius: 10px;
-    color: @main-font-color;
+    color: $main-font-color;
     cursor: pointer;
     flex-direction: column;
     justify-content: space-between;
@@ -22,16 +22,16 @@
     box-sizing: border-box;
 
     &:hover {
-      border: 3px solid @border-accent1;
+      border: 3px solid $border-accent1;
       transform: scale(1.1, 1.1);
     }
 
     &--selected {
-      background-color: @light-background;
-      color: @dark-font-color;
+      background-color: $light-background;
+      color: $dark-font-color;
     }
 
-    @media (max-width: @screen-xs-max) {
+    @media (max-width: $screen-sm) {
       width: 70px;
     }
   }

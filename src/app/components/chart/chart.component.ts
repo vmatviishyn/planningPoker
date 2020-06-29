@@ -8,7 +8,7 @@ import { Card, Vote, User } from 'src/app/models';
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.less'],
+  styleUrls: ['./chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DecimalPipe],
 })

@@ -7,7 +7,7 @@ import { CardTypes } from './../../models';
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
-  styleUrls: ['./admin-panel.component.less'],
+  styleUrls: ['./admin-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminPanelComponent {

@@ -19,7 +19,7 @@ import { User, Ticket, Session, Card, Vote } from 'src/app/models';
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
-  styleUrls: ['./room.component.less']
+  styleUrls: ['./room.component.scss']
 })
 export class RoomComponent implements OnInit, OnDestroy {
   sessionSub: Subscription;

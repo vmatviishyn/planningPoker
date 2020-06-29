@@ -1,4 +1,4 @@
-@import './../../../assets/main-theme';
+@import './../../../assets/scss/main-theme';
 
 .list {
 
@@ -10,7 +10,7 @@
     width: 100%;
     margin: 10px 0;
 
-    @media (max-width: @screen-xs-max) {
+    @media (max-width: $screen-sm) {
       flex-direction: column;
       align-items: initial;
       height: 100%;
@@ -29,7 +29,7 @@
       padding: 0 10px;
       width: 400px;
 
-      @media (max-width: @screen-xs-max) {
+      @media (max-width: $screen-sm) {
         margin: 5px 0;
         padding: 0;
         width: 100%;
@@ -40,7 +40,7 @@
       border-radius: 10px;
       margin-left: 10px;
 
-      @media (max-width: @screen-xs-max) {
+      @media (max-width: $screen-sm) {
         margin: 5px 0;
       }
     }
@@ -59,7 +59,7 @@
   }
 
   .mat-badge-content {
-    background-color: @red;
+    background-color: $red;
   }
 
 }
@@ -67,7 +67,7 @@
 mat-form-field {
   width: 400px;
 
-  @media (max-width: @screen-xs-max) {
+  @media (max-width: $screen-sm) {
     width: 100%;
   }
 }

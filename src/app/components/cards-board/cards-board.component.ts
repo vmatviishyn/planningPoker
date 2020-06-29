@@ -5,7 +5,7 @@ import { Card, CardTypes } from 'src/app/models';
 @Component({
   selector: 'app-cards-board',
   templateUrl: './cards-board.component.html',
-  styleUrls: ['./cards-board.component.less'],
+  styleUrls: ['./cards-board.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsBoardComponent implements OnChanges {

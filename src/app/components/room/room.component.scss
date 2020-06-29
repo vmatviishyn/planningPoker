@@ -1,9 +1,9 @@
-@import './../../../assets/main-theme';
+@import './../../../assets/scss/main-theme';
 
 .room {
 
   &__title {
-    color: @main-font-color;
+    color: $main-font-color;
     margin-bottom: 0;
     text-align: center;
   }
@@ -16,18 +16,18 @@
     justify-content: center;
     padding: 20px 40px 40px;
 
-    @media (max-width: @screen-xs-max) {
+    @media (max-width: $screen-sm) {
       padding: 0;
     }
   }
 
   &__app-list {
-    background-color: @secondary-background;
+    background-color: $secondary-background;
     border-radius: 20px;
     margin: 0 40px;
     width: 100%;
 
-    @media (max-width: @screen-xs-max) {
+    @media (max-width: $screen-sm) {
       margin: 20px 40px 0;
     }
   }
@@ -72,13 +72,13 @@
 
   &__vote,
   &__status {
-    color: @red;
+    color: $red;
     cursor: pointer;
     margin-left: 10px;
   }
 
   &__timer {
-    color: @red;
+    color: $red;
     font-size: 16px;
     font-weight: 600;
   }
@@ -90,16 +90,16 @@
   app-cards-board {
     width: 70%;
 
-    @media (max-width: @screen-xs-max) {
+    @media (max-width: $screen-sm) {
       width: 100%;
     }
   }
 
   .mat-list {
-    background-color: @secondary-background;
+    background-color: $secondary-background;
     border-radius: 20px;
 
-    @media (max-width: @screen-xs-max) {
+    @media (max-width: $screen-sm) {
       margin: 40px 40px 0;
       width: 100%;
     }

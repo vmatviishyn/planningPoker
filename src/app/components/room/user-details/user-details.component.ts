@@ -8,7 +8,7 @@ import { UsersService } from 'src/app/services';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.less'],
+  styleUrls: ['./user-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserDetailsComponent {
