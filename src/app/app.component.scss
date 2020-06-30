@@ -1,7 +1,7 @@
-@import "../assets/main-theme";
+@import "../assets/scss/main-theme";
 
 mat-sidenav {
-  background-color: @main-accent;
+  background-color: $main-accent;
 
   &-container {
     height: 100%;
@@ -9,13 +9,13 @@ mat-sidenav {
   }
 
   &-content {
-    background-color: @main-accent;
+    background-color: $main-accent;
   }
 }
 
 mat-toolbar {
   align-items: center;
-  background-color: @secondary-background;
+  background-color: $secondary-background;
   display: flex;
   justify-content: space-between;
 

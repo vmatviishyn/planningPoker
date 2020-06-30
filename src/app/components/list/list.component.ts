@@ -11,7 +11,7 @@ import { HashService, SessionService, UrlParserService } from 'src/app/services'
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.less'],
+  styleUrls: ['./list.component.scss'],
   providers: [UrlParserService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

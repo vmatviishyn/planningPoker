@@ -1,4 +1,4 @@
-@import './../../../assets/main-theme';
+@import './../../../assets/scss/main-theme';
 
 .chart {
   display: block;
@@ -11,7 +11,7 @@
   }
 
   &__average {
-    color: @red;
+    color: $red;
     font-size: 23px;
     font-weight: 600;
     text-align: center;
@@ -29,7 +29,7 @@
 
   &__edit-icon {
     bottom: 0;
-    color: @main-font-color;
+    color: $main-font-color;
     display: none;
     font-size: 0.8em;
     position: absolute;
@@ -45,7 +45,7 @@
     color: #8c2e2e;
   }
 
-  @media (max-width: @screen-sm-max) {
+  @media (max-width: $screen-md) {
     width: 90vw;
     margin: 20px 0px;
   }

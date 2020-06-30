@@ -1,22 +1,22 @@
-@import './../../../../assets/main-theme';
+@import './../../../../assets/scss/main-theme';
 
 .ticket-preview {
   text-align: center;
   word-break: break-all;
 
   &--link {
-    color: @main-font-color;
+    color: $main-font-color;
     margin-bottom: 0;
     text-decoration: none;
     transition: .3s;
 
     &:hover {
-      color: @red;
+      color: $red;
       text-decoration: underline;
     }
 
     &:active {
-      color: @dark-font-color;
+      color: $dark-font-color;
     }
   }
 }

@@ -6,7 +6,7 @@ import { UrlParserService } from '../../../services';
 @Component({
   selector: 'app-textfield-popup',
   templateUrl: './textfield-popup.component.html',
-  styleUrls: ['./textfield-popup.component.less'],
+  styleUrls: ['./textfield-popup.component.scss'],
   providers: [UrlParserService]
 })
 export class TextfieldPopupComponent {

@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
-  styleUrls: ['./report.component.less']
+  styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) set content(sort: MatSort) {

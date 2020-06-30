@@ -5,7 +5,7 @@ import { PopupComponent } from './popup/popup.component';
 @Component({
   selector: 'app-share',
   templateUrl: './share.component.html',
-  styleUrls: ['./share.component.less'],
+  styleUrls: ['./share.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShareComponent {

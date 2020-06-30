@@ -1,4 +1,4 @@
-@import './../../../assets/main-theme';
+@import './../../../assets/scss/main-theme';
 
 .home {
 
@@ -13,7 +13,7 @@
     top: 52%;
     transform: translate(-50%, -50%);
 
-    @media (max-width: @screen-sm-max) {
+    @media (max-width: $screen-md) {
       display: none;
     }
 
@@ -35,7 +35,7 @@
   &--mobile {
     display: none;
 
-    @media (max-width: @screen-sm-max) {
+    @media (max-width: $screen-md) {
       align-content: center;
       display: flex;
       flex-direction: row;

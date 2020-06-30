@@ -1,4 +1,4 @@
-@import '../../../assets/main-theme';
+@import '../../../assets/scss/main-theme';
 
 .report {
   padding-bottom: 20px;
@@ -9,7 +9,7 @@
     max-width: 75%;
     width: 100%;
 
-    @media (max-width: @screen-sm-max) {
+    @media (max-width: $screen-md) {
       max-width: 100%;
     }
   }
