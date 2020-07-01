@@ -1,0 +1,17 @@
+.tickets-list {
+
+  &--active {
+    background-color: #626565;
+    border-radius: 10px;
+  }
+
+  &--completed {
+    text-decoration: line-through;
+  }
+
+  &.mat-list-item,
+  &.mat-list-option {
+    height: 100%;
+  }
+
+}

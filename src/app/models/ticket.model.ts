@@ -4,5 +4,6 @@ export interface Ticket {
   sessionId?: string;
   timestamp?: firebase.firestore.FieldValue;
   ticketId?: string;
+  skipped?: boolean;
   voted?: boolean;
 }

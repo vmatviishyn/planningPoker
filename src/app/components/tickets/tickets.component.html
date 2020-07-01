@@ -1,0 +1,81 @@
+<div class="tickets">
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span [matBadge]="activeTickets?.length" matBadgeOverlap="false">Active Tickets</span>
+      </ng-template>
+
+      <mat-list>
+        <mat-list-item *ngIf="currentUser?.isAdmin">
+          <label class="tickets__add-ticket">
+            <mat-form-field>
+              <input matInput class="tickets__ticket-input" placeholder="Enter new ticket" [(ngModel)]="ticket">
+            </mat-form-field>
+            <div class="tickets__actions">
+              <button class="tickets__ticket-btn" mat-raised-button (click)="onAddTicket()" [disabled]="!ticket.length">
+                <span class="tickets__ticket-text">Add ticket</span>
+                <mat-slide-toggle
+                  [matTooltip]="insertBefore ? 'Insert before' : 'Insert after'"
+                  (click)="$event.stopPropagation()"
+                  (change)="onToggleChange($event)"
+                ></mat-slide-toggle>
+              </button>
+              <button class="tickets__ticket-btn" mat-raised-button (click)="addTicketsFromText()">Add tickets from text</button>
+            </div>
+          </label>
+        </mat-list-item>
+
+        <app-tickets-list
+          [activeId]="session?.activeTicket"
+          [isAdmin]="currentUser?.isAdmin"
+          [tickets]="activeTickets"
+          (removeTicket)="onRemoveTicket($event)"
+        ></app-tickets-list>
+
+      </mat-list>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span [matBadge]="completedTickets?.length" matBadgeOverlap="false">Completed Tickets</span>
+      </ng-template>
+
+      <mat-list>
+        <app-tickets-list
+          [isAdmin]="currentUser?.isAdmin"
+          [isRevote]="currentUser?.isAdmin"
+          [isShowResults]="true"
+          [tickets]="completedTickets"
+          (removeTicket)="onRemoveTicket($event)"
+          (revote)="onRevote($event)"
+          (showResults)="onShowResults($event)"
+        ></app-tickets-list>
+
+      </mat-list>
+
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span [matBadge]="tickets?.length" matBadgeOverlap="false">All Tickets</span>
+      </ng-template>
+
+      <mat-list>
+        <app-tickets-list
+          [activeId]="session?.activeTicket"
+          [isAdmin]="currentUser?.isAdmin"
+          [isRevote]="currentUser?.isAdmin"
+          [isShowResults]="true"
+          [tickets]="tickets"
+          (removeTicket)="onRemoveTicket($event)"
+          (revote)="onRevote($event)"
+          (showResults)="onShowResults($event)"
+        ></app-tickets-list>
+
+      </mat-list>
+
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>

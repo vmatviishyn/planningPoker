@@ -25,13 +25,14 @@ import { AppComponent } from './app.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { CardsBoardComponent } from './components/cards-board/cards-board.component';
 import { ChartComponent } from './components/chart/chart.component';
-import { ListComponent } from './components/list/list.component';
+import { TicketsComponent } from './components/tickets/tickets.component';
+import { TicketsListComponent } from './components/tickets/tickets-list/tickets-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { ShareComponent } from './components/share/share.component';
 import { ReportComponent } from './components/report/report.component';
 import { PopupComponent } from './components/share/popup/popup.component';
 import { RoomComponent } from './components/room/room.component';
-import { TextfieldPopupComponent } from './components/list/textfield-popup/textfield-popup.component';
+import { TextfieldPopupComponent } from './components/tickets/textfield-popup/textfield-popup.component';
 import { TicketPreviewComponent } from './components/room/ticket-preview/ticket-preview.component';
 import { UserDetailsComponent } from './components/room/user-details/user-details.component';
 
@@ -45,13 +46,14 @@ import { environment } from '../environments/environment';
     HomeComponent,
     ShareComponent,
     PopupComponent,
-    ListComponent,
+    TicketsComponent,
+    TicketsListComponent,
     ReportComponent,
     RoomComponent,
     ChartComponent,
     TextfieldPopupComponent,
     TicketPreviewComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
   ],
   imports: [
     BrowserModule,
