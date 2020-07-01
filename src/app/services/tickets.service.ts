@@ -44,11 +44,11 @@ export class TicketsService {
       .pipe(map((tickets: Ticket[]) => tickets[0]));
   }
 
-  updateValue(key: string, value: boolean, ticketId: string) {
+  updateValue(data: { [key: string]: any }, ticketId: string) {
     return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
       .where('ticketId', '==', ticketId)).get()
       .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-        return of(this.afs.doc(`tickets/${snapshot.docs[0].id}`).update({ [key]: value }));
+        return of(this.afs.doc(`tickets/${snapshot.docs[0].id}`).update(data));
       }));
   }
 

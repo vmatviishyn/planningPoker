@@ -1,6 +1,7 @@
 <div class="room">
   <h3 class="room__title">
     <app-ticket-preview *ngIf="activeTicket$ | async as activeTicket else noSelected" [ticket]="activeTicket"></app-ticket-preview>
+
     <ng-template #noSelected>
       {{ messages.notSelected }}
     </ng-template>
@@ -44,7 +45,8 @@
       <ng-container *ngIf="currentUser?.isAdmin">
         <ng-container *ngIf="activeTicket$ | async as activeTicket else noActiveTicket">
           <div class="room__action-buttons room__action-buttons--primary">
-            <button class="room__button" mat-raised-button (click)="onSkipTicket()">{{ showResults ? 'Next Ticket' : 'Skip Ticket' }}</button>
+            <button class="room__button xs-mt-0" mat-raised-button (click)="onSkipTicket(showResults)">{{ showResults ? 'Next Ticket' : 'Skip Ticket' }}</button>
+            <button class="room__button" mat-raised-button (click)="onRevote(activeTicket)" *ngIf="showResults">Vote Again</button>
             <button class="room__button" mat-raised-button (click)="onFinishVoting()" *ngIf="!showResults">Finish Voting</button>
           </div>
         </ng-container>
@@ -63,14 +65,15 @@
   </div>
 
   <div class="room__container">
-    <div class="room__app-list">
-      <app-list
+    <div class="room__tickets">
+      <app-tickets
         [currentUser]="currentUser"
         [session]="session"
         [tickets]="tickets"
         (addTicket)="onAddTicket($event)"
         (removeTicket)="onRemoveTicket($event)"
-      ></app-list>
+        (revote)="onRevote($event)"
+      ></app-tickets>
     </div>
   </div>
 </div>
