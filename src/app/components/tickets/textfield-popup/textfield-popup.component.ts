@@ -11,8 +11,10 @@ import { UrlParserService } from '../../../services';
 })
 export class TextfieldPopupComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data,
-              private urlParser: UrlParserService) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data,
+    private urlParser: UrlParserService
+  ) { }
 
   getLinksArray(text: string): string[] {
     return this.urlParser.parseUrls(text);

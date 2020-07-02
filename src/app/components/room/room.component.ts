@@ -29,13 +29,12 @@ export class RoomComponent implements OnInit, OnDestroy {
   users$: Observable<User[]>;
   session: Session;
   activeTicket$: Observable<Ticket>;
+  messages = messages;
   showResults = false;
   vote: Vote;
   votes: { data: Card[], vote: Vote };
   selectedCard: Card;
   tickets: Ticket[];
-
-  messages = messages;
 
   constructor(
     private notificationService: NotificationService,
@@ -77,14 +76,19 @@ export class RoomComponent implements OnInit, OnDestroy {
       ).subscribe(() => this.selectedCard = card);
   }
 
-  onSkipTicket() {
+  onSkipTicket(isNext: boolean) {
+    const data = { voted: true };
     this.showResults = false;
 
     if (!this.session.activeTicket) {
       return this.notificationService.showError(this.messages.notSelected);
     }
 
-    this.ticketsService.updateValue('voted', true, this.session.activeTicket)
+    if (!isNext) {
+      Object.assign(data, { skipped: true });
+    }
+
+    this.ticketsService.updateValue(data, this.session.activeTicket)
       .pipe(take(1))
       .subscribe(() => {
         this.showResults = false;
@@ -119,6 +123,21 @@ export class RoomComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  onRevote({ ticketId }: Ticket) {
+    forkJoin(
+      this.ticketsService.updateValue({ voted: false, skipped: false }, ticketId),
+      this.sessionService.updateValue('activeTicket', null),
+      this.voteService.resetVotes(ticketId),
+    ).pipe(take(1))
+     .subscribe(() => this.setActiveTicket(ticketId));
+  }
+
+  onSetAverage(average: number) {
+    this.voteService.updateValue(this.session.activeTicket, 'average', average)
+      .pipe(take(1))
+      .subscribe();
+  }
+
   private getFirstTicket() {
     this.ticketsService.getFirst()
       .pipe(take(1))
@@ -127,18 +146,8 @@ export class RoomComponent implements OnInit, OnDestroy {
           return this.emptyListNotification();
         }
 
-        forkJoin(
-          this.sessionService.updateValue('activeTicket', ticket.ticketId),
-          this.voteService.createVoteCollection(this.sessionService.getSessionId(), ticket.ticketId)
-        ).pipe(take(1))
-         .subscribe();
+        this.setActiveTicket(ticket.ticketId);
       });
-  }
-
-  onSetAverage(average: number) {
-    this.voteService.updateValue(this.session.activeTicket, 'average', average)
-      .pipe(take(1))
-      .subscribe();
   }
 
   private finishVoting() {
@@ -156,7 +165,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           this.showResults = true;
           this.votes = { data, vote: this.vote };
         } else {
-          this.emptyListNotification();
+          this.notificationService.showError(this.messages.notVoted);
         }
       });
   }
@@ -222,4 +231,11 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.notificationService.showError(this.messages.emptyList);
   }
 
+  private setActiveTicket(id: string) {
+    forkJoin(
+      this.sessionService.updateValue('activeTicket', id),
+      this.voteService.createVoteCollection(this.sessionService.getSessionId(), id),
+    ).pipe(take(1))
+     .subscribe();
+  }
 }

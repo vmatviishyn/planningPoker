@@ -1,4 +1,4 @@
-$spaceamounts: (2, 5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100);
+$spaceamounts: (0, 2, 5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100);
 $sides: (all, x, y, top, bottom, left, right);
 
 @mixin make-space($prefix, $property) {

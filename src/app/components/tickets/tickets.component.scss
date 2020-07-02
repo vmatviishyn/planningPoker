@@ -1,6 +1,6 @@
 @import './../../../assets/scss/main-theme';
 
-.list {
+.tickets {
 
   &__add-ticket {
     display: flex;
@@ -55,14 +55,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  &__mat-list {
-
-    &--active {
-      background-color: #626565;
-      border-radius: 10px;
-    }
   }
 
   .mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
