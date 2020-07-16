@@ -18,10 +18,6 @@ mat-toolbar {
   background-color: $secondary-background;
   display: flex;
   justify-content: space-between;
-
-  .title {
-    flex: 1 1 auto;
-  }
 }
 
 .nav-links {
@@ -36,5 +32,32 @@ mat-toolbar {
 
   &:hover {
     color: darken(white, 50);
+  }
+}
+
+.rate {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+
+  &__img {
+    height: 25px;
+    margin-left: 15px;
+    transition: .3s;
+    transform: scale(1);
+
+    &--clickable {
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  &__text {
+    font-size: 1.4em;
+    margin-left: 5px;
+    font-weight: bold;
   }
 }

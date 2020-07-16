@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { AuthService, HeaderService, NotificationService, SessionService, UsersService } from './services';
+import { AuthService, HeaderService, NotificationService, SessionService, UsersService, RateService } from './services';
 
-import { Session, User, messages } from 'src/app/models';
+import { Rate, Session, User, messages } from 'src/app/models';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private authSub: Subscription;
   private userDataSub: Subscription;
 
+  rates = 0;
   userData: User;
   showBackButton$ = this.headerService.showBackButton$;
   user$: Observable<firebase.User>;
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private headerService: HeaderService,
     private location: Location,
     private notificationService: NotificationService,
+    private rateService: RateService,
     private router: Router,
     private sessionService: SessionService,
     private userService: UsersService,
@@ -38,6 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getSessionData();
     this.getCurrentUser();
     this.sessionChange();
+    this.onRatesCalculate();
   }
 
   ngOnDestroy() {
@@ -49,6 +52,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  onRate() {
+    if (!this.authService.user) { return; }
+
+    this.rateService.rate(this.authService.user.uid)
+      .pipe(take(1))
+      .subscribe();
+  }
+
   logout() {
     this.authService.logout()
       .pipe(take(1))
@@ -56,6 +67,19 @@ export class AppComponent implements OnInit, OnDestroy {
         this.notificationService.show(messages.loggedOut);
         this.navigateToHome();
       });
+  }
+
+  private onRatesCalculate() {
+    this.rateService.getRates()
+      .subscribe((data: Rate[]) => {
+        this.rates = 0;
+
+        data.forEach((item: Rate) => this.rates += item.count);
+
+        if (this.rates < 0) {
+          this.rates = 0;
+        }
+    });
   }
 
   private sessionChange() {
