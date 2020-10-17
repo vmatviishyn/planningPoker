@@ -1,6 +1,6 @@
 .textfield-popup {
 
-  &__input {
+  &__textarea {
     background-color: #000;
     border: none;
     border-radius: 10px;
@@ -9,5 +9,10 @@
     padding: 10px;
     resize: none;
     width: calc(100% - 20px);
+
+    &-wrapper {
+      max-height: 400px;
+      overflow: auto;
+    }
   }
 }

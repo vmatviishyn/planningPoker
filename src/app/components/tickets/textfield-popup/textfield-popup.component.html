@@ -1,15 +1,31 @@
 <div class="textfield-popup">
+  <h2 class="xs-m-0" mat-dialog-title>Add multiple tickets</h2>
   <div mat-dialog-content>
-    <textarea
-      #text
-      class="textfield-popup__input"
-      rows="30"
-      cdkFocusInitial
-      placeholder="Text should include http(s) pattern to parse link"
-    ></textarea>
+    <mat-form-field class="w-100">
+      <mat-label>URL prefix (optional)</mat-label>
+      <input
+        (keyup)="onPrefixKeyup()"
+        [(ngModel)]="urlPrefix"
+        placeholder="http(s)://project/browse"
+        matInput
+        type="text"
+      ><button *ngIf="urlPrefix" (click)="urlPrefix=''" aria-label="Clear" mat-button mat-icon-button matSuffix>
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="textfield-popup__textarea-wrapper">
+      <textarea
+        (keyup)="onTextKeyup()"
+        [(ngModel)]="text"
+        class="textfield-popup__textarea"
+        rows="30"
+        cdkFocusInitial
+        placeholder="Please follow http(s)://[project_domain]/[ticket_id] or [ticket_id] pattern with prefix above which automatically be added to the target. Text should be separated by spaces to add multiple values."
+      ></textarea>
+    </div>
   </div>
   <div mat-dialog-actions>
     <button mat-button [mat-dialog-close]="[]">Cancel</button>
-    <button mat-button [mat-dialog-close]="getLinksArray(text.value)">Ok</button>
+    <button mat-raised-button color="accent" [mat-dialog-close]="getLinksArray(text)">Ok</button>
   </div>
 </div>
