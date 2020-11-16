@@ -19,8 +19,16 @@ export class UserDetailsComponent {
     private userService: UsersService
   ) { }
 
-  onRemoveFromSession(user: User) {
-    this.userService.removeUserFromSession(user)
+  makeAdmin(user: User): void {
+    this.updateUser({ ...user, isAdmin: true });
+  }
+
+  onRemoveFromSession(user: User): void {
+    this.updateUser({ ...user, removedByAdmin: true });
+  }
+
+  private updateUser(user: User): void {
+    this.userService.updateUser(user)
       .pipe(take(1))
       .subscribe(() => this.dialogRef.close());
   }

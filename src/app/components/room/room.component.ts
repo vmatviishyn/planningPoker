@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, Subscription, forkJoin } from 'rxjs';
-import { take, withLatestFrom } from 'rxjs/operators';
+import { take, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
   AuthService,
@@ -25,12 +25,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   sessionSub: Subscription;
   ticketsSub: Subscription;
 
-  currentUser: User;
+  currentUser$: Observable<User>;
   users$: Observable<User[]>;
   session: Session;
   activeTicket$: Observable<Ticket>;
   messages = messages;
   showResults = false;
+  user: User;
   vote: Vote;
   votes: { data: Card[], vote: Vote };
   selectedCard: Card;
@@ -100,12 +101,12 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.finishVoting();
   }
 
-  onUserClick(user: User) {
+  onUserClick(user: User, currentUser = this.user) {
     this.dialog.open(UserDetailsComponent, {
       width: '60vh',
       data: {
         user,
-        currentUser: this.currentUser
+        currentUser,
       },
       panelClass: 'full-container'
     });
@@ -209,15 +210,15 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   private geUserInfo() {
-    this.userService.getCurrentUser()
-      .pipe(take(1))
-      .subscribe((user: User) => {
-        this.currentUser = user;
-
-        if (this.currentUser) {
-          this.notificationService.show(`Hi, ${this.currentUser.name}!`);
-        }
-      });
+    this.currentUser$ = this.userService.getCurrentUser()
+      .pipe(
+        tap((user: User) => {
+          if (user) {
+            this.user = user;
+            this.notificationService.show(`Hi, ${user.name}!`);
+          }
+        }),
+      );
   }
 
   private getTickets() {

@@ -29,19 +29,6 @@ export class UsersService {
       );
   }
 
-  removeUserFromSession(user: User): Observable<void> {
-    return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
-      .where('email', '==', user.email)).get()
-      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-        return this.afs.doc(`users/${snapshot.docs[0].id}`).set({
-          name: user.name,
-          email: user.email,
-          photoURL: user.photoURL,
-          removedByAdmin: true
-        });
-      }));
-  }
-
   getUsers(): Observable<User[]> {
     return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId()))
@@ -67,6 +54,14 @@ export class UsersService {
       .where('sessionId', '==', sessionId)).get()
       .pipe(switchMap(() => {
         return of(this.afs.doc(`users/${userUid}`).update({ vote: value, voted }));
+      }));
+  }
+
+  updateUser(user: User): Observable<void> {
+    return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
+      .where('email', '==', user.email)).get()
+      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        return this.afs.doc(`users/${snapshot.docs[0].id}`).set(user);
       }));
   }
 }
