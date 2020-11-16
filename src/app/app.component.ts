@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 
 import { AuthService, HeaderService, NotificationService, SessionService, UsersService, RateService } from './services';
 
-import { Rate, Session, User, messages } from 'src/app/models';
+import { Rate, Session, User, messages, FirebaseUser } from 'src/app/models';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   rates = 0;
   userData: User;
   showBackButton$ = this.headerService.showBackButton$;
-  user$: Observable<firebase.User>;
+  user$: Observable<FirebaseUser>;
   session$: Observable<Session>;
 
   constructor(

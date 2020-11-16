@@ -3,19 +3,18 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, from, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { auth } from 'firebase/app';
 import { SessionService } from './session.service';
 import { UsersService } from './users.service';
-import { User } from '../models';
+import { AuthUserCredential, FirebaseUser, googleAuthProvider, User } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private authState: firebase.auth.UserCredential;
+  private authState: AuthUserCredential;
   private signUp = new Subject<void>();
 
-  user: firebase.User;
+  user: FirebaseUser;
   signUp$ = this.signUp.asObservable();
 
   constructor(
@@ -24,15 +23,15 @@ export class AuthService {
     private userService: UsersService
   ) {
     this.getUserData()
-      .subscribe((user: firebase.User) => {
+      .subscribe((user: FirebaseUser) => {
         this.user = user;
     });
   }
 
   loginWithGoogle(sessionId: string, isAdmin: boolean): Observable<User> {
     // login to the system using google authentication
-    return from(this.afauth.signInWithPopup(new auth.GoogleAuthProvider()))
-      .pipe(switchMap((userCredential: firebase.auth.UserCredential) => {
+    return from(this.afauth.signInWithPopup(googleAuthProvider()))
+      .pipe(switchMap((userCredential: AuthUserCredential) => {
         this.authState = userCredential;
         // save user and session id to database
         const { displayName, email, photoURL } = userCredential.user;
@@ -47,7 +46,7 @@ export class AuthService {
 
     return this.getUserData()
       .pipe(
-        switchMap((user: firebase.User) => {
+        switchMap((user: FirebaseUser) => {
           return this.userService.updateCurrentUser({
             name: user.displayName,
             email: user.email,
@@ -59,7 +58,7 @@ export class AuthService {
     );
   }
 
-  getUserData(): Observable<firebase.User> {
+  getUserData(): Observable<FirebaseUser> {
     return this.afauth.authState;
   }
 

@@ -3,10 +3,8 @@ import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { Observable, of, from } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import * as firebase from 'firebase/app';
-
 import { SessionService } from './session.service';
-import { Ticket } from '../models';
+import { FirestoreCollectionReference, FirestoreQuerySnapshot, Ticket } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +17,14 @@ export class TicketsService {
   }
 
   getTickets(sessionId = this.sessionService.getSessionId()): Observable<Ticket[]> {
-    return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('tickets', (ref: FirestoreCollectionReference) => ref
       .where('sessionId', '==', sessionId)
       .orderBy('timestamp'))
       .valueChanges();
   }
 
   getFirst(): Observable<Ticket> {
-    return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('tickets', (ref: FirestoreCollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId())
       .where('voted', '==', false)
       .orderBy('timestamp')
@@ -36,7 +34,7 @@ export class TicketsService {
   }
 
   getTicketById(ticketId: string): Observable<Ticket> {
-    return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('tickets', (ref: FirestoreCollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId())
       .where('voted', '==', false)
       .where('ticketId', '==', ticketId))
@@ -45,17 +43,17 @@ export class TicketsService {
   }
 
   updateValue(data: { [key: string]: any }, ticketId: string) {
-    return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('tickets', (ref: FirestoreCollectionReference) => ref
       .where('ticketId', '==', ticketId)).get()
-      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+      .pipe(switchMap((snapshot: FirestoreQuerySnapshot) => {
         return of(this.afs.doc(`tickets/${snapshot.docs[0].id}`).update(data));
       }));
   }
 
   removeTicket(ticket: Ticket) {
-    return this.afs.collection('tickets', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('tickets', (ref: FirestoreCollectionReference) => ref
       .where('ticketId', '==', ticket.ticketId)).get()
-      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+      .pipe(switchMap((snapshot: FirestoreQuerySnapshot) => {
         return of(this.afs.doc(`tickets/${snapshot.docs[0].id}`).delete());
       }));
   }

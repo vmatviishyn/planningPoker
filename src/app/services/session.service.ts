@@ -4,9 +4,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { switchMap, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
-import * as firebase from 'firebase/app';
-
 import { Session } from '../models/session.model';
+import { FirestoreCollectionReference, FirestoreQuerySnapshot, serverTimestamp } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -17,21 +16,21 @@ export class SessionService {
   constructor(private afs: AngularFirestore) { }
 
   createSession(id: string) {
-    return this.afs.collection('sessions').add({ id, timestamp: firebase.firestore.FieldValue.serverTimestamp() })
+    return this.afs.collection('sessions').add({ id, timestamp: serverTimestamp() })
       .then(() => this.sessionId = id);
   }
 
   getSessionData(): Observable<Session> {
     if (!this.sessionId) { return of(null); }
-    return this.afs.collection('sessions', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('sessions', (ref: FirestoreCollectionReference) => ref
       .where('id', '==', this.getSessionId())).valueChanges()
       .pipe(map((sessions: Session[]) => sessions[0]));
   }
 
   updateValue(key: string, value: string) {
-    return this.afs.collection('sessions', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('sessions', (ref: FirestoreCollectionReference) => ref
       .where('id', '==', this.getSessionId())).get()
-      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+      .pipe(switchMap((snapshot: FirestoreQuerySnapshot) => {
         return of(this.afs.doc(`sessions/${snapshot.docs[0].id}`).update({ [key]: value }));
       }));
   }
