@@ -3,9 +3,7 @@ import { AngularFirestore, DocumentReference, DocumentData } from '@angular/fire
 import { switchMap } from 'rxjs/operators';
 import { Observable, from } from 'rxjs';
 
-import { Vote } from './../models';
-
-import * as firebase from 'firebase/app';
+import { FirestoreCollectionReference, FirestoreQuerySnapshot, Vote } from './../models';
 
 import { SessionService } from './session.service';
 import { Card } from '../models';
@@ -24,7 +22,7 @@ export class VoteService {
   vote(userId: string, card: Card, ticketId: string): Observable<void> {
     return this.getVotesCollectionByTicketId(ticketId)
       .pipe(
-        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        switchMap((snapshot: FirestoreQuerySnapshot) => {
           return this.afs.doc(`votes/${snapshot.docs[0].id}`).collection('results').doc(userId).set(card);
         })
       );
@@ -33,7 +31,7 @@ export class VoteService {
   getResults(ticketId: string): Observable<DocumentData[]> {
     return this.getVotesCollectionByTicketId(ticketId)
       .pipe(
-        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        switchMap((snapshot: FirestoreQuerySnapshot) => {
           return this.afs.doc(`votes/${snapshot.docs[0].id}`).collection('results').valueChanges();
         })
       );
@@ -42,7 +40,7 @@ export class VoteService {
   getVoteByTicketId(ticketId: string): Observable<Vote> {
     return this.getVotesCollectionByTicketId(ticketId)
       .pipe(
-        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        switchMap((snapshot: FirestoreQuerySnapshot) => {
           return this.afs.doc(`votes/${snapshot.docs[0].id}`).valueChanges();
         })
       );
@@ -51,28 +49,28 @@ export class VoteService {
   resetVotes(ticketId: string): Observable<void> {
     return this.getVotesCollectionByTicketId(ticketId)
       .pipe(
-        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        switchMap((snapshot: FirestoreQuerySnapshot) => {
           return this.afs.doc(`votes/${snapshot.docs[0].id}`).delete();
         })
       );
   }
 
   getVotesBySessionId(sessionId: string): Observable<Vote[]> {
-    return this.afs.collection('votes', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('votes', (ref: FirestoreCollectionReference) => ref
       .where('sessionId', '==', sessionId)).valueChanges();
   }
 
   updateValue(ticketId: string, key: string, value: boolean | number): Observable<void> {
     return this.getVotesCollectionByTicketId(ticketId)
       .pipe(
-        switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
+        switchMap((snapshot: FirestoreQuerySnapshot) => {
           return this.afs.doc(`votes/${snapshot.docs[0].id}`).update({ [key]: value });
         })
     );
   }
 
-  private getVotesCollectionByTicketId(ticketId: string): Observable<firebase.firestore.QuerySnapshot> {
-    return this.afs.collection('votes', (ref: firebase.firestore.CollectionReference) => ref
+  private getVotesCollectionByTicketId(ticketId: string): Observable<FirestoreQuerySnapshot> {
+    return this.afs.collection('votes', (ref: FirestoreCollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId())
       .where('ticketId', '==', ticketId))
       .get();

@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { AuthService } from './../services/auth.service';
 import { SessionService } from '../services/session.service';
+import { FirebaseUser } from '../models/firebase.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class AuthGuard implements CanActivate {
 
     return this.authService.getUserData()
       .pipe(
-        switchMap((data: firebase.User) => {
+        switchMap((data: FirebaseUser) => {
           if (data && !!this.sessionService.getSessionId()) {
             return of(true);
           }

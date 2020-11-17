@@ -38,7 +38,7 @@ export class TextfieldPopupComponent implements OnInit {
 
   @Debounce(350)
   onTextKeyup() {
-    if (this.urlParser.parseUrls(this.urlPrefix)) {
+    if (this.urlPrefix && this.urlParser.parseUrls(this.urlPrefix)) {
       this.addPrefix();
     }
   }
@@ -50,7 +50,7 @@ export class TextfieldPopupComponent implements OnInit {
   private onBeforeClosed(): void {
     this.dialog.beforeClosed()
       .pipe(take(1))
-      .subscribe(() => localStorage.setItem(this.storageKey, this.urlPrefix.trim()));
+      .subscribe(() => this.urlPrefix && localStorage.setItem(this.storageKey, this.urlPrefix.trim()));
   }
 
   private addPrefix(): void {

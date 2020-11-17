@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatTableExporterDirective } from 'mat-table-exporter';
-import { take, combineLatest, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
 import { HeaderService, TicketsService, VoteService } from './../../services';
 import { Ticket, Vote, Report } from 'src/app/models';
@@ -63,9 +64,11 @@ export class ReportComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getReportData() {
-    this.voteService.getVotesBySessionId(this.sessionId)
+    combineLatest([
+        this.voteService.getVotesBySessionId(this.sessionId),
+        this.ticketsService.getTickets(this.sessionId),
+      ])
       .pipe(
-        combineLatest(this.ticketsService.getTickets(this.sessionId)),
         take(1),
         map(([votes, tickets]) => {
           return { votes, tickets };

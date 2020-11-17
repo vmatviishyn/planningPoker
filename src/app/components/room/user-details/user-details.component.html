@@ -16,6 +16,7 @@
     </p>
   </mat-card-content>
   <mat-card-actions *ngIf="data.currentUser.isAdmin && data.currentUser.email !== data.user.email">
+    <button *ngIf="!data.user.isAdmin" (click)="makeAdmin(data.user)" mat-button>Make admin</button>
     <button (click)="onRemoveFromSession(data.user)" mat-button>Remove from session</button>
   </mat-card-actions>
 </mat-card>

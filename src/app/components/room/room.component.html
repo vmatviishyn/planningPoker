@@ -1,4 +1,4 @@
-<div class="room">
+<div class="room" *ngIf="currentUser$ | async as currentUser">
   <h3 class="room__title">
     <app-ticket-preview *ngIf="activeTicket$ | async as activeTicket else noSelected" [ticket]="activeTicket"></app-ticket-preview>
 
@@ -23,17 +23,11 @@
     ></app-chart>
 
     <div class="room__side-content">
-      <mat-list *ngIf="users$ | async as users">
-        <h3 mat-subheader class="room__list-header">
-          <span>Members</span>
-        </h3>
-        <mat-list-item *ngFor="let person of users | orderBy: 'name'">
-          <img class="room__user-img" (click)="onUserClick(person)" matListAvatar [src]="person.photoURL" alt="">
-          <h4 mat-line>{{ person.name }}</h4>
-          <span *ngIf="showResults" class="room__vote">{{ person.vote }}</span>
-          <mat-icon *ngIf="!showResults && person.voted" class="room__status" aria-hidden="true">check_circle</mat-icon>
-        </mat-list-item>
-      </mat-list>
+      <app-users-list
+        (userClick)="onUserClick($event)"
+        [users]="users$ | async"
+        [showResults]="showResults"
+      ></app-users-list>
 
       <div class="room__action-buttons">
         <button

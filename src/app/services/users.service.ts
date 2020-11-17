@@ -4,10 +4,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import * as firebase from 'firebase/app';
-
 import { SessionService } from 'src/app/services/session.service';
-import { User } from 'src/app/models';
+import { documentId, FirebaseUser, FirestoreCollectionReference, FirestoreQuerySnapshot, User } from 'src/app/models';
 
 @Injectable({
   providedIn: 'root'
@@ -24,26 +22,13 @@ export class UsersService {
     return this.afauth.authState
       .pipe(
         // create new user or update existing with new session id
-        switchMap((userData: firebase.User) => of(this.afs.doc(`users/${userData.uid}`).set(user))),
+        switchMap((userData: FirebaseUser) => of(this.afs.doc(`users/${userData.uid}`).set(user))),
         switchMap(() => of(user)),
       );
   }
 
-  removeUserFromSession(user: User): Observable<void> {
-    return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
-      .where('email', '==', user.email)).get()
-      .pipe(switchMap((snapshot: firebase.firestore.QuerySnapshot) => {
-        return this.afs.doc(`users/${snapshot.docs[0].id}`).set({
-          name: user.name,
-          email: user.email,
-          photoURL: user.photoURL,
-          removedByAdmin: true
-        });
-      }));
-  }
-
   getUsers(): Observable<User[]> {
-    return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('users', (ref: FirestoreCollectionReference) => ref
       .where('sessionId', '==', this.sessionService.getSessionId()))
       .valueChanges();
   }
@@ -51,11 +36,11 @@ export class UsersService {
   getCurrentUser(): Observable<User> {
     return this.afauth.authState
     .pipe(
-      switchMap((userData: firebase.User) => {
+      switchMap((userData: FirebaseUser) => {
         if (!userData) { return of(null); }
         return this.afs
-          .collection('users', (ref: firebase.firestore.CollectionReference) => ref
-          .where(firebase.firestore.FieldPath.documentId(), '==', userData.uid))
+          .collection('users', (ref: FirestoreCollectionReference) => ref
+          .where(documentId(), '==', userData.uid))
           .valueChanges();
       }),
       map((users: User[]) => users && users[0] || null)
@@ -63,10 +48,18 @@ export class UsersService {
   }
 
   updateVotes(value: string, sessionId: string, userUid: string, voted: boolean) {
-    return this.afs.collection('users', (ref: firebase.firestore.CollectionReference) => ref
+    return this.afs.collection('users', (ref: FirestoreCollectionReference) => ref
       .where('sessionId', '==', sessionId)).get()
       .pipe(switchMap(() => {
         return of(this.afs.doc(`users/${userUid}`).update({ vote: value, voted }));
+      }));
+  }
+
+  updateUser(user: User): Observable<void> {
+    return this.afs.collection('users', (ref: FirestoreCollectionReference) => ref
+      .where('email', '==', user.email)).get()
+      .pipe(switchMap((snapshot: FirestoreQuerySnapshot) => {
+        return this.afs.doc(`users/${snapshot.docs[0].id}`).set(user);
       }));
   }
 }
