@@ -125,10 +125,10 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   onRevote({ ticketId }: Ticket) {
-    forkJoin(
+    forkJoin([
       this.ticketsService.updateValue({ voted: false, skipped: false }, ticketId),
       this.sessionService.updateValue('activeTicket', null),
-      this.voteService.resetVotes(ticketId),
+      this.voteService.resetVotes(ticketId)],
     ).pipe(take(1))
      .subscribe(() => this.setActiveTicket(ticketId));
   }
@@ -214,8 +214,8 @@ export class RoomComponent implements OnInit, OnDestroy {
       .pipe(
         tap((user: User) => {
           if (user) {
+            !this.user && this.notificationService.show(`Hi, ${user.name}!`);
             this.user = user;
-            this.notificationService.show(`Hi, ${user.name}!`);
           }
         }),
       );
@@ -233,9 +233,9 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   private setActiveTicket(id: string) {
-    forkJoin(
+    forkJoin([
       this.sessionService.updateValue('activeTicket', id),
-      this.voteService.createVoteCollection(this.sessionService.getSessionId(), id),
+      this.voteService.createVoteCollection(this.sessionService.getSessionId(), id)],
     ).pipe(take(1))
      .subscribe();
   }
