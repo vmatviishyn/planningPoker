@@ -3,6 +3,7 @@ export * from './header.service';
 export * from './hash.service';
 export * from './notification.service';
 export * from './rate.service';
+export * from './theme.service';
 export * from './session.service';
 export * from './tickets.service';
 export * from './url-parser.service';

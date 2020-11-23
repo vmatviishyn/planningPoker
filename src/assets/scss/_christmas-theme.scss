@@ -1,0 +1,12 @@
+body.christmas-theme {
+  .christmas-theme {
+    &__santa {
+      bottom: 0;
+      display: block;
+      max-height: 160px;
+      position: fixed;
+      right: -15px;
+      z-index: 2;
+    }
+  }
+}

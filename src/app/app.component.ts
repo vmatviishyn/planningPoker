@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { AuthService, HeaderService, NotificationService, SessionService, UsersService, RateService } from './services';
+import { AuthService, HeaderService, NotificationService, SessionService, UsersService, RateService, ThemeService } from './services';
 
 import { Rate, Session, User, messages, FirebaseUser } from 'src/app/models';
 
@@ -19,6 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   rates = 0;
   userData: User;
+  christmasThemeEnabled$ = this.themeService.christmasThemeEnabled();
   showBackButton$ = this.headerService.showBackButton$;
   user$: Observable<FirebaseUser>;
   session$: Observable<Session>;
@@ -30,12 +31,14 @@ export class AppComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private rateService: RateService,
     private router: Router,
+    private themeService: ThemeService,
     private sessionService: SessionService,
     private userService: UsersService,
   ) {}
 
   ngOnInit() {
     this.sessionService.setSessionId();
+    this.themeService.init();
     this.user$ = this.authService.getUserData();
     this.getSessionData();
     this.getCurrentUser();
