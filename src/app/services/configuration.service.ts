@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Configuration } from '../models';
@@ -10,7 +10,10 @@ import { Configuration } from '../models';
   providedIn: 'root'
 })
 export class ConfigurationService {
-  private configs = new Subject<Configuration>();
+  private initialConfigs: Configuration = {
+    theme: null,
+  };
+  private configs = new BehaviorSubject<Configuration>(this.initialConfigs);
   configs$: Observable<Configuration> = this.configs.asObservable();
 
   constructor(private afs: AngularFirestore) {
@@ -18,14 +21,10 @@ export class ConfigurationService {
   }
 
   private initConfigs(): void {
-    const initialConfigs: Configuration = {
-      theme: null,
-    };
-
     this.afs.collection('configs').valueChanges()
       .pipe(
         map((configs: Configuration[]) => {
-          !configs.length && this.afs.collection('configs').add(initialConfigs);
+          !configs.length && this.afs.collection('configs').add(this.initialConfigs);
           return configs[0];
         })
       )

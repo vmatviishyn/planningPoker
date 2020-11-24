@@ -120,4 +120,11 @@ body.christmas-theme {
       opacity: 0.5;
     }
   }
+
+  mat-sidenav {
+    &-content {
+      background: $main-accent url('../images/christmas-tree-balls.jpg') no-repeat center;
+      background-size: cover;
+    }
+  }
 }
