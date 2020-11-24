@@ -1,4 +1,5 @@
 export * from './auth.service';
+export * from './configuration.service';
 export * from './header.service';
 export * from './hash.service';
 export * from './notification.service';
