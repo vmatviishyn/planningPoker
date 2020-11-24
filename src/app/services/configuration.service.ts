@@ -18,14 +18,14 @@ export class ConfigurationService {
   }
 
   private initConfigs(): void {
-    const initialCongigs: Configuration = {
+    const initialConfigs: Configuration = {
       theme: null,
     };
 
     this.afs.collection('configs').valueChanges()
       .pipe(
         map((configs: Configuration[]) => {
-          !configs.length && this.afs.collection('configs').add(initialCongigs);
+          !configs.length && this.afs.collection('configs').add(initialConfigs);
           return configs[0];
         })
       )

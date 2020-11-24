@@ -43,7 +43,7 @@ export class ThemeService {
   private initChristmasTheme(enabled: boolean): void {
     this.renderer[enabled ? 'addClass' : 'removeClass'](this.document.body, 'christmas-theme');
 
-    if (enabled) {
+    if (!this.snowflakes && enabled) {
       this.snowflakes = new Snowflakes({
         count: 30,       // Default: 50
         color: '#fff',   // Default: "#5ECDEF"
@@ -52,8 +52,8 @@ export class ThemeService {
         maxSize: 30,     // Default: 18
         wind: false,     // Without wind. Default: true
       });
-    } else {
-      this.snowflakes && this.snowflakes.destroy();
+    } else if (this.snowflakes && !enabled) {
+      this.snowflakes.destroy();
       this.snowflakes = null;
     }
   }
