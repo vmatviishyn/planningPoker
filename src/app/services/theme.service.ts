@@ -1,41 +1,60 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import * as Snowflakes from 'magic-snowflakes';
+
+import { ConfigurationService } from './configuration.service';
+import { Configuration, Theme } from '../models';
+import { Debounce } from '../decorators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
   private renderer: Renderer2;
+  private snowflakes: { destroy: () => void };
 
-  constructor(@Inject(DOCUMENT) private document, rendererFactory: RendererFactory2) {
+  constructor(
+    @Inject(DOCUMENT) private document,
+    private configurationService: ConfigurationService,
+    rendererFactory: RendererFactory2
+  ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
   init() {
-    this.isChristmasThemeEnabled() && this.initChristmasTheme();
+    this.isChristmasThemeEnabled();
   }
 
   christmasThemeEnabled(): Observable<boolean> {
-    return of(this.isChristmasThemeEnabled());
+    return this.isChristmasThemeEnabled();
   }
 
-  private isChristmasThemeEnabled(): boolean {
-    // @TODO: Add logic
-    return true;
+  private isChristmasThemeEnabled(): Observable<boolean> {
+    return this.configurationService.configs$.pipe(
+      map(({ theme }: Configuration) => theme === Theme.Christmas),
+      tap((enabled: boolean) => this.initChristmasTheme(enabled)),
+    );
   }
 
-  private initChristmasTheme(): void {
-    this.renderer.addClass(this.document.body, 'christmas-theme');
+  @Debounce(100)
+  private initChristmasTheme(enabled: boolean): void {
+    this.renderer[enabled ? 'addClass' : 'removeClass'](this.document.body, 'christmas-theme');
 
-    new Snowflakes({
-      color: '#fff',   // Default: "#5ECDEF"
-      minOpacity: 0.7, // From 0 to 1. Default: 0.6
-      minSize: 10,     // Default: 8
-      maxSize: 30,     // Default: 18
-      wind: false,     // Without wind. Default: true
-    });
+    if (enabled) {
+      this.snowflakes = new Snowflakes({
+        count: 30,       // Default: 50
+        color: '#fff',   // Default: "#5ECDEF"
+        minOpacity: 0.7, // From 0 to 1. Default: 0.6
+        minSize: 10,     // Default: 8
+        maxSize: 30,     // Default: 18
+        wind: false,     // Without wind. Default: true
+      });
+    } else {
+      this.snowflakes && this.snowflakes.destroy();
+      this.snowflakes = null;
+    }
   }
 }

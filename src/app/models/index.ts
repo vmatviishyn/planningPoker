@@ -1,4 +1,5 @@
 export * from './card.model';
+export * from './configuration.model';
 export * from './firebase.model';
 export * from './messages.model';
 export * from './session.model';
