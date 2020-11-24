@@ -31,6 +31,12 @@
         </ng-container>
       </div>
     </mat-toolbar>
+
+    <!-- TODO: Check if Christmas :) -->
+    <ng-container *ngIf="christmasThemeEnabled$ | async">
+      <app-christmas-lights></app-christmas-lights>
+    </ng-container>
+
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

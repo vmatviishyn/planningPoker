@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { AuthService, HashService, NotificationService, SessionService } from 'src/app/services';
+import { AuthService, HashService, NotificationService, SessionService, ThemeService } from 'src/app/services';
 import { User, Session } from 'src/app/models';
 
 @Component({
@@ -13,6 +13,7 @@ import { User, Session } from 'src/app/models';
 export class HomeComponent implements OnInit {
   sessionId: string;
   isSessionExists = false;
+  christmasThemeEnabled$ = this.themeService.christmasThemeEnabled();
 
   constructor(
     private authService: AuthService,
@@ -20,7 +21,8 @@ export class HomeComponent implements OnInit {
     private activateRoute: ActivatedRoute,
     private notificationService: NotificationService,
     private hashService: HashService,
-    private router: Router
+    private router: Router,
+    private themeService: ThemeService
   ) { }
 
   ngOnInit() {
