@@ -6,7 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import * as Snowflakes from 'magic-snowflakes';
 
 import { ConfigurationService } from './configuration.service';
-import { Configuration, Theme } from '../models';
+import { Configuration, Theme, ThemeConfiguration } from '../models';
 import { Debounce } from '../decorators';
 
 @Injectable({
@@ -28,14 +28,19 @@ export class ThemeService {
     this.isChristmasThemeEnabled();
   }
 
-  christmasThemeEnabled(): Observable<boolean> {
+  christmasThemeEnabled(): Observable<ThemeConfiguration> {
     return this.isChristmasThemeEnabled();
   }
 
-  private isChristmasThemeEnabled(): Observable<boolean> {
+  private isChristmasThemeEnabled(): Observable<ThemeConfiguration> {
     return this.configurationService.configs$.pipe(
-      map(({ theme }: Configuration) => theme === Theme.Christmas),
-      tap((enabled: boolean) => this.initChristmasTheme(enabled)),
+      map(({ theme, loaded }: Configuration) => {
+        return {
+          loaded,
+          christmasThemeEnabled: theme === Theme.Christmas,
+        };
+      }),
+      tap(({ christmasThemeEnabled }: ThemeConfiguration) => this.initChristmasTheme(christmasThemeEnabled)),
     );
   }
 

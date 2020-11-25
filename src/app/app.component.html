@@ -1,4 +1,4 @@
-<mat-sidenav-container *ngIf="{ value: christmasThemeEnabled$ | async } as theme">
+<mat-sidenav-container *ngIf="christmasThemeEnabled$ | async as themeConfiguration">
   <mat-sidenav #sidenav mode="over" position="end">
     <app-admin-panel></app-admin-panel>
   </mat-sidenav>
@@ -8,7 +8,8 @@
       <mat-icon mat-list-icon class="back-icon" [class.hidden]="!(showBackButton$ | async)" (click)="onGoBack()">arrow_back_ios</mat-icon>
       <div class="rate">
         <img
-          *ngIf="theme.value"
+          alt=""
+          *ngIf="themeConfiguration.christmasThemeEnabled"
           src="assets/images/santa.png"
           class="christmas-theme__santa d-none" alt=""
         >Planning Poker
@@ -32,7 +33,7 @@
       </div>
     </mat-toolbar>
 
-    <app-christmas-lights *ngIf="theme.value"></app-christmas-lights>
+    <app-christmas-lights *ngIf="themeConfiguration.christmasThemeEnabled"></app-christmas-lights>
 
     <router-outlet></router-outlet>
   </mat-sidenav-content>

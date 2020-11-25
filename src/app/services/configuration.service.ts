@@ -4,14 +4,14 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Configuration } from '../models';
+import { Configuration, Theme } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigurationService {
   private initialConfigs: Configuration = {
-    theme: null,
+    theme: Theme.Default,
   };
   private configs = new BehaviorSubject<Configuration>(this.initialConfigs);
   configs$: Observable<Configuration> = this.configs.asObservable();
@@ -28,6 +28,6 @@ export class ConfigurationService {
           return configs[0];
         })
       )
-      .subscribe((configs: Configuration) => this.configs.next(configs));
+      .subscribe((configs: Configuration) => this.configs.next({ ...configs, loaded: true }));
   }
 }

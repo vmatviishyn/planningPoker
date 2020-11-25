@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 
 import { AuthService, HeaderService, NotificationService, SessionService, UsersService, RateService, ThemeService } from './services';
 
-import { Rate, Session, User, messages, FirebaseUser } from 'src/app/models';
+import { Rate, Session, User, messages, FirebaseUser, ThemeConfiguration } from 'src/app/models';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   rates = 0;
   userData: User;
-  christmasThemeEnabled$ = this.themeService.christmasThemeEnabled();
+  christmasThemeEnabled$: Observable<ThemeConfiguration> = this.themeService.christmasThemeEnabled();
   showBackButton$ = this.headerService.showBackButton$;
   user$: Observable<FirebaseUser>;
   session$: Observable<Session>;
