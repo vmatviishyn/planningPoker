@@ -7,12 +7,7 @@
     <mat-toolbar>
       <mat-icon mat-list-icon class="back-icon" [class.hidden]="!(showBackButton$ | async)" (click)="onGoBack()">arrow_back_ios</mat-icon>
       <div class="rate">
-        <img
-          alt=""
-          *ngIf="themeConfiguration.christmasThemeEnabled"
-          src="assets/images/santa.png"
-          class="christmas-theme__santa d-none" alt=""
-        >Planning Poker
+        Planning Poker
         <img src="assets/images/rates.svg" class="rate__img" alt="" [class.rate__img--clickable]="user$ | async" (click)="onRate()">
         <span class="rate__text">{{ rates }}</span>
       </div>
