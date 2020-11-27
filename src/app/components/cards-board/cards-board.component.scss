@@ -20,6 +20,7 @@
     width: 130px;
     height: 150px;
     box-sizing: border-box;
+    position: relative;
 
     &:hover {
       border: 3px solid $border-accent1;

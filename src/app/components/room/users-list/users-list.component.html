@@ -4,18 +4,13 @@
   </h3>
   <ng-container *ngFor="let user of users | orderBy: 'name'">
     <mat-list-item *ngIf="!user.removedByAdmin">
-      <img
-        alt=""
-        class="users__user-img"
-        matListAvatar
-        (click)="onUserClick(user)"
-        [src]="user.photoURL">
+      <div (click)="onUserClick(user)" class="users__user-img-wrapper" matListAvatar
+        [ngClass]="{'users__user-img-wrapper--admin' : user?.isAdmin, 'users__user-img-wrapper--user' : !user?.isAdmin}">
+        <img class="users__user-img" [src]="user.photoURL" alt="">
+      </div>
       <h4 mat-line>{{ user.name }}</h4>
       <span *ngIf="showResults" class="users__vote">{{ user.vote }}</span>
-      <mat-icon
-        *ngIf="!showResults && user.voted"
-        aria-hidden="true"
-        class="users__status">
+      <mat-icon *ngIf="!showResults && user.voted" aria-hidden="true" class="users__status">
         check_circle
       </mat-icon>
     </mat-list-item>

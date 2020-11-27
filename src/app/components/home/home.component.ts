@@ -1,18 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { AuthService, HashService, NotificationService, SessionService } from 'src/app/services';
-import { User, Session } from 'src/app/models';
+import { AuthService, HashService, NotificationService, SessionService, ThemeService } from 'src/app/services';
+import { User, Session, ThemeConfiguration } from 'src/app/models';
+import { fadeIn } from 'src/app/animations';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  animations: [fadeIn],
 })
 export class HomeComponent implements OnInit {
   sessionId: string;
   isSessionExists = false;
+  christmasThemeEnabled$: Observable<ThemeConfiguration> = this.themeService.christmasThemeEnabled();
 
   constructor(
     private authService: AuthService,
@@ -20,7 +24,8 @@ export class HomeComponent implements OnInit {
     private activateRoute: ActivatedRoute,
     private notificationService: NotificationService,
     private hashService: HashService,
-    private router: Router
+    private router: Router,
+    private themeService: ThemeService
   ) { }
 
   ngOnInit() {

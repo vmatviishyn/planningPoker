@@ -2,6 +2,18 @@
 
 .room {
 
+  &__header {
+    bottom: -15px;
+    max-height: 100px;
+    position: absolute;
+    top: 65px;
+    z-index: 2;
+
+    @media (max-width: $screen-md) {
+      display: none;
+    }
+  }
+
   &__title {
     color: $main-font-color;
     margin-bottom: 0;
@@ -12,9 +24,12 @@
     align-items: flex-start;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     justify-content: center;
     padding: 20px 40px 40px;
+
+    @media (max-width: $screen-md) {
+      flex-wrap: wrap;
+    }
 
     @media (max-width: $screen-sm) {
       padding: 0;

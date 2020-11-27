@@ -1,4 +1,4 @@
-<mat-sidenav-container>
+<mat-sidenav-container *ngIf="christmasThemeEnabled$ | async as themeConfiguration">
   <mat-sidenav #sidenav mode="over" position="end">
     <app-admin-panel></app-admin-panel>
   </mat-sidenav>
@@ -27,6 +27,9 @@
         </ng-container>
       </div>
     </mat-toolbar>
+
+    <app-christmas-lights *ngIf="themeConfiguration.christmasThemeEnabled"></app-christmas-lights>
+
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

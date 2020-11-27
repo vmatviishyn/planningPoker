@@ -15,3 +15,5 @@ export * from './share/popup/popup.component';
 export * from './tickets/tickets.component';
 export * from './tickets/textfield-popup/textfield-popup.component';
 export * from './tickets/tickets-list/tickets-list.component';
+
+export * from './christmas-lights/christmas-lights.component';

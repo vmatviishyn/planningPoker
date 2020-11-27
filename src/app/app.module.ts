@@ -37,6 +37,7 @@ import {
   TicketsListComponent,
   UserDetailsComponent,
   UsersListComponent,
+  ChristmasLightsComponent,
 } from './components';
 
 import { environment } from '../environments/environment';
@@ -58,6 +59,7 @@ import { environment } from '../environments/environment';
     TicketsListComponent,
     UserDetailsComponent,
     UsersListComponent,
+    ChristmasLightsComponent,
   ],
   imports: [
     BrowserModule,

@@ -9,22 +9,26 @@ import {
   NotificationService,
   SessionService,
   TicketsService,
+  ThemeService,
   UsersService,
   VoteService,
 } from 'src/app/services';
 
 import { UserDetailsComponent } from './user-details/user-details.component';
-import { User, Ticket, Session, Card, Vote, messages } from 'src/app/models';
+import { User, Ticket, Session, Card, Vote, messages, ThemeConfiguration } from 'src/app/models';
+import { scaleIn } from 'src/app/animations';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
-  styleUrls: ['./room.component.scss']
+  styleUrls: ['./room.component.scss'],
+  animations: [scaleIn]
 })
 export class RoomComponent implements OnInit, OnDestroy {
   sessionSub: Subscription;
   ticketsSub: Subscription;
 
+  christmasThemeEnabled$: Observable<ThemeConfiguration> = this.themeService.christmasThemeEnabled();
   currentUser$: Observable<User>;
   users$: Observable<User[]>;
   session: Session;
@@ -41,6 +45,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private sessionService: SessionService,
     private userService: UsersService,
+    private themeService: ThemeService,
     private ticketsService: TicketsService,
     private voteService: VoteService,
     private authService: AuthService,

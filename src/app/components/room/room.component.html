@@ -9,6 +9,7 @@
 
   <div class="room__container">
     <app-cards-board
+      @scaleIn
       *ngIf="!showResults"
       [type]="session?.cardsType"
       (cardClicked)="onCardClicked($event)"
@@ -23,6 +24,13 @@
     ></app-chart>
 
     <div class="room__side-content">
+      <img
+        *ngIf="(christmasThemeEnabled$ | async)?.christmasThemeEnabled"
+        alt=""
+        class="room__header"
+        src="assets/images/santa.png"
+      >
+
       <app-users-list
         (userClick)="onUserClick($event)"
         [users]="users$ | async"

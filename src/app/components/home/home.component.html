@@ -1,25 +1,28 @@
-<div class="home">
-  <div class="home--desktop">
-    <img class="home__login-img" src="/assets/images/background.jpg" alt="">
+<div class="home" *ngIf="christmasThemeEnabled$ | async as themeConfiguration">
+  <div *ngIf="themeConfiguration.loaded" @fadeIn class="home--desktop">
+
+    <img class="home__login-img" [src]="themeConfiguration.christmasThemeEnabled ? '/assets/images/christmas-card.jpg' : '/assets/images/background.jpg'" alt="">
+
     <div class="home__login-form">
       <div class="home__login-btn-wrapper home__card">
         <div class="home__card__header">
-          <div><img class="home__card-icon" src="/assets/images/poker.png" alt=""></div>
-          <div><img class="home__card-icon" src="/assets/images/poker.png" alt=""></div>
+          <div><img class="home__card-icon" [src]="themeConfiguration.christmasThemeEnabled ? '/assets/images/santa-icon.png' : '/assets/images/poker.png'" alt=""></div>
+          <div><img class="home__card-icon" [src]="themeConfiguration.christmasThemeEnabled ? '/assets/images/santa-icon.png' : '/assets/images/poker.png'" alt=""></div>
         </div>
         <div class="home__card__body">
           <button (click)="onLoginWithGoogle()" type="button" mat-raised-button class="home__login-btn">
-            <img class="home__google-img" src="/assets/images/google.svg" alt="">
+            <img class="home__google-img" [src]="themeConfiguration.christmasThemeEnabled ? '/assets/images/red-google.svg' : '/assets/images/google.svg'" alt="">
           </button>
         </div>
         <div class="home__card__footer">
-          <div><img class="home__card-icon" src="/assets/images/poker.png" alt=""></div>
-          <div><img class="home__card-icon" src="/assets/images/poker.png" alt=""></div>
+          <div><img class="home__card-icon" [src]="themeConfiguration.christmasThemeEnabled ? '/assets/images/santa-icon.png' : '/assets/images/poker.png'" alt=""></div>
+          <div><img class="home__card-icon" [src]="themeConfiguration.christmasThemeEnabled ? '/assets/images/santa-icon.png' : '/assets/images/poker.png'" alt=""></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="home--mobile">
+
+  <div @fadeIn class="home--mobile">
     <button class="home__mobile-button" mat-raised-button (click)="onLoginWithGoogle()">
       <span class="home__mobile-button__text">Login with Google</span>
       <img class="home__google-img" src="/assets/images/google.svg" alt="">
