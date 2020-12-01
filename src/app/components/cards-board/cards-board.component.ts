@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { Card, CardTypes } from 'src/app/models';
+import { Card, CardTypes, SELECTED_CARD_TYPE } from 'src/app/models';
 
 @Component({
   selector: 'app-cards-board',
@@ -16,7 +16,7 @@ export class CardsBoardComponent implements OnChanges {
   cards: Card[];
 
   ngOnChanges() {
-    this.cards = CardTypes[this.type || 'days'];
+    this.cards = CardTypes[this.type || SELECTED_CARD_TYPE];
   }
 
   onCardClick(card: Card) {

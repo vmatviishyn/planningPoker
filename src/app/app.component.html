@@ -1,6 +1,8 @@
 <mat-sidenav-container *ngIf="christmasThemeEnabled$ | async as themeConfiguration">
   <mat-sidenav #sidenav mode="over" position="end">
-    <app-admin-panel></app-admin-panel>
+    <app-admin-panel
+      [selectedType]="(session$ | async)?.cardsType || selectedCardType"
+    ></app-admin-panel>
   </mat-sidenav>
 
   <mat-sidenav-content>

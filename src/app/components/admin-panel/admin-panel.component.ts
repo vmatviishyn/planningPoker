@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { take } from 'rxjs/operators';
 
 import { NotificationService, SessionService } from 'src/app/services';
@@ -11,6 +11,7 @@ import { CardTypes } from './../../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminPanelComponent {
+  @Input() selectedType: string;
   cardTypes = Object.keys(CardTypes);
   title = '';
 

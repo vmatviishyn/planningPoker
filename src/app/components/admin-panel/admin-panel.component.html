@@ -12,8 +12,13 @@
   </div>
   <div class="xs-mt-10 xs-px-15">
     <mat-radio-group aria-label="Select an option">
-      <mat-radio-button class="w-100 xs-mb-10" (change)="onChangeCardType(type)" [value]="type" *ngFor="let type of cardTypes">
-        {{ type | titlecase }}
+      <mat-radio-button
+        *ngFor="let type of cardTypes"
+        class="w-100 xs-mb-10"
+        (change)="onChangeCardType(type)"
+        [checked]="selectedType === type"
+        [value]="type"
+      >{{ type | titlecase }}
       </mat-radio-button>
     </mat-radio-group>
   </div>
