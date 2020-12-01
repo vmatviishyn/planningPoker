@@ -2,14 +2,9 @@
   <div class="admin-panel__header xs-py-2 xs-px-20">
     <h3>Admin Panel</h3>
   </div>
-  <div class="xs-mt-10 xs-px-15">
-    <mat-form-field>
-      <input [(ngModel)]="title" matInput placeholder="Title">
-    </mat-form-field>
-    <button mat-mini-fab color="primary" [disabled]="title.length === 0" (click)="onUpdateTitle()">
-      <mat-icon aria-hidden="true">check</mat-icon>
-    </button>
-  </div>
+  <h4 class="xs-px-15">
+    Select cards type:
+  </h4>
   <div class="xs-mt-10 xs-px-15">
     <mat-radio-group aria-label="Select an option">
       <mat-radio-button

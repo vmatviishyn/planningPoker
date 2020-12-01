@@ -13,20 +13,10 @@ import { CardTypes } from './../../models';
 export class AdminPanelComponent {
   @Input() selectedType: string;
   cardTypes = Object.keys(CardTypes);
-  title = '';
 
   constructor(private sessionService: SessionService, private notificationService: NotificationService) { }
 
-  onUpdateTitle() {
-    this.sessionService.updateValue('title', this.title)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.notificationService.show(`Changed title to "${this.title}".`);
-        this.title = '';
-      });
-  }
-
-  onChangeCardType(value: string) {
+  onChangeCardType(value: string): void {
     this.sessionService.updateValue('cardsType', value)
       .pipe(take(1))
       .subscribe(() => {
