@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { take } from 'rxjs/operators';
 
 import { NotificationService, SessionService } from 'src/app/services';
@@ -11,21 +11,12 @@ import { CardTypes } from './../../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminPanelComponent {
+  @Input() selectedType: string;
   cardTypes = Object.keys(CardTypes);
-  title = '';
 
   constructor(private sessionService: SessionService, private notificationService: NotificationService) { }
 
-  onUpdateTitle() {
-    this.sessionService.updateValue('title', this.title)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.notificationService.show(`Changed title to "${this.title}".`);
-        this.title = '';
-      });
-  }
-
-  onChangeCardType(value: string) {
+  onChangeCardType(value: string): void {
     this.sessionService.updateValue('cardsType', value)
       .pipe(take(1))
       .subscribe(() => {

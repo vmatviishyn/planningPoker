@@ -140,3 +140,5 @@ export const CardTypes = {
   days,
   hours,
 };
+
+export const SELECTED_CARD_TYPE = 'days';

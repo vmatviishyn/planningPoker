@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 
 import { AuthService, HeaderService, NotificationService, SessionService, UsersService, RateService, ThemeService } from './services';
 
-import { Rate, Session, User, messages, FirebaseUser, ThemeConfiguration } from 'src/app/models';
+import { Rate, Session, User, messages, FirebaseUser, ThemeConfiguration, SELECTED_CARD_TYPE } from 'src/app/models';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private authSub: Subscription;
   private userDataSub: Subscription;
 
+  selectedCardType = SELECTED_CARD_TYPE;
   rates = 0;
   userData: User;
   christmasThemeEnabled$: Observable<ThemeConfiguration> = this.themeService.christmasThemeEnabled();
