@@ -50,7 +50,7 @@ export class ThemeService {
 
     if (!this.snowflakes && enabled) {
       this.snowflakes = new Snowflakes({
-        count: 30,       // Default: 50
+        count: 20,       // Default: 50
         color: '#fff',   // Default: "#5ECDEF"
         minOpacity: 0.7, // From 0 to 1. Default: 0.6
         minSize: 10,     // Default: 8
