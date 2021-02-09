@@ -134,11 +134,17 @@ const hours: Card[] = Array.from({ length: 3 }, (item, idx) => {
   })
 );
 
+const fibonacciSeq = (n: number) => Array(n).fill(undefined).reduce((acc: number[], value: number, idx: number) => acc.concat(idx < 2 ? idx : acc[idx - 1] + acc[idx - 2]), []);
+const fibonacci: Card[] = [...new Set(fibonacciSeq(13))].map((value: number) => {
+  return { value, mainText: value + '', secondaryText: value + '' };
+});
+
 export const CardTypes = {
   izyan,
   tshirt,
   days,
   hours,
+  fibonacci,
 };
 
 export const SELECTED_CARD_TYPE = 'days';
