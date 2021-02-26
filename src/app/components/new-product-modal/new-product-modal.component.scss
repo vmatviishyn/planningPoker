@@ -1,0 +1,71 @@
+@import '../../../assets/scss/main-theme';
+
+.wrapper {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+
+  @media (max-width: $screen-md) {
+    flex-wrap: wrap;
+  }
+
+  &__text {
+    max-width: 250px;
+  }
+
+  &__close {
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    transition: .3s;
+
+    &:hover {
+      color: darken(white, 50);
+    }
+  }
+
+  &__img {
+    img {
+      display: block;
+      max-height: 500px;
+      max-width: 100%;
+    }
+  }
+}
+
+.info {
+  text-align: center;
+
+  a {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: 0.3s;
+    background: linear-gradient(to right, white 10%, #acacac 50%, white 60%);
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 1.5s linear infinite;
+    display: inline-block;
+    outline: none;
+
+    &:hover {
+      transform: scale(0.95);
+    }
+  }
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}

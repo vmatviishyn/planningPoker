@@ -35,6 +35,15 @@ mat-toolbar {
   }
 }
 
+.izi-retro {
+  img {
+    cursor: pointer;
+    display: flex;
+    height: 25px;
+    margin-right: 10px;
+  }
+}
+
 .rate {
   align-items: center;
   display: flex;

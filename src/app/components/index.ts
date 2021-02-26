@@ -2,6 +2,7 @@ export * from './admin-panel/admin-panel.component';
 export * from './cards-board/cards-board.component';
 export * from './chart/chart.component';
 export * from './home/home.component';
+export * from './new-product-modal/new-product-modal.component';
 export * from './report/report.component';
 
 export * from './room/room.component';

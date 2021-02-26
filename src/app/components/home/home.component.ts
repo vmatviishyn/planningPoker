@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService, HashService, NotificationService, SessionService, ThemeService } from 'src/app/services';
 import { User, Session, ThemeConfiguration } from 'src/app/models';
 import { fadeIn } from 'src/app/animations';
+import { NewProductModalComponent } from '../new-product-modal/new-product-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +19,7 @@ export class HomeComponent implements OnInit {
   sessionId: string;
   isSessionExists = false;
   christmasThemeEnabled$: Observable<ThemeConfiguration> = this.themeService.christmasThemeEnabled();
+  shownNewProductKey = 'shown-new-product';
 
   constructor(
     private authService: AuthService,
@@ -25,10 +28,12 @@ export class HomeComponent implements OnInit {
     private notificationService: NotificationService,
     private hashService: HashService,
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
+    this.openNewProductModal();
     // get session id from query params
     this.sessionId = this.sessionService.getSessionId();
 
@@ -87,4 +92,12 @@ export class HomeComponent implements OnInit {
     this.authService.dispatchSignUp();
   }
 
+  private openNewProductModal() {
+    if (localStorage.getItem(this.shownNewProductKey) && false) { return; }
+
+    this.dialog.open(NewProductModalComponent, { panelClass: 'full-container'})
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(() => localStorage.setItem(this.shownNewProductKey, 'true'));
+  }
 }
