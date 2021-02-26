@@ -93,9 +93,9 @@ export class HomeComponent implements OnInit {
   }
 
   private openNewProductModal() {
-    if (localStorage.getItem(this.shownNewProductKey) && false) { return; }
+    if (localStorage.getItem(this.shownNewProductKey)) { return; }
 
-    this.dialog.open(NewProductModalComponent, { panelClass: 'full-container'})
+    this.dialog.open(NewProductModalComponent, { panelClass: 'new-product'})
       .afterClosed()
       .pipe(take(1))
       .subscribe(() => localStorage.setItem(this.shownNewProductKey, 'true'));

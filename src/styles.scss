@@ -24,6 +24,11 @@ body {
     padding: 0;
   }
 
+  .new-product .mat-dialog-container {
+    border-radius: 20px;
+    padding: 0;
+  }
+
   .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar,
   .mat-form-field-appearance-legacy.mat-focused .mat-form-field-ripple {
     background-color: $red;
