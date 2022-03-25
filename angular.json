@@ -33,7 +33,7 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "@angular/fire/firestore",
+              "chart.js",
               "randomatic",
               "file-saver",
               "xlsx"
