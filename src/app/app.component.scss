@@ -11,6 +11,12 @@ mat-sidenav {
   &-content {
     background-color: $main-accent;
   }
+
+  .close-sidenav {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
 }
 
 mat-toolbar {
@@ -65,8 +71,14 @@ mat-toolbar {
   }
 
   &__text {
-    font-size: 1.4em;
+    font-size: 1em;
     margin-left: 5px;
     font-weight: bold;
+  }
+}
+
+@media (max-width: $screen-sm) {
+  .nav-links .izi-retro {
+    display: none;
   }
 }

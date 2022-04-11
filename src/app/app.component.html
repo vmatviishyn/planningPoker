@@ -1,5 +1,8 @@
 <mat-sidenav-container *ngIf="christmasThemeEnabled$ | async as themeConfiguration">
   <mat-sidenav #sidenav mode="over" position="end">
+    <button mat-button mat-icon-button class="close-sidenav" (click)="sidenav.toggle()">
+      <mat-icon>cancel</mat-icon>
+    </button>
     <app-admin-panel
       [selectedType]="(session$ | async)?.cardsType || selectedCardType"
     ></app-admin-panel>
@@ -8,6 +11,9 @@
   <mat-sidenav-content>
     <mat-toolbar>
       <mat-icon mat-list-icon class="back-icon" [class.hidden]="!(showBackButton$ | async)" (click)="onGoBack()">arrow_back_ios</mat-icon>
+      <a matTooltip="Enjoying the application? Please follow us or star it on GitHub!" href="https://github.com/vmatviishyn/planningPoker" class="izi-retro" target="_blank">
+        <img src="assets/images/github.svg" alt="">
+       </a>
       <div class="rate">
         Planning Poker
         <img src="assets/images/rates.svg" class="rate__img" alt="" [class.rate__img--clickable]="user$ | async" (click)="onRate()">

@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 // Firebase
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 // Additional modules
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -81,11 +81,6 @@ import { environment } from '../environments/environment';
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
-  ],
-  entryComponents: [
-    PopupComponent,
-    TextfieldPopupComponent,
-    UserDetailsComponent
   ],
   bootstrap: [AppComponent]
 })
