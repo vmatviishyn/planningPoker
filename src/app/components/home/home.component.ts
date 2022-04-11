@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService, HashService, NotificationService, SessionService, ThemeService } from 'src/app/services';
-import { User, Session, ThemeConfiguration } from 'src/app/models';
+import { User, Session, ThemeConfiguration, messages } from 'src/app/models';
 import { fadeIn } from 'src/app/animations';
 import { NewProductModalComponent } from '../new-product-modal/new-product-modal.component';
 
@@ -53,13 +53,16 @@ export class HomeComponent implements OnInit {
     }
     this.authService.loginWithGoogle(sessionId, !this.isSessionExists)
       .pipe(take(1))
-      .subscribe((user: User) => {
-        if (this.isSessionExists) {
-          this.navigateToRoom(this.sessionId);
-        } else {
-          this.createSession(user.sessionId);
-        }
-      });
+      .subscribe(
+        (user: User) => {
+          if (this.isSessionExists) {
+            this.navigateToRoom(this.sessionId);
+          } else {
+            this.createSession(user.sessionId);
+          }
+        },
+        () => this.notificationService.showError(messages.signInError),
+      );
   }
 
   private createSession(id: string) {
