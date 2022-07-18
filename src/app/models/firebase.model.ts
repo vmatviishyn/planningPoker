@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 
 export type AuthUserCredential = firebase.auth.UserCredential;
 export type FirestoreCollectionReference = firebase.firestore.CollectionReference;

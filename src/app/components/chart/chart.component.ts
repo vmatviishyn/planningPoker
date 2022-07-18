@@ -64,14 +64,6 @@ export class ChartComponent implements OnInit, OnChanges {
     }
   }
 
-  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
-
-  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
-
   private getValues() {
     const average = this.votes.vote.average;
 

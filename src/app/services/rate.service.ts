@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, DocumentData } from '@angular/fire/firestore'
+import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore'
 ;
 import { exhaustMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
